@@ -7,6 +7,7 @@ Running Sample:
 - `data_interpreter_Keras_aux.py` - This is the dataloader file.
 
 Reference Source:
-1. https://github.com/MengtingWan/marketBias
-2. https://github.com/nijianmo/fit-rec
-3. https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
+1. Data: https://github.com/MengtingWan/marketBias
+2. Data: https://cseweb.ucsd.edu/~jmcauley/datasets.html#market_bias
+3. Model: https://github.com/nijianmo/fit-rec
+4. A2 Slides: https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
