@@ -9,3 +9,4 @@ Running Sample:
 Reference Source:
 1. https://github.com/MengtingWan/marketBias
 2. https://github.com/nijianmo/fit-rec
+3. https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
