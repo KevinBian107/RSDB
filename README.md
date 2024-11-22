@@ -1,5 +1,8 @@
 # Temporal Bias-based Recommandation
 
+[Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
+
+
 Running Sample:
 - `data_split.py` - First run this to split the dataset into train/valid/test. Or you can directly download the files here `endomondoHR_proper_temporal_dataset.pkl` and `endomondoHR_proper_metaData.pkl`.
 - `heart_rate_aux.py` - Run this file to predict the heart rate given the route and target time.
