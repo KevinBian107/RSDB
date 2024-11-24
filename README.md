@@ -16,3 +16,6 @@
 ## Mathamatics Formulation
 1. Summary of the math from FitRec: https://github.com/KevinBian107/TBR/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
 2. Intro to Sequential Modeling: https://github.com/KevinBian107/SBRB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
+
+## Explorative Data Analysis
+Refer to https://github.com/KevinBian107/RSDB/blob/main/explorative%20data%20analysis/eda.ipynb
