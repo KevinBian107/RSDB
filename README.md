@@ -1,4 +1,4 @@
-# Sequential Based Recommendation for Business Owners (SBRB)
+# Recommendation based on Sequential Dynamics for Business owners (RSDB)
 
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
