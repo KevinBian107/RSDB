@@ -8,5 +8,5 @@
     - General models from textbook: https://cseweb.ucsd.edu/~jmcauley/pml/pml_book.pdf
     - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
     - Advance LSTM Model: https://github.com/nijianmo/fit-rec
-3. Summary of the math from FitRec: https://github.com/KevinBian107/TBR/blob/main/related%20works%20and%20math/TBR%20Mathamatical%20Formulation.pdf
+3. Summary of the math from FitRec: https://github.com/KevinBian107/TBR/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
 4. A2 Slides: https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
