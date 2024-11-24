@@ -1,4 +1,4 @@
-# Sequential Based Models for Business Owners (SBB)
+# Sequential Based Recommendation for Business Owners (SBRB)
 
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
