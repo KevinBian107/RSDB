@@ -3,7 +3,8 @@
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
 ## Milestones
-Four hours per day work:
+1. Four hours per day work:
+2. Milestones:
     - `Dec 2, 2024` Start doing writeup
     - `Dec 1, 2024` Finish project
     - `Nov 30, 2024` Basemodel, can be bad models, ready to fine tune.
