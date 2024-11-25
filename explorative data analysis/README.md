@@ -4,7 +4,7 @@ EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA 
 1. Data Cleaning:
     - Traditional data science cleaning (systematic rigorous) + outlier (make it N/A?) + evaluate the outlier impact (use BoxPlot).
     - Missing value imputation. How do we deal with it? Depending on the case, look at the impact.
-    - **Standardization + constraint function (data integrity!!! Do we have functional dependency!!!🤪) The data is where the key lays in (Justin Eldridge)’**
+    - **Standardization + constraint function (data integrity!!! Do we have functional dependency!!!🤪) `The data is where the key lays in (Justin Eldridge)`**
     - Look at data distribution (rating,...), beware of imbalance issues.
     - Prevent dropping features (atomic typing), return as much feature as possible.
 
