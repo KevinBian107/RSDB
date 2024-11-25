@@ -10,6 +10,10 @@
     - General models from textbook: https://cseweb.ucsd.edu/~jmcauley/pml/pml_book.pdf
     - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
     - Advance LSTM Model: https://github.com/nijianmo/fit-rec
+    - Model charcteristics
+        - BIM (Bias-injected model) manually define long-short-term bias
+        - FMPC (Factorized Markov Personalized Chain) finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
+        - RNN/LSTM (Recurrent) cares long term and short term and finds them automatically.
 3. Instructions:
     - A2 Slides: https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
 
