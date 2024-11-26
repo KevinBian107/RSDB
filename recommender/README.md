@@ -29,3 +29,12 @@ We want to do reconmandation for business owner:
 1. user = `gmap_id`
 2. model `interaction` with item = `user_id` through `metric` (counts/rating/...) and `features`.
     - Which business has close relationship for what user.
+
+# Model architectures
+Based on the pros and cons of the model, the effect would be different and what we model is different.
+- TLF-V (Temporal Latent Factor Model  Variants):
+    - It manually define long-short-term bias term for user and item by `binning` or `parametric functions`, many `hand-crafted` things that is specific to the data set working with (original model for Netflix dataset).
+- FPMC-V (Factorized Personalized Markov Chain Variants):
+    - It finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
+- LSTM (Recurrent Neural Network):
+    - It cares long term and short term and finds them automatically agonist of the dataset.
