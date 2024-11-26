@@ -2,14 +2,18 @@
 
 EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA first)
 1. Data Cleaning:
-    - Traditional data science cleaning (systematic rigorous) + outlier (make it N/A?) + evaluate the outlier impact (use BoxPlot).
+    - Traditional data science cleaning (systematic rigorous)
+        - Outlier (make it N/A?)
+        - Evaluate the outlier impact (use BoxPlot).
     - Missing value imputation. How do we deal with it? Depending on the case, look at the impact.
+        - If missing value less than 5%, drop it directly.
+        - If missing value more, do dpendent random imputation.
     - **Standardization + constraint function (data integrity!!! Do we have functional dependency!!!🤪) `The data is where the key lays in (Justin Eldridge)`**
     - Look at data distribution (rating,...), beware of imbalance issues.
     - Prevent dropping features (atomic typing), return as much feature as possible.
 
 2. EDA (Find some intelligence in data)
-    - Dataset too big problem (how to deal with large data set)
+    - Dataset too big problem (how to deal with large data set) ✅
         - Narrow the data scope:
             - Choose a state.
             - Choose a few types of business.
