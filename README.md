@@ -2,6 +2,20 @@
 
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
+## Milestones
+1. Four hours per day work:
+2. Milestones:
+    - `Dec 2, 2024` Start doing writeup
+    - `Dec 1, 2024` Finish project
+    - `Nov 30, 2024` Basemodel, can be bad models, ready to fine tune.
+    - `Nov 28, 2024` EDA all finish, start doing model(EDA简单粗暴)
+        - Prioritize cleaning and standardization
+        - Dataset can use Hawaii if no choice
+        - After this, everyone focus on modeling
+    - `Nov 26, 2024` Model 1 & 2 start (Jason & Kevin), make sure not just mathematically, but practically work.
+    - `Nov 25, 2024` Data cleaning finish (at least good dat, doesn’t need to be best data)
+        - Have a Python file with clean code that preprocesses and give clean data
+
 ## Reference Sources
 1. Dataset:
     - General Information: https://cseweb.ucsd.edu/~jmcauley/datasets.html#google_local
@@ -11,15 +25,19 @@
     - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
     - Advance LSTM Model: https://github.com/nijianmo/fit-rec
     - Model charcteristics
-        - BIM (Bias-injected model) manually define long-short-term bias
-        - FMPC (Factorized Markov Personalized Chain) finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
-        - RNN/LSTM (Recurrent) cares long term and short term and finds them automatically.
+        - BIM-V (Bias Injected Model Variants) manually define long-short-term bias
+        - FPMC-V (Factorized Personalized Markov Chain Variants) finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
+        - RNN/LSTM (Recurrent Neural Network) cares long term and short term and finds them automatically.
 3. Instructions:
     - A2 Slides: https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
 
-## Mathamatics Formulation
+## Mathamatics Formulation of Model
 1. Summary of the math from FitRec: https://github.com/KevinBian107/TBR/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
 2. Intro to Sequential Modeling: https://github.com/KevinBian107/SBRB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
 
+## Model in Practice
+1. Instruction at https://github.com/KevinBian107/RSDB/tree/main/recommender
+
 ## Explorative Data Analysis
-Refer to https://github.com/KevinBian107/RSDB/blob/main/explorative%20data%20analysis/eda.ipynb
+1. Refer to https://github.com/KevinBian107/RSDB/bl ob/main/explorative%20data%20analysis/eda.ipynb
+2. Instruction at https://github.com/KevinBian107/RSDB/tree/main/explorative%20data%20analysis
