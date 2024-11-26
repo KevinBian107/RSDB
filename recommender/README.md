@@ -1,8 +1,8 @@
-# Keys to keep in mind
+# Keys to Keep in Mind 💡
 
 Remanber that `intelligence comes from the data`, you should use a temporal model if your data tells you so, not just by imaginations. We have nice engineering lessons from the Netflix price model, `build models that is particularly designed and shaped particularly your data` (extract intelligence form the data), the temporal user bias is specifically designed as a parametric function to follow the frame of the data.
 
-# Question In Interest🤔
+# Question In Interest 🤔
 We want to do reconmandation for business owner:
 - We are doing the inverse thing: see what user like to make/develop our business towards that (先看客户，然后看开什么店好)
 - Think from the business perspective.
@@ -34,7 +34,7 @@ We want to do reconmandation for business owner:
 2. model `interaction` with item = `user_id` through `metric` (counts/rating/...) and `features`.
     - Which business has close relationship for what user.
 
-# Model Architectures
+# Model Architectures 🌉
 Based on the pros and cons of the model, the effect would be different and what we model is different.
 
 - TLF-V (Temporal Latent Factor Model  Variants):
