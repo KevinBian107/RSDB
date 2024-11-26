@@ -1,4 +1,8 @@
-# Question In Interest🤔
+# Keys to Keep in Mind 💡
+
+Remanber that `intelligence comes from the data`, you should use a temporal model if your data tells you so, not just by imaginations. We have nice engineering lessons from the Netflix price model, `build models that is particularly designed and shaped particularly your data` (extract intelligence form the data), the temporal user bias is specifically designed as a parametric function to follow the frame of the data.
+
+# Question In Interest 🤔
 We want to do reconmandation for business owner:
 - We are doing the inverse thing: see what user like to make/develop our business towards that (先看客户，然后看开什么店好)
 - Think from the business perspective.
@@ -29,3 +33,15 @@ We want to do reconmandation for business owner:
 1. user = `gmap_id`
 2. model `interaction` with item = `user_id` through `metric` (counts/rating/...) and `features`.
     - Which business has close relationship for what user.
+
+# Model Architectures 🌉
+Based on the pros and cons of the model, the effect would be different and what we model is different.
+
+- TLF-V (Temporal Latent Factor Model  Variants):
+    - It manually define long-short-term bias term for user and item by `binning` or `parametric functions`, many `hand-crafted` things that is specific to the data set working with (original model for Netflix dataset).
+    - Temporal modeling based on time-stamp.
+- FPMC-V (Factorized Personalized Markov Chain Variants):
+    - It finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
+    - Sequential modeling.
+- LSTM (Recurrent Neural Network):
+    - It cares long term and short term and finds them automatically agonist of the dataset.
