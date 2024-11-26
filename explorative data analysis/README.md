@@ -1,7 +1,7 @@
 # Schematic of EDA
 
 EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA first)
-1. Data Cleaning:
+1. Data Cleaning (do two notebook and then merge):
     - Traditional data science cleaning (systematic and rigorous)
         - Type conversion.
         - Outlier (make it N/A?).
