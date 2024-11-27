@@ -21,6 +21,7 @@ EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA 
 
 2. EDA (Find some intelligence in data)
     - Dataset too big problem (how to deal with large data set) ✅
+    - We do not use the subset, subsetting makes data space sparse. We use the k-core for using only the dense data set and thinking about the more active user and items.
         - Narrow the data scope: we will do `entertainment` + `food` + `retail` using the `California dataset`
             - Choose a state.
             - Choose a few types of business.
