@@ -39,7 +39,7 @@ class TemporalStaticModel(tfrs.Model):
             num_oov_indices=1
         )
 
-        # Embedding layers
+        # Embedding layers for latent embeddings
         self.user_embedding = tf.keras.layers.Embedding(
             input_dim=self.user_index.vocabulary_size(),
             output_dim=embedding_dim,
@@ -106,7 +106,7 @@ class TemporalStaticModel(tfrs.Model):
         user_alpha = self.user_alpha(user_idx)
         time = tf.cast(features["time"], tf.float32)
         user_mean_time = tf.cast(features["user_mean_time"], tf.float32)
-        deviation = tf.math.sign(time - user_mean_time) * tf.abs(time - user_mean_time) ** 0.4
+        deviation = tf.math.sign(time - user_mean_time) * tf.abs(time - user_mean_time) ** 0.5
         temporal_effect = user_bias + user_alpha * tf.expand_dims(deviation, axis=-1)
 
         # Interaction score
