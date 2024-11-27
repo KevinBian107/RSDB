@@ -4,11 +4,22 @@ import numpy as np
 import gzip
 from pathlib import Path
 import json
+import requests
 
 import warnings
 warnings.filterwarnings("ignore")
 
 def download_review_data(url, save_path):
+    """
+    Downloads the review dataset and saves it to a specified file path.
+
+    Args:
+        url (str): The URL of the dataset to be downloaded.
+        save_path (str): The file path where the downloaded dataset will be saved.
+
+    Returns:
+        None
+    """
     try:
         # Send GET request to the URL
         response = requests.get(url, stream=True)
@@ -26,12 +37,38 @@ def download_review_data(url, save_path):
 
 
 def parseData(file_path):
+    """
+    Parses a gzipped JSON file
+
+    Args:
+        file_path (str): The file path
+
+    Returns:
+        list[dict]: A list of dictionaries
+    """
+
     with gzip.open(file_path, 'rt', encoding='utf-8') as f:
         data = [json.loads(line) for line in f]
     return data
 
 
 def clean_gmap_meta_data(df):
+    """
+    Cleans and processes a DataFrame containing review metadata.
+
+    This function performs the following operations:
+    - Renames the 'name' column to 'gmap_name'
+    - Reorders the columns 
+    - Removes the 'state' and 'url' column
+    - Handles missing values and fills other missing values with 'NaN'.
+    - Filters out entries based on frequency of 'category'
+
+    Args:
+        df (DataFrame): A DataFrame containing review metadata
+
+    Returns:
+        DataFrame: The cleaned DataFrame
+    """
     df = df.rename(columns={
     'name': 'gmap_name'
     })
@@ -68,8 +105,24 @@ def clean_gmap_meta_data(df):
     
     df = df[df['category'].apply(lambda categories: not any([cate in spare_categories for cate in categories]))]
 
+    return df
 
-def clean_review_data(df): 
+
+def clean_review_data(df, meta_df): 
+    """
+    Cleans and processes a DataFrame containing review data.
+
+    This function performs the following operations:
+    - Removes the 'pics' column
+    - Adds the 'has_rep' column
+    - Merges the DataFrame with metadata
+
+    Args:
+        df (DataFrame): A DataFrame containing review data
+
+    Returns:
+        DataFrame: The cleaned DataFrame
+    """
     ## remove pics column: since we don't want to deal with image
     df = df.drop(columns=['pics'])
 
@@ -78,11 +131,11 @@ def clean_review_data(df):
 
     # merging
     df = df.merge(
-        df,
+        meta_df,
         how = 'inner',
         right_on = 'gmap_id',
         left_on = 'gmap_id'
     )
-    
 
+    return df
 
