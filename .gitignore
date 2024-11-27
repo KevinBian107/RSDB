@@ -1,3 +1,4 @@
 .DS_Store
 /data/*
-*/*/__pycahce__
+*__pycache__
+*latent_hyperparameter_tuning/
