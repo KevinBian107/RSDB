@@ -17,8 +17,7 @@
         - Have a Python file with clean code that preprocesses and give clean data
 
 ## assignment requirements
-## Dataset
-
+### Dataset
 - [ ]  EDA
 - [ ]  data set description
     - [ ]  row and cols
@@ -27,8 +26,7 @@
     - [ ]  outliers
     - [ ]  size of the data set
 
-## Predictive Task
-
+### Predictive Task
 - [ ]  Problem we are trying to solve
     - [ ]  context
     - [ ]  stakeholder
@@ -37,8 +35,7 @@
 - [ ]  downstream application of the model (validity the performance of the model)
 - [ ]  used features
 
-## Model
-
+### Model
 - [ ]  Used model
     - [ ]  what is the model
     - [ ]  pro and con
@@ -49,15 +46,13 @@
 - [ ]  
 - [ ]  strength and weakness
 
-## Literature
-
+### Literature
 - [ ]  related works on the problem
 - [ ]  other data set that has been used to train this model
 - [ ]  What are state of the art method
 - [ ]  your finding against other works
 
-## Results
-
+### Results
 - [ ]  baseline model comparison
 - [ ]  significance of the result
 - [ ]  which feature representation works well
