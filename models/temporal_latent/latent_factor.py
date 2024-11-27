@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class LatentFactorModel(tfrs.Model):
-    def __init__(self, l2_reg, dense_units, embedding_dim, data_querry):
+    def __init__(self, l2_reg, dense_units, embedding_dim, data_query):
         super().__init__()
 
         self.l2_reg = l2_reg
@@ -23,50 +23,50 @@ class LatentFactorModel(tfrs.Model):
         self.embedding_dim = embedding_dim
 
         # latent factors using lookup table
-        self.user_embedding = tf.keras.Sequential([
+        self.b_embed = tf.keras.Sequential([
             tf.keras.layers.StringLookup(
-                vocabulary=data_querry["gmap_id"].unique(),
+                vocabulary=data_query["gmap_id"].unique(),
                 mask_token=None, 
                 num_oov_indices=1
                 ),
             tf.keras.layers.Embedding(
-                len(data_querry["gmap_id"].unique()) + 2,
+                len(data_query["gmap_id"].unique()) + 2,
                 self.embedding_dim,
                 embeddings_regularizer=tf.keras.regularizers.l2(self.l2_reg)
                 )
         ])
-        self.book_embedding = tf.keras.Sequential([
+        self.r_embed = tf.keras.Sequential([
             tf.keras.layers.StringLookup(
-                vocabulary=data_querry["user_id"].unique(),
+                vocabulary=data_query["reviewer_id"].unique(),
                 mask_token=None, 
                 num_oov_indices=1
                 ),
             tf.keras.layers.Embedding(
-                len(data_querry["user_id"].unique()) + 2,
+                len(data_query["reviewer_id"].unique()) + 2,
                 self.embedding_dim,
                 embeddings_regularizer=tf.keras.regularizers.l2(self.l2_reg)
                 )
         ])
 
         # bias terms
-        self.user_bias = tf.keras.Sequential([
+        self.b_bias = tf.keras.Sequential([
             tf.keras.layers.StringLookup(
-                vocabulary=data_querry["gmap_id"].unique(),
+                vocabulary=data_query["gmap_id"].unique(),
                 mask_token=None,
                 num_oov_indices=1
                 ),
             tf.keras.layers.Embedding(
-                input_dim=len(data_querry["gmap_id"].unique()) + 2,
+                input_dim=len(data_query["gmap_id"].unique()) + 2,
                 output_dim=1)
         ])
-        self.book_bias = tf.keras.Sequential([
+        self.r_bias = tf.keras.Sequential([
             tf.keras.layers.StringLookup(
-                vocabulary=data_querry["user_id"].unique(),
+                vocabulary=data_query["reviewer_id"].unique(),
                 mask_token=None,
                 num_oov_indices=1
                 ),
             tf.keras.layers.Embedding(
-                input_dim=len(data_querry["user_id"].unique()) + 2,
+                input_dim=len(data_query["reviewer_id"].unique()) + 2,
                 output_dim=1)
         ])
 
@@ -87,16 +87,16 @@ class LatentFactorModel(tfrs.Model):
         )
 
     def call(self, features):
-        user_embeddings = self.user_embedding(features["gmap_id"])
-        book_embeddings = self.book_embedding(features["user_id"])
-        user_bias = self.user_bias(features["gmap_id"])
-        book_bias = self.book_bias(features["user_id"])
+        b_embeds = self.b_embed(features["gmap_id"])
+        r_embeds = self.r_embed(features["reviewer_id"])
+        b_bias = self.b_bias(features["gmap_id"])
+        r_bias = self.r_bias(features["reviewer_id"])
         
         # Concatenate embeddings and pass through dense layers
-        concatenated_embeddings = tf.concat([user_embeddings, book_embeddings],axis=1)
+        concatenated_embeddings = tf.concat([b_embeds, r_embeds],axis=1)
         interaction_score = self.dense_layers(concatenated_embeddings)
         
-        return tf.squeeze(interaction_score) + tf.squeeze(user_bias) + tf.squeeze(book_bias)
+        return tf.squeeze(interaction_score) + tf.squeeze(b_bias) + tf.squeeze(r_bias)
     
 
     def compute_loss(self, features, training=False):
