@@ -43,5 +43,6 @@ Based on the pros and cons of the model, the effect would be different and what 
 - FPMC-V (Factorized Personalized Markov Chain Variants):
     - It finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
     - Sequential modeling.
+    - Different from traditional FPMC model, we need to not only distibguish perfered and non-perfered, so the vanilla model need to have use MSE instead of BPR lost.
 - LSTM (Recurrent Neural Network):
     - It cares long term and short term and finds them automatically agonist of the dataset.

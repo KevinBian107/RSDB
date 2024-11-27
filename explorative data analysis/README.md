@@ -35,6 +35,7 @@ EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA 
         - price (discrete, need one hot)
         - hours (int)
         - MISC (one hot)
+    - No matter from what perspective, user should be user because of the data limitations.
 
 4. Models
     - Try to avoid python for loop, use vectorization.
