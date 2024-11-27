@@ -1,6 +1,7 @@
 # Schematic of EDA
 
 EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA first)
+0. No subset, subsetting makes data space sparse, we use the k-core for dense data set, more active user and items.
 1. Data Cleaning (do two notebook and then merge):
     - Traditional data science cleaning (systematic and rigorous)
         - Type conversion.
