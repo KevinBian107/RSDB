@@ -1,4 +1,8 @@
+# macOS
 .DS_Store
 /data/*
 *__pycache__
+
+# project specific
+data
 *latent_hyperparameter_tuning/
