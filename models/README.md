@@ -2,6 +2,9 @@
 
 Remanber that `intelligence comes from the data`, you should use a temporal model if your data tells you so, not just by imaginations. We have nice engineering lessons from the Netflix price model, `build models that is particularly designed and shaped particularly your data` (extract intelligence form the data), the temporal user bias is specifically designed as a parametric function to follow the frame of the data.
 
+# Testing 🔧
+- Use a different state? based on a region?
+
 # Question In Interest 🤔
 We want to do reconmandation for business owner:
 - We are doing the inverse thing: see what user like to make/develop our business towards that (先看客户，然后看开什么店好)
