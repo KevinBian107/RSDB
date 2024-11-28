@@ -4,6 +4,7 @@ Remanber that `intelligence comes from the data`, you should use a temporal mode
 
 # Testing 🔧
 - Use a different state? based on a region?
+- Output should be given region, check with how many ranking degree.
 
 # Question In Interest 🤔
 We want to do reconmandation for business owner:
