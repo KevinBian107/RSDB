@@ -22,6 +22,7 @@ We want to do reconmandation for business owner:
     - Use longitude + latitude
 3. `Gmap popularity score`
     - Monthly visits
+    - Temporal, does not construct data lekage
 4. `Hours` (Open or not? + total opening times)
     - Time interval of when it is open (opening period)
     - Does it open during weekend 
