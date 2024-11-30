@@ -145,8 +145,20 @@ def clean_review_data(df, meta_df):
     ## adding feature
     df = df.assign(has_rep=df["resp"].notna())
 
+    ## Filter data within latitude/longitude bounds
+    lat_min, lat_max = 32.5, 42
+    long_min, long_max = -124.4, -114.13
+    df = df[(df["latitude"] >= lat_min) & (df["latitude"] <= lat_max) &
+            (df["longitude"] >= long_min) & (df["longitude"] <= long_max)]
+
+    ## Filter data with review_time(unix) before 2005
+    before_2005_timestamp = 1107849600 * 1000  # Convert to milliseconds
+    df = df[df["review_time(unix)"] >= before_2005_timestamp]
+
     # merging
     df = df.merge(meta_df, how="inner", right_on="gmap_id", left_on="gmap_id")
+    df = df.drop_duplicates(subset=["reviewer_id", "text", "gmap_id"])
+
 
     return df
 
