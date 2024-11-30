@@ -167,17 +167,18 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=Fal
     """
     ## Set up paths
     base_path = Path.cwd()
-    file_path = base_path / "data" / "data.json.gz"
-    meta_file_path = base_path / "data" / "metadata.json.gz"
+    file_path = base_path / "data" / "california_clean_data.json.gz"
+    meta_file_path = base_path / "data" / "california_clean_metadata.json.gz"
+    
 
     ## Download data if not available
-    if not file_path.exists():
-        print(f"Review file not found. Downloading...")
-        download_review_data(url, file_path)
+    # if not file_path.exists():
+    #     print(f"Review file not found. Downloading...")
+    #     download_review_data(url, file_path)
 
-    if not meta_file_path.exists():
-        print(f"Metadata file not found. Downloading...")
-        download_review_data(meta_url, meta_file_path)
+    # if not meta_file_path.exists():
+    #     print(f"Metadata file not found. Downloading...")
+    #     download_review_data(meta_url, meta_file_path)
 
     ## Process meta data
     if meta_file_path.exists():
