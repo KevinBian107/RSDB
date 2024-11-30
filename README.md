@@ -3,7 +3,7 @@
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
 ## Recommendation Structure
-![Alt text](pic/recommendationSystemStructure.png)
+![Alt text](demos/recommendationSystemStructure.png)
 
 ## Milestones
 1. Four hours per day work:
