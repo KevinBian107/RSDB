@@ -74,7 +74,25 @@ class Recommendation():
 
         return result_df
     
-    '''Assume we are using this to process tf data'''
+    def df_to_tf_fpmc_model(self, dataframe):
+        '''
+        Convert panda Dataframe to tensforflow data for tf fpmc model 
+        '''
+        # Instantiate StringLookup layers
+        user_lookup = tf.keras.layers.StringLookup(
+            vocabulary=self.dataset["reviewer_id"].unique(), mask_token=None
+        )
+        item_lookup = tf.keras.layers.StringLookup(
+            vocabulary=self.dataset["gmap_id"].unique(), mask_token=None
+        )
+        return tf.data.Dataset.from_tensor_slices({
+            "reviewer_id": user_lookup(dataframe["reviewer_id"]),
+            "prev_item_id": item_lookup(dataframe["prev_item_id"]),
+            "next_item_id": item_lookup(dataframe["gmap_id"]),
+            "rating": dataframe["rating"].astype(float),
+        })
+    
+    '''Assume we are using this to process tf data for dynamic model'''
     @staticmethod
     def df_to_tf_dynamic_model(dataframe):
         return tf.data.Dataset.from_tensor_slices({
@@ -85,6 +103,7 @@ class Recommendation():
             "user_mean_time": dataframe["user_mean_time"],
             "rating": dataframe["rating"]
         })
+
 
 
 '''
