@@ -8,16 +8,10 @@ import pandas as pd
 import numpy as np
 
 
-## helper functions
-def hot_encode_categories(location_categories: list) -> np.ndarray:
-    """
-    helper function for featuring_category that that convert
-    """
-
-
 def featuring_category(df: pd.DataFrame, featuring_category: list) -> pd.DataFrame:
     """
     creating features out of category
+    takes around 1 min and 54 sec
 
     Args:
         df: input dataframe
@@ -26,6 +20,40 @@ def featuring_category(df: pd.DataFrame, featuring_category: list) -> pd.DataFra
 
     """
     assert "category" in df.columns, "column category does not exist in df"
+
+    ## helper functions
+    def hot_encode_categories(location_categories: pd.Series) -> np.ndarray:
+        """
+        helper function for featuring_category that that convert
+        location_category into multiple columns
+        """
+        # creating location category_matrix filled with zeros
+        location_category_feature = np.zeros(
+            (len(location_categories), len(featuring_category)), dtype=int
+        )
+
+        location_categories_str_rep = location_categories.apply(
+            lambda categories: " ".join(categories).lower()
+        )
+        # check with location_categories that specified by user
+        for i, feature in enumerate(featuring_category):
+            location_category_feature[:, i] = [
+                1 if feature in category_str_rep else 0
+                for category_str_rep in location_categories_str_rep
+            ]
+
+        return location_category_feature
+
+    category_feature_matrix = hot_encode_categories(df["category"])
+
+    # convert features into dataframe
+    category_feature_df = pd.DataFrame(
+        category_feature_matrix,
+        columns=[f"isin_category_{name}" for name in featuring_category],
+        index=df.index,
+    )
+
+    return pd.concat([df, category_feature_df], axis=1).drop(columns=["category"])
 
 
 def featuring_locations(df: pd.DataFrame) -> pd.DataFrame:
@@ -56,13 +84,10 @@ def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
     Args:
         cleaned_df: claned reviews dataframe
     """
-    featuring_category = ["restaurant", "park", "glocery"]
-
     feaured_df = clean_df
 
-    feaured_df = featuring_category(
-        feaured_df,
-    )
+    featuring_category = ["restaurant", "park", "store"]
+    feaured_df = featuring_category(feaured_df, featuring_category)
 
     feaured_df = featuring_locations(feaured_df)
 
