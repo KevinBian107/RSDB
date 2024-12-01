@@ -6,9 +6,10 @@ def recommend(model, features, u_location, u_hours):
     # bining by locations (same as feature engineering)
     
     # for all users in location Bin + Hours want to operate:
-        # gmap popularity score = 0
-        # predict ratings for all type of business
-        # aggregate
+        # query all the needed info (temporal info + gmap popularity)
+        # predict ratings for all type of business x all user in such location
+        # aggregate all ratings grouoby business category
+        # ranking
     
     return ...
 

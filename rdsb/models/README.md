@@ -34,6 +34,7 @@ We want to do reconmandation for business owner:
     - `Gmap ID`
     - `Reviewer ID`
     - `Rating`
+2. **Need to study how to model temproal better, sticking with current status for now, working on featuers**
 
 # Prediction Models (Let's not do Dark Magic 🪄🧙）
 **Predict unknown interaction between business and users.** New business in certain area, we predict the `overall` user metric (i.e. rating) for this new business (scoring function of your business).
@@ -59,6 +60,16 @@ Based on the pros and cons of the model, the effect would be different and what 
 
 # Downstream Application 🌊
 Given a `location (lattitude, longitute)` -> binning -> look at all business rating predictions in this bin -> predict the best business for this location bin given all user rating in this location (implicit inm the recommander system).
+
+```python
+bining by locations (same as feature engineering)
+for all users in location Bin + Hours want to operate:
+    query all the needed info (temporal info + gmap popularity)
+    predict ratings for all type of business x all user in such location
+    aggregate all ratings grouoby business category
+    ranking
+
+```
 
 # Testing 🔧
 - Use a different state? based on a region?
