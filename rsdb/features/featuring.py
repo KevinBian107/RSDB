@@ -6,12 +6,132 @@
 ## Hours (TODO)
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
-# OUTPUT_COLS = [
-#     'review_time(unix)',
-#     'reviewer_id',
-#     ''
-# ]
+OUTPUT_COLS = [
+    "review_time(unix)",
+    "reviewer_id",
+    "gmap_id",
+    "rating",
+    "isin_category_restaurant",
+    "isin_category_park",
+    "isin_category_store",
+    "lon_bin_0",
+    "lon_bin_1",
+    "lon_bin_2",
+    "lon_bin_3",
+    "lon_bin_4",
+    "lon_bin_5",
+    "lon_bin_6",
+    "lon_bin_7",
+    "lon_bin_8",
+    "lon_bin_9",
+    "lon_bin_10",
+    "lon_bin_11",
+    "lon_bin_12",
+    "lon_bin_13",
+    "lon_bin_14",
+    "lon_bin_15",
+    "lon_bin_16",
+    "lon_bin_17",
+    "lon_bin_18",
+    "lon_bin_19",
+    "lat_bin_0",
+    "lat_bin_1",
+    "lat_bin_2",
+    "lat_bin_3",
+    "lat_bin_4",
+    "lat_bin_5",
+    "lat_bin_6",
+    "lat_bin_7",
+    "lat_bin_8",
+    "lat_bin_9",
+    "lat_bin_10",
+    "lat_bin_11",
+    "lat_bin_12",
+    "lat_bin_13",
+    "lat_bin_14",
+    "lat_bin_15",
+    "lat_bin_16",
+    "lat_bin_17",
+    "lat_bin_18",
+    "lat_bin_19",
+    "closed_on_weekend",
+    "weekly_operating_hours",
+    "time_bin",
+    "user_mean_time",
+    "prev_item_id",
+]
+
+
+def is_closed_on_weekend(entry):
+    # can swtich to single day if possible
+
+    if not isinstance(entry, list):
+        return np.nan
+    return entry[2][1] == "Closed" and entry[3][1] == "Closed"
+
+
+def parse_time(time_str):
+    # Define the possible time formats
+    time_formats = [
+        "%I%p",  # 8AM, 8:00AM
+        "%I:%M%p",  # 3:00, 6PM
+        "%I:%M",  # 8:00AM
+        "%H",  # 3
+        "%I%p",  # 3PM, 6PM
+    ]
+    for fmt in time_formats:
+        try:
+            # Try parsing the time with the given format
+            return datetime.strptime(time_str, fmt)
+        except ValueError:
+            continue
+
+    # If no format matches, return None or raise an error
+    raise ValueError(f"Time format for '{time_str}' not recognized")
+
+
+def calculate_total_hours(hours_list):  # for each row
+    total_hours = 0
+    if not isinstance(hours_list, list):
+        return np.nan
+
+    for week_day in hours_list:
+        # Take the second entry
+        daily_hour = week_day[1]
+        daily_hour = daily_hour.replace("–", "-")
+        if daily_hour == "Closed":
+            continue  # Skip if the value is "Closed"
+
+        if daily_hour == "Open 24 hours":
+            total_hours += 24
+            continue
+
+        if not isinstance(daily_hour, str):
+            print(f"Unexpected format in daily_hour: {daily_hour}")
+            continue  # Skip if the format is unexpected
+
+        try:
+            # Split the string into start and end times
+            if "-" not in daily_hour:
+                print(f"Invalid time format: {daily_hour}")
+                continue
+
+            start_time_str, end_time_str = daily_hour.split("-")
+
+            # Parse the start and end times
+            start_time = parse_time(start_time_str)
+            end_time = parse_time(end_time_str)
+
+            # Calculate duration in hours
+            duration = (end_time - start_time).seconds / 3600
+            total_hours += duration
+        except ValueError as e:
+            print(f"Error parsing time: {daily_hour}, Error: {e}")
+            continue  # Skip malformed entries
+
+    return total_hours
 
 
 def milliseconds_to_years(milliseconds: int) -> float:
@@ -153,7 +273,12 @@ def featuring_hours(df: pd.DataFrame) -> pd.DataFrame:
 
     return: cleaned dataframe
     """
-    # TODO
+    assert "hours" in df.columns, "hours does not exist"
+
+    df = df.assign(closed_on_weekend=df["hours"].apply(is_closed_on_weekend))
+    df = df.assign(weekly_operating_hours=df["hours"].apply(calculate_total_hours))
+
+    return df
 
 
 def featuring_model(df: pd.DataFrame) -> pd.DataFrame:
@@ -168,8 +293,30 @@ def featuring_model(df: pd.DataFrame) -> pd.DataFrame:
 
     return: dataframe with
     """
-    # TODO
-    # df = df.assign(time_bin = df['review_time(unix)'])
+
+    df = df.assign(time_bin=df["review_time(unix)"])
+    user_avg_time = df.groupby("reviewer_id")["review_time(unix)"].mean()
+    df = df.assign(user_mean_time=df["reviewer_id"].map(user_avg_time))
+
+    time_mean, time_std = (
+        df["review_time(unix)"].mean(),
+        df["review_time(unix)"].std(),
+    )
+    user_mean_time_mean, user_mean_time_std = (
+        df["user_mean_time"].mean(),
+        df["user_mean_time"].std(),
+    )
+
+    df["review_time(unix)"] = (df["review_time(unix)"] - time_mean) / time_std
+    df["user_mean_time"] = (
+        df["user_mean_time"] - user_mean_time_mean
+    ) / user_mean_time_std
+
+    df = df.sort_values(by=["reviewer_id", "review_time(unix)"])
+    df["prev_item_id"] = df.groupby("reviewer_id")["gmap_id"].shift(1)
+    df = df.dropna(subset=["prev_item_id"])
+
+    return df
 
 
 def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
@@ -179,16 +326,19 @@ def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
     Args:
         cleaned_df: claned reviews dataframe
     """
+    checking_category = ["restaurant", "park", "store"]
 
-    feaured_df = clean_df
+    featured_df = clean_df
 
-    featuring_category = ["restaurant", "park", "store"]
-    feaured_df = featuring_category(feaured_df, featuring_category)
+    featured_df = featuring_category(featured_df, checking_category)
 
-    feaured_df = featuring_locations(feaured_df)
+    featured_df = featuring_locations(featured_df)
 
     # feaured_df = featuring_review_counts(feaured_df)
 
-    feaured_df = featuring_hours(feaured_df)
+    featured_df = featuring_hours(featured_df)
 
-    return feaured_df
+    featured_df = featuring_model(featured_df)
+
+    # this will drop 7 percent of the dataset
+    return featured_df[OUTPUT_COLS].dropna()

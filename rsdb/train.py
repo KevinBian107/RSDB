@@ -12,6 +12,11 @@ def main():
     url = "https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/review-California_10.json.gz"
     meta_url = "https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/meta-California.json.gz"
 
+    cleaned_df = get_clean_review_data(url, meta_url)
+    featured_df = featuring_engineering(cleaned_df)
+
+    breakpoint()
+
 
 if __name__ == "__main__":
     main()
