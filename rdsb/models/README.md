@@ -1,6 +1,32 @@
 # Keys to Keep in Mind 💡
 Remanber that `intelligence comes from the data`, you should use a temporal model if your data tells you so, not just by imaginations. We have nice engineering lessons from the Netflix price model, `build models that is particularly designed and shaped particularly your data` (extract intelligence form the data), the temporal user bias is specifically designed as a parametric function to follow the frame of the data.
 
+# Structure of Models
+```bash
+- fpmc
+    - fpmc.py
+        - (factorized personalized markov chain)
+    - fpmc_variants.py
+        - (our variants factorized personalized markov chain)
+    - run.ipynb
+        - (run script of non-varaiants fpmc)
+- tlfm
+    - latent_factor.py
+        - (baseline latent factor + neural corrolative)
+    - temporal_static.py
+        - (Netflex price model with static user imbeddings)
+    - temporal_dynamics.py
+        - (Netflex price model with dynamics user imbeddings)
+    - temporal_dynamics_variants.py
+        - (Variants Netflex price model with dynamics user imbeddings)
+    - run.ipynb
+        - (run scripts of non-variants tlfm)
+- recommendation.py
+    - (down stream task)
+- run.ipynb
+    - (full model of the variants)
+```
+
 # Question In Interest 🤔
 We want to do reconmandation for business owner:
 - We are doing the inverse thing: see what user like to make/develop our business towards that (先看客户，然后看开什么店好)
