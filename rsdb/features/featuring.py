@@ -8,6 +8,23 @@ import pandas as pd
 import numpy as np
 
 
+def milliseconds_to_years(milliseconds: int) -> float:
+    """
+    turn milliseconds into years
+
+    Args:
+        milliseconds
+
+    return: number that convert milliseconds into years
+    """
+    seconds = milliseconds / 1000
+    minutes = seconds / 60
+    hours = minutes / 60
+    days = hours / 24
+    years = days / 365.25  # Account for leap years
+    return years
+
+
 def featuring_category(df: pd.DataFrame, featuring_category: list) -> pd.DataFrame:
     """
     creating features out of category
@@ -91,9 +108,34 @@ def featuring_locations(df: pd.DataFrame, lon_bins=20, lat_bins=20) -> pd.DataFr
 
 def featuring_review_counts(df: pd.DataFrame) -> pd.DataFrame:
     """
-    takes in a dataframe and count the reviews
+    takes in a dataframe and count the average review per year of each gmapid
+
+    Args:
+        pd: input dataframe
+
+    return: dataframe with bins encoded into categories
     """
-    pass
+    assert "review_time(unix)" in df.columns, "no review time"
+    assert "gmap_id" in df.columns, "needs location identifier"
+    assert "num_of_reviews" in df.columns, "needs total review counts"
+
+    # find review duration of each store and calculate the avg review per year
+    latest_review_time = df["review_time(unix)"].max()
+    location_earliest_review = df.groupby(["gmap_id"])["review_time(unix)"].min()
+    location_duration_ms = latest_review_time - location_earliest_review
+    location_duration_yr = location_duration_ms.apply(milliseconds_to_years)
+    location_duration_yr_reviws = df[["gmap_id", "num_of_reviews"]].merge(
+        location_duration_yr, left_on="gmap_id", right_index=True
+    )
+
+    assert location_duration_yr_reviws.shape[0] == df.shape[0], "merging issue"
+
+    return df.assign(
+        **{
+            "avg_review(per year)": location_duration_yr_reviws["num_of_reviews"]
+            / location_duration_yr_reviws["review_time(unix)"]
+        }
+    )
 
 
 def featuring_hours(df: pd.DataFrame) -> pd.DataFrame:
