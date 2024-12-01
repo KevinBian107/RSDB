@@ -7,6 +7,12 @@
 import pandas as pd
 import numpy as np
 
+# OUTPUT_COLS = [
+#     'review_time(unix)',
+#     'reviewer_id',
+#     ''
+# ]
+
 
 def milliseconds_to_years(milliseconds: int) -> float:
     """
@@ -106,43 +112,64 @@ def featuring_locations(df: pd.DataFrame, lon_bins=20, lat_bins=20) -> pd.DataFr
     )
 
 
-def featuring_review_counts(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    takes in a dataframe and count the average review per year of each gmapid
+# def featuring_review_counts(df: pd.DataFrame) -> pd.DataFrame:
+#     """
+#     takes in a dataframe and count the average review per year of each gmapid
 
-    Args:
-        pd: input dataframe
+#     Args:
+#         pd: input dataframe
 
-    return: dataframe with bins encoded into categories
-    """
-    assert "review_time(unix)" in df.columns, "no review time"
-    assert "gmap_id" in df.columns, "needs location identifier"
-    assert "num_of_reviews" in df.columns, "needs total review counts"
+#     return: dataframe with bins encoded into categories
+#     """
+#     assert "review_time(unix)" in df.columns, "no review time"
+#     assert "gmap_id" in df.columns, "needs location identifier"
+#     assert "num_of_reviews" in df.columns, "needs total review counts"
 
-    # find review duration of each store and calculate the avg review per year
-    latest_review_time = df["review_time(unix)"].max()
-    location_earliest_review = df.groupby(["gmap_id"])["review_time(unix)"].min()
-    location_duration_ms = latest_review_time - location_earliest_review
-    location_duration_yr = location_duration_ms.apply(milliseconds_to_years)
-    location_duration_yr_reviws = df[["gmap_id", "num_of_reviews"]].merge(
-        location_duration_yr, left_on="gmap_id", right_index=True
-    )
+#     # find review duration of each store and calculate the avg review per year
+#     latest_review_time = df["review_time(unix)"].max()
+#     location_earliest_review = df.groupby(["gmap_id"])["review_time(unix)"].min()
+#     location_duration_ms = latest_review_time - location_earliest_review
+#     location_duration_yr = location_duration_ms.apply(milliseconds_to_years)
+#     location_duration_yr_reviws = df[["gmap_id", "num_of_reviews"]].merge(
+#         location_duration_yr, left_on="gmap_id", right_index=True
+#     )
 
-    assert location_duration_yr_reviws.shape[0] == df.shape[0], "merging issue"
+#     assert location_duration_yr_reviws.shape[0] == df.shape[0], "merging issue"
 
-    return df.assign(
-        **{
-            "avg_review(per year)": location_duration_yr_reviws["num_of_reviews"]
-            / location_duration_yr_reviws["review_time(unix)"]
-        }
-    )
+#     return df.assign(
+#         **{
+#             "avg_review(per year)": location_duration_yr_reviws["num_of_reviews"]
+#             / location_duration_yr_reviws["review_time(unix)"]
+#         }
+#     )
 
 
 def featuring_hours(df: pd.DataFrame) -> pd.DataFrame:
     """
-    extracting time interval features out of the dataframe
+    extracting time interval features and open in weekend features
+
+    Args:
+        df: clean reviews dataframe
+
+    return: cleaned dataframe
     """
-    pass
+    # TODO
+
+
+def featuring_model(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    creating ml specific features. These features include:
+    * weekly bin for gmap_id
+    * average review time that user left the comment (normalized)
+    * normalized review time
+
+    Args:
+        cleaned_df: claned reviews dataframe
+
+    return: dataframe with
+    """
+    # TODO
+    # df = df.assign(time_bin = df['review_time(unix)'])
 
 
 def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
@@ -152,6 +179,7 @@ def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
     Args:
         cleaned_df: claned reviews dataframe
     """
+
     feaured_df = clean_df
 
     featuring_category = ["restaurant", "park", "store"]
@@ -159,7 +187,7 @@ def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
 
     feaured_df = featuring_locations(feaured_df)
 
-    feaured_df = featuring_review_counts(feaured_df)
+    # feaured_df = featuring_review_counts(feaured_df)
 
     feaured_df = featuring_hours(feaured_df)
 
