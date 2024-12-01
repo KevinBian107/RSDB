@@ -56,11 +56,37 @@ def featuring_category(df: pd.DataFrame, featuring_category: list) -> pd.DataFra
     return pd.concat([df, category_feature_df], axis=1).drop(columns=["category"])
 
 
-def featuring_locations(df: pd.DataFrame) -> pd.DataFrame:
+def featuring_locations(df: pd.DataFrame, lon_bins=20, lat_bins=20) -> pd.DataFrame:
     """
-    takes in a dataframe and bin locations
+    takes in a dataframe and divide longitude and latitude into equally
+    distributed bins
+
+    Args:
+        df: input dataframe
+        lon_bins: number of bins for longitude
+        lat_bins: number of bins for latitude
+
+    return: dataframe with bins encoded into categories
+
     """
-    pass
+    assert "longitude" in df.columns, "longitude not in the dataframe"
+    assert "latitude" in df.columns, "latitude not in the dataframe"
+
+    # Calculate bin edges for longitude and latitude
+    lon_edges = np.linspace(df["longitude"].min(), df["longitude"].max(), lon_bins + 1)
+    lat_edges = np.linspace(df["latitude"].min(), df["latitude"].max(), lat_bins + 1)
+
+    lon_bins = pd.cut(
+        df["longitude"], bins=lon_edges, labels=False, include_lowest=True
+    )
+    lat_bins = pd.cut(df["latitude"], bins=lat_edges, labels=False, include_lowest=True)
+
+    lon_feature_df = pd.get_dummies(lon_bins, prefix="lon_bin", dtype=int)
+    lat_feature_df = pd.get_dummies(lat_bins, prefix="lat_bin", dtype=int)
+
+    return pd.concat([df, lon_feature_df, lat_feature_df], axis=1).drop(
+        columns=["longitude", "latitude"]
+    )
 
 
 def featuring_review_counts(df: pd.DataFrame) -> pd.DataFrame:
