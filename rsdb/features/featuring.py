@@ -8,11 +8,24 @@ import pandas as pd
 import numpy as np
 
 
-def featuring_category(df: pd.DataFrame, featuring_category) -> pd.DataFrame:
+## helper functions
+def hot_encode_categories(location_categories: list) -> np.ndarray:
+    """
+    helper function for featuring_category that that convert
+    """
+
+
+def featuring_category(df: pd.DataFrame, featuring_category: list) -> pd.DataFrame:
     """
     creating features out of category
+
+    Args:
+        df: input dataframe
+
+    return: dataframe with category list encode into different columns
+
     """
-    pass
+    assert "category" in df.columns, "column category does not exist in df"
 
 
 def featuring_locations(df: pd.DataFrame) -> pd.DataFrame:
