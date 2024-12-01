@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tlfm.temporal_dynamic import TemporalDynamicModel
+from tlfm.temporal_dynamic_v import TemporalDynamicModel
 from fpmc.fpmc_v import FPMCVariants
 
 class Recommendation():
@@ -21,9 +21,9 @@ class Recommendation():
 
         tf_data = None
         if isinstance(self.model, TemporalDynamicModel):
-            tf_data = Recommendation.df_to_tf_dynamic_model(df).batch(1024)
+            tf_data = Recommendation.tlfm_df_to_tf(df).batch(1024)
         elif isinstance(self.model, FPMCVariants):
-            tf_data = self.df_to_tf_fpmc_model(df).batch(1024)
+            tf_data = self.fpmc_df_to_tf(df).batch(1024)
 
         # predict ratings for all user for a specific business in a location
         pred_rating = []
@@ -82,34 +82,54 @@ class Recommendation():
 
         return result_df
     
-    def df_to_tf_fpmc_model(self, dataframe):
-        '''
-        Convert panda Dataframe to tensforflow data for tf fpmc model 
-        '''
-        # Instantiate StringLookup layers
+    '''TODO: need to update to the latest model '''
+    def fpmc_df_to_tf(dataframe):
+        '''change featuers from data frame to tensorfloe styles'''
+        
         user_lookup = tf.keras.layers.StringLookup(
-            vocabulary=self.dataset["reviewer_id"].unique(), mask_token=None
+            vocabulary=dataframe["reviewer_id"].unique(), mask_token=None
         )
         item_lookup = tf.keras.layers.StringLookup(
-            vocabulary=self.dataset["gmap_id"].unique(), mask_token=None
+            vocabulary=dataframe["gmap_id"].unique(), mask_token=None
         )
+        
         return tf.data.Dataset.from_tensor_slices({
             "reviewer_id": user_lookup(dataframe["reviewer_id"]),
             "prev_item_id": item_lookup(dataframe["prev_item_id"]),
             "next_item_id": item_lookup(dataframe["gmap_id"]),
             "rating": dataframe["rating"].astype(float),
+            "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(float),
+            "isin_category_park": dataframe["isin_category_park"].astype(float),
+            "isin_category_store": dataframe["isin_category_store"].astype(float),
+            "avg_review_per_year": dataframe["avg_review(per year)"].astype(float),
+            
+            # Longitude bins
+            **{f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float) for i in range(20) if f"lon_bin_{i}" in dataframe.columns},
+            # Latitude bins
+            **{f"lat_bin_{i}": dataframe[f"lat_bin_{i}"].astype(float) for i in range(20) if f"lat_bin_{i}" in dataframe.columns},
         })
     
     '''Assume we are using this to process tf data for dynamic model'''
     @staticmethod
-    def df_to_tf_dynamic_model(dataframe):
+    def tlfm_df_to_tf(dataframe):
+        '''change featuers from data frame to tensorflow styles'''
+        
         return tf.data.Dataset.from_tensor_slices({
             "reviewer_id": dataframe["reviewer_id"].astype(str),
             "gmap_id": dataframe["gmap_id"].astype(str),
             "time": dataframe["review_time(unix)"].astype(float),
             "time_bin": dataframe["time_bin"].astype(float),
             "user_mean_time": dataframe["user_mean_time"],
-            "rating": dataframe["rating"]
+            "rating": dataframe["rating"],
+            "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(float),
+            "isin_category_park": dataframe["isin_category_park"].astype(float),
+            "isin_category_store": dataframe["isin_category_store"].astype(float),
+            "avg_review_per_year": dataframe["avg_review(per year)"].astype(float),
+            
+            # Longitude bins
+            **{f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float) for i in range(20) if f"lon_bin_{i}" in dataframe.columns},
+            # Latitude bins
+            **{f"lat_bin_{i}": dataframe[f"lat_bin_{i}"].astype(float) for i in range(20) if f"lat_bin_{i}" in dataframe.columns},
         })
 
 
