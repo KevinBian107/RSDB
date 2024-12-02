@@ -37,6 +37,11 @@ rsdb/
 ```
 
 ## Running RSDB System
+Running a training job with `blf` model(basic latent factor model):
+```bash
+python rsdb/train.py --action "train" --model "blf"
+```
+
 Running a training job with `tdlf` model:
 ```bash
 python rsdb/train.py --action "train" --model "tdlf"

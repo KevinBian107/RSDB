@@ -2,6 +2,7 @@ from preprocess.data_preprocessing import *
 from features.featuring import *
 from models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
 from models.fpmc.fpmc_v import FPMCVariants
+from models.tdlf.latent_factor import LatentFactorModel
 import tensorflow as tf
 import kerastuner as kt
 import argparse
@@ -36,6 +37,17 @@ def load_config(config_path):
             return validate_and_cast(data)
 
     return recursive_validate_cast(config)
+
+
+def blf_df_to_tf_dataset(dataframe: pd.DataFrame):
+    """Convert DataFrame to TensorFlow Dataset for Latent Factor Model."""
+    return tf.data.Dataset.from_tensor_slices(
+        {
+            "reviewer_id": dataframe["reviewer_id"].astype(str),
+            "gmap_id": dataframe["gmap_id"].astype(str),
+            "rating": dataframe["rating"],
+        }
+    )
 
 
 def tdlf_df_to_tf_dataset(dataframe):
@@ -191,9 +203,37 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
 
         model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
     elif model_name == "blf":
-        # TODO
-        print("currently working on the model")
-        return
+        l2_reg = 0.001
+        embedding_dim = 1
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate=0.001,
+            decay_steps=10000,
+            decay_rate=0.96,
+        )
+
+        data_query["gmap_id"] = data_query["gmap_id"].astype(str)
+        data_query["reviewer_id"] = data_query["reviewer_id"].astype(str)
+
+        train_data = (
+            blf_df_to_tf_dataset(train_df)
+            .shuffle(shuffle_buffer_size)
+            .batch(batch_size)
+        )
+
+        test_data = blf_df_to_tf_dataset(test_df).batch(batch_size)
+
+        model = LatentFactorModel(
+            l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
+        )
+
+        early_stopping = tf.keras.callbacks.EarlyStopping(
+            monitor="val_root_mean_squared_error",
+            patience=patience,
+            min_delta=min_delta,
+            restore_best_weights=True,
+        )
+
+        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule))
 
     # Training and saving
     model.fit(
