@@ -3,8 +3,8 @@ tuning:
   random_state: 42
   shuffle_buffer_size: 1024
   batch_size: 4096
-  search_epochs: 10
-  max_epochs: 50
+  search_epochs: 20
+  max_epochs: 100
   factor: 3
   directories:
     tdlf: "hypertune_tdlf"

@@ -25,7 +25,6 @@
     - [ ]  why using this model
     - [ ]  how did we optimize it
     - [ ]  issue encountered
-- [ ]  
 - [ ]  strength and weakness
 
 ### Literature

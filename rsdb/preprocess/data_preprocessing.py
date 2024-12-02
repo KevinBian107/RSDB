@@ -212,7 +212,7 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=Fal
     if file_path.exists():
         print(f"Processing review data from: {file_path}")
         results = []
-        total_chunks = 445
+        total_chunks = 100
         num_rows = 0
 
         ## Extract, Transform, Load
@@ -222,6 +222,10 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=Fal
             ## batch processin
             with tqdm(total=total_chunks, desc="Processing chunks") as pbar:
                 for i, chunk in enumerate(reader):
+                    
+                    if i > total_chunks:
+                        break
+                    
                     # Rename columns
                     chunk = chunk.rename(
                         columns={
