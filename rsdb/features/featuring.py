@@ -10,59 +10,20 @@ from datetime import datetime
 import time
 from functools import lru_cache
 
-OUTPUT_COLS = [
-    "review_time(unix)",
-    "reviewer_id",
-    "gmap_id",
-    "rating",
-    "isin_category_restaurant",
-    "isin_category_park",
-    "isin_category_store",
-    "lon_bin_0",
-    "lon_bin_1",
-    "lon_bin_2",
-    "lon_bin_3",
-    "lon_bin_4",
-    "lon_bin_5",
-    "lon_bin_6",
-    "lon_bin_7",
-    "lon_bin_8",
-    "lon_bin_9",
-    "lon_bin_10",
-    "lon_bin_11",
-    "lon_bin_12",
-    "lon_bin_13",
-    "lon_bin_14",
-    "lon_bin_15",
-    "lon_bin_16",
-    "lon_bin_17",
-    "lon_bin_18",
-    "lon_bin_19",
-    "lat_bin_0",
-    "lat_bin_1",
-    "lat_bin_2",
-    "lat_bin_3",
-    "lat_bin_4",
-    "lat_bin_5",
-    "lat_bin_6",
-    "lat_bin_7",
-    "lat_bin_8",
-    "lat_bin_9",
-    "lat_bin_10",
-    "lat_bin_11",
-    "lat_bin_12",
-    "lat_bin_13",
-    "lat_bin_14",
-    "lat_bin_15",
-    "lat_bin_16",
-    "lat_bin_17",
-    "lat_bin_18",
-    "lat_bin_19",
-    "closed_on_weekend",
-    "weekly_operating_hours",
-    "time_bin",
-    "user_mean_time",
-    "prev_item_id",
+DROP_COLS = [
+    "reviewer_name",
+    "text",
+    "resp",
+    "has_rep",
+    "gmap_name",
+    "description",
+    "avg_rating",
+    "num_of_reviews",
+    "price",
+    "hours",
+    "MISC",
+    "address",
+    "relative_results",
 ]
 
 time_format = ["%I%p", "%I:%M%p", "%I:%M", "%H", "%I%p"]
@@ -285,8 +246,9 @@ def featuring_model(df: pd.DataFrame) -> pd.DataFrame:
     """
 
     df = df.assign(time_bin=df["review_time(unix)"] // (7 * 24 * 3600))
-    user_avg_time = df.groupby("reviewer_id")["review_time(unix)"].mean()
-    df = df.assign(user_mean_time=df["reviewer_id"].map(user_avg_time))
+    df["user_mean_time"] = df.groupby("reviewer_id")["review_time(unix)"].transform(
+        "mean"
+    )
 
     time_mean, time_std = (
         df["review_time(unix)"].mean(),
@@ -328,7 +290,9 @@ def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
     print(f"finished bining locations. Takes {time.time() - start_time}")
     start_time = time.time()
 
-    featured_df = featuring_hours(featured_df)
+    featured_df = featuring_hours(featured_df).dropna(
+        subset=["operating_hours", "weekly_operating_hours"]
+    )
     print(f"finished featuring hours. Takes {time.time() - start_time}")
     start_time = time.time()
 
@@ -347,4 +311,4 @@ def featuring_engineering(clean_df: pd.DataFrame) -> pd.DataFrame:
     # )
 
     # this will drop 7 percent of the dataset
-    return featured_df[OUTPUT_COLS].dropna()
+    return featured_df  # .drop(columns=DROP_COLS)  # [OUTPUT_COLS]
