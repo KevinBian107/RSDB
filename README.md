@@ -9,44 +9,9 @@
 - [ ] Commenting on the models' performance and provide reason for the performance
 
 
-## Assignment Requirements
-### Dataset
-- [ ]  EDA
-- [ ]  data set description
-    - [ ]  row and cols
-    - [ ]  basic statistics
-    - [ ]  missing values
-    - [ ]  outliers
-    - [ ]  size of the data set
-
-### Predictive Task
-- [ ]  Problem we are trying to solve
-    - [ ]  context
-    - [ ]  stakeholder
-- [ ]  metrics used to evaluate the model
-- [ ]  baseline model
-- [ ]  downstream application of the model (validity of the performance of the model)
-- [ ]  used features
-
-### Model
-- [ ]  Used model
-    - [ ]  what is the model
-    - [ ]  pro and con
-    - [ ]  the result
-    - [ ]  why using this model
-    - [ ]  how did we optimize it
-    - [ ]  issue encountered
-- [ ]  strength and weakness
-
-### Literature
-- [ ]  related works on the problem
-- [ ]  other data set that has been used to train this model
-- [ ]  What are state of the art method
-- [ ]  your finding against other works
-
-### Results
-- [ ]  baseline model comparison
-- [ ]  significance of the result
-- [ ]  which feature representation works well
-- [ ]  interpretation of your model
-- [ ]  How does the proposed model succeed
+## Reference sources
+- [dataset](https://cseweb.ucsd.edu/~jmcauley/datasets.html#google_local)
+- [Julian's textbook](https://cseweb.ucsd.edu/~jmcauley/pml/pml_book.pdf)
+- [Translation-based Factorization Machines for Sequential
+Recommendation](https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf)
+- [Advanced LSTM model](https://github.com/nijianmo/fit-rec)
