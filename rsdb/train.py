@@ -212,7 +212,7 @@ def tune(model_name):
         print("Starting hypertuning for TemporalDynamicVariants...")
         tdlf_tuner = kt.Hyperband(
             build_tdlf_model,
-            objective="val_root_mean_squared_error",
+            objective=kt.Objective("val_root_mean_squared_error", direction="min"),
             max_epochs=50,
             factor=3,
             directory="hypertune_tdlf",
@@ -229,7 +229,7 @@ def tune(model_name):
         print("\nStarting hypertuning for FPMCVariants...")
         fpmc_tuner = kt.Hyperband(
             build_fpmc_model,
-            objective="val_root_mean_squared_error",
+            objective=kt.Objective("val_root_mean_squared_error", direction="min"),
             max_epochs=50,
             factor=3,
             directory="hypertune_fpmc",
