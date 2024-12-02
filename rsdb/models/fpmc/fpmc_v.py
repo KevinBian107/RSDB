@@ -49,16 +49,16 @@ class FPMCVariants(tfrs.Model):
             embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
         )
 
-        self.lon_bin_embedding = tf.keras.layers.Embedding(
-            input_dim=20,  # 20 longitude bins
-            output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+        self.lon_bin_dense = tf.keras.layers.Dense(
+            units=embedding_dim,
+            activation="relu",
+            kernel_regularizer=tf.keras.regularizers.l2(l2_reg)
         )
 
-        self.lat_bin_embedding = tf.keras.layers.Embedding(
-            input_dim=20,  # 20 latitude bins
-            output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+        self.lat_bin_dense = tf.keras.layers.Dense(
+            units=embedding_dim,
+            activation="relu",
+            kernel_regularizer=tf.keras.regularizers.l2(l2_reg)
         )
 
         self.avg_review_dense = tf.keras.layers.Dense(
@@ -99,25 +99,25 @@ class FPMCVariants(tfrs.Model):
         item_bias = tf.squeeze(self.item_bias(next_item_ids))
 
         # Additional feature embeddings
-        category_emb = tf.reduce_sum(
-            self.category_embedding(features["isin_category_restaurant"]) +
-            self.category_embedding(features["isin_category_park"]) +
-            self.category_embedding(features["isin_category_store"]),
-            axis=1
+        category_emb = (
+            features["isin_category_restaurant"][:, None] * self.category_embedding(0) +
+            features["isin_category_park"][:, None] * self.category_embedding(1) +
+            features["isin_category_store"][:, None] * self.category_embedding(2)
         )
-        lon_bin_emb = tf.reduce_sum(
-            self.lon_bin_embedding(features["lon_bin"]),
-            axis=1
+
+        lon_bin_features = tf.concat(
+            [features[f"lon_bin_{i}"][:, None] for i in range(20) if f"lon_bin_{i}" in features], axis=1
         )
-        lat_bin_emb = tf.reduce_sum(
-            self.lat_bin_embedding(features["lat_bin"]),
-            axis=1
+        lat_bin_features = tf.concat(
+            [features[f"lat_bin_{i}"][:, None] for i in range(20) if f"lat_bin_{i}" in features], axis=1
         )
-        avg_review_emb = self.avg_review_dense(features["avg_review_per_year"])
+
+        lon_bin_emb = tf.reduce_sum(self.lon_bin_dense(lon_bin_features), axis=1)
+        lat_bin_emb = tf.reduce_sum(self.lat_bin_dense(lat_bin_features), axis=1)
 
         # Combine embeddings
         additional_features = tf.reduce_sum(
-            [category_emb, lon_bin_emb, lat_bin_emb, avg_review_emb], axis=0
+            [tf.reduce_sum(category_emb, axis=1), lon_bin_emb, lat_bin_emb], axis=0
         )
 
         # Total predicted rating

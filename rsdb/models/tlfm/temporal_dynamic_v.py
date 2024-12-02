@@ -12,7 +12,7 @@ import tensorflow_recommenders as tfrs
 import warnings
 warnings.filterwarnings("ignore")
 
-class TemporalDynamicModel(tfrs.Model):
+class TemporalDynamicVariants(tfrs.Model):
     def __init__(self, l2_reg, dense_units, embedding_dim, dataframe, time_bins):
         super().__init__()
 
@@ -123,9 +123,10 @@ class TemporalDynamicModel(tfrs.Model):
         category_features = tf.stack([
             features["isin_category_restaurant"],
             features["isin_category_park"],
-            features["isin_category_store"]
+            features["isin_category_store"],
+            features['closed_on_weekend'],
+            features['weekly_operating_hours']
         ], axis=1)
-        avg_review_per_year = tf.expand_dims(features["avg_review_per_year"], axis=1)
 
         # Longitude and latitude bins
         longitude_bins = tf.stack(
@@ -137,7 +138,7 @@ class TemporalDynamicModel(tfrs.Model):
 
         # Combine all features for interaction computation
         interaction_inputs = tf.concat([
-            dynamic_user_emb, item_emb, category_features, avg_review_per_year, longitude_bins, latitude_bins
+            dynamic_user_emb, item_emb, category_features, longitude_bins, latitude_bins
         ], axis=1)
 
         # Interaction score

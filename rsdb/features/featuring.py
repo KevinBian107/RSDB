@@ -294,7 +294,7 @@ def featuring_model(df: pd.DataFrame) -> pd.DataFrame:
     return: dataframe with
     """
 
-    df = df.assign(time_bin=df["review_time(unix)"])
+    df = df.assign(time_bin=df["review_time(unix)"] // (7 * 24 * 3600))
     user_avg_time = df.groupby("reviewer_id")["review_time(unix)"].mean()
     df = df.assign(user_mean_time=df["reviewer_id"].map(user_avg_time))
 

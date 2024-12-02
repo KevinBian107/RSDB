@@ -21,10 +21,6 @@ Remanber that `intelligence comes from the data`, you should use a temporal mode
         - (Variants Netflex price model with dynamics user imbeddings)
     - run.ipynb
         - (run scripts of non-variants tlfm)
-- recommendation.py
-    - (down stream task)
-- run.ipynb
-    - (full model of the variants)
 ```
 
 # Question In Interest 🤔
