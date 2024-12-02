@@ -167,7 +167,7 @@ def clean_review_data(df, meta_df):
     return df
 
 
-def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=False):
+def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=False):
     """
     take in data url and export the clean data set
 
@@ -222,10 +222,10 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=Fal
             ## batch processin
             with tqdm(total=total_chunks, desc="Processing chunks") as pbar:
                 for i, chunk in enumerate(reader):
-                    
+
                     if i > total_chunks:
                         break
-                    
+
                     # Rename columns
                     chunk = chunk.rename(
                         columns={
@@ -269,7 +269,7 @@ def get_single_chunk(url: str, meta_url: str, chunk_size=100000):
     ## Set up paths
     base_path = Path.cwd()
     file_path = base_path / "rsdb" / "data" / "data.json.gz"
-    meta_file_path = base_path /  "rsdb" / "data" / "metadata.json.gz"
+    meta_file_path = base_path / "rsdb" / "data" / "metadata.json.gz"
 
     ## Download data if not available
     if not file_path.exists():

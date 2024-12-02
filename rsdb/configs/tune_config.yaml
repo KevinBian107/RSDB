@@ -15,26 +15,26 @@ tuning:
 
 tdlf_hyperparameters:
   l2_reg:
-    min: 1e-5
-    max: 1e-2
+    min: 1e-4
+    max: 1e-3
     sampling: "log"
   dense_units:
-    min: 16
+    min: 64
     max: 128
-    step: 16
+    step: 32
   embedding_dim:
-    min: 8
-    max: 64
-    step: 8
+    min: 30
+    max: 90
+    step: 30
   time_bins:
-    min: 5
-    max: 50
-    step: 5
+    min: 10
+    max: 30
+    step: 10
   learning_rate:
     min: 1e-4
-    max: 1e-2
+    max: 1e-3
     sampling: "log"
-  decay_rate: 0.8
+  decay_rate: 0.5
   decay_steps: 1000
 
 fpmc_hyperparameters:
