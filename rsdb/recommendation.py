@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tlfm.temporal_dynamic_v import TemporalDynamicModel
-from fpmc.fpmc_v import FPMCVariants
+from models.tlfm.temporal_dynamic_v import TemporalDynamicVariants
+from models.fpmc.fpmc_v import FPMCVariants
+
+
 
 
 class Recommendation:
@@ -13,6 +15,11 @@ class Recommendation:
     def __init__(self, model, dataset):
         self.model = model
         self.dataset = dataset
+        # the number of users recommend to business
+        self.N = 20
+
+        # feature engineering dataset
+        
 
     def recommend(self, gmap_id, location):
         """
@@ -22,7 +29,7 @@ class Recommendation:
         df = self.prepare_data(gmap_id, location)
 
         tf_data = None
-        if isinstance(self.model, TemporalDynamicModel):
+        if isinstance(self.model, TemporalDynamicVariants):
             tf_data = Recommendation.tlfm_df_to_tf(df).batch(1024)
         elif isinstance(self.model, FPMCVariants):
             tf_data = self.fpmc_df_to_tf(df).batch(1024)
@@ -61,27 +68,14 @@ class Recommendation:
             .max()
         )
 
-        result_df = empty_df.merge(user_time_mapping, on=["reviewer_id"])
-
-        # standardlize data
-        time_mean, time_std = (
-            result_df["review_time(unix)"].mean(),
-            result_df["review_time(unix)"].std(),
-        )
-        user_mean_time_mean, user_mean_time_std = (
-            result_df["user_mean_time"].mean(),
-            result_df["user_mean_time"].std(),
-        )
-
-        result_df["review_time(unix)"] = (
-            result_df["review_time(unix)"] - time_mean
-        ) / time_std
-        result_df["user_mean_time"] = (
-            result_df["user_mean_time"] - user_mean_time_mean
-        ) / user_mean_time_std
-
         # TODO: query feature for business
-        features = data[data["gmap_id"] == gmap_id].iloc[0][...]
+        features = data[data['gmap_id'] == gmap_id].iloc[0][[
+            'isin_category_restaurant',
+            'isin_category_park', 
+            'isin_category_store', 
+            'closed_on_weekend', 
+            'weekly_operating_hours'
+        ]]
 
         # append feature to the dataframe
         # all the entries will have the same values
@@ -95,79 +89,60 @@ class Recommendation:
 
         return result_df
 
-    """TODO: need to update to the latest model """
 
-    def fpmc_df_to_tf(dataframe):
-        """change featuers from data frame to tensorfloe styles"""
-
+    def fpmc_df_to_tf_dataset(self, dataframe):
+        '''
+        change featuers from data frame to tensorfloe styles
+        '''
+        dataframe["reviewer_id"] = dataframe["reviewer_id"].astype(str)
+        dataframe["prev_item_id"] = dataframe["prev_item_id"].astype(str)
+        dataframe["gmap_id"] = dataframe["gmap_id"].astype(str)
+        
         user_lookup = tf.keras.layers.StringLookup(
-            vocabulary=dataframe["reviewer_id"].unique(), mask_token=None
+            vocabulary=self.dataset["reviewer_id"].unique(), mask_token=None
         )
         item_lookup = tf.keras.layers.StringLookup(
-            vocabulary=dataframe["gmap_id"].unique(), mask_token=None
+            vocabulary=self.dataset["gmap_id"].unique(), mask_token=None
         )
-
-        return tf.data.Dataset.from_tensor_slices(
-            {
-                "reviewer_id": user_lookup(dataframe["reviewer_id"]),
-                "prev_item_id": item_lookup(dataframe["prev_item_id"]),
-                "next_item_id": item_lookup(dataframe["gmap_id"]),
-                "rating": dataframe["rating"].astype(float),
-                "isin_category_restaurant": dataframe[
-                    "isin_category_restaurant"
-                ].astype(float),
-                "isin_category_park": dataframe["isin_category_park"].astype(float),
-                "isin_category_store": dataframe["isin_category_store"].astype(float),
-                "avg_review_per_year": dataframe["avg_review(per year)"].astype(float),
-                # Longitude bins
-                **{
-                    f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float)
-                    for i in range(20)
-                    if f"lon_bin_{i}" in dataframe.columns
-                },
-                # Latitude bins
-                **{
-                    f"lat_bin_{i}": dataframe[f"lat_bin_{i}"].astype(float)
-                    for i in range(20)
-                    if f"lat_bin_{i}" in dataframe.columns
-                },
-            }
-        )
-
-    """Assume we are using this to process tf data for dynamic model"""
+        
+        return tf.data.Dataset.from_tensor_slices({
+            "reviewer_id": user_lookup(dataframe["reviewer_id"]),
+            "prev_item_id": item_lookup(dataframe["prev_item_id"]),
+            "next_item_id": item_lookup(dataframe["gmap_id"]),
+            "rating": dataframe["rating"].astype(float),
+            "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(float),
+            "isin_category_park": dataframe["isin_category_park"].astype(float),
+            "isin_category_store": dataframe["isin_category_store"].astype(float),
+            "closed_on_weekend": dataframe["closed_on_weekend"].astype(float),
+            "weekly_operating_hours": dataframe["weekly_operating_hours"].astype(float),
+            
+            # Longitude bins
+            **{f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float) for i in range(20) if f"lon_bin_{i}" in dataframe.columns},
+            # Latitude bins
+            **{f"lat_bin_{i}": dataframe[f"lat_bin_{i}"].astype(float) for i in range(20) if f"lat_bin_{i}" in dataframe.columns},
+        })
 
     @staticmethod
-    def tlfm_df_to_tf(dataframe):
-        """change featuers from data frame to tensorflow styles"""
-
-        return tf.data.Dataset.from_tensor_slices(
-            {
-                "reviewer_id": dataframe["reviewer_id"].astype(str),
-                "gmap_id": dataframe["gmap_id"].astype(str),
-                "time": dataframe["review_time(unix)"].astype(float),
-                "time_bin": dataframe["time_bin"].astype(float),
-                "user_mean_time": dataframe["user_mean_time"],
-                "rating": dataframe["rating"],
-                "isin_category_restaurant": dataframe[
-                    "isin_category_restaurant"
-                ].astype(float),
-                "isin_category_park": dataframe["isin_category_park"].astype(float),
-                "isin_category_store": dataframe["isin_category_store"].astype(float),
-                "avg_review_per_year": dataframe["avg_review(per year)"].astype(float),
-                # Longitude bins
-                **{
-                    f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float)
-                    for i in range(20)
-                    if f"lon_bin_{i}" in dataframe.columns
-                },
-                # Latitude bins
-                **{
-                    f"lat_bin_{i}": dataframe[f"lat_bin_{i}"].astype(float)
-                    for i in range(20)
-                    if f"lat_bin_{i}" in dataframe.columns
-                },
-            }
-        )
+    def tlfm_df_to_tf_dataset(dataframe):
+        '''change featuers from data frame to tensorfloe styles'''
+        return tf.data.Dataset.from_tensor_slices({
+            "reviewer_id": dataframe["reviewer_id"].astype(str),
+            "gmap_id": dataframe["gmap_id"].astype(str),
+            "time": dataframe["review_time(unix)"].astype(float),
+            "time_bin": dataframe["time_bin"].astype(float),
+            "user_mean_time": dataframe["user_mean_time"],
+            "rating": dataframe["rating"],
+            "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(float),
+            "isin_category_park": dataframe["isin_category_park"].astype(float),
+            "isin_category_store": dataframe["isin_category_store"].astype(float),
+            "closed_on_weekend": dataframe["closed_on_weekend"].astype(float),
+            "weekly_operating_hours": dataframe["weekly_operating_hours"].astype(float),
+            
+            # Longitude bins
+            **{f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float) for i in range(20) if f"lon_bin_{i}" in dataframe.columns},
+            # Latitude bins
+            **{f"lat_bin_{i}": dataframe[f"lat_bin_{i}"].astype(float) for i in range(20) if f"lat_bin_{i}" in dataframe.columns},
+        })
 
 
 """
