@@ -221,11 +221,11 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
 
     def build_tdlf_model(hp):
         params = config["tdlf_hyperparameters"]
-        l2_reg = hp.Float("l2_reg", **params["l2_reg"])
-        dense_units = hp.Int("dense_units", **params["dense_units"])
-        embedding_dim = hp.Int("embedding_dim", **params["embedding_dim"])
-        time_bins = hp.Int("time_bins", **params["time_bins"])
-        learning_rate = hp.Float("learning_rate", **params["learning_rate"])
+        l2_reg = hp.Float("l2_reg", min_value=params["l2_reg"]["min"], max_value=params["l2_reg"]["max"], sampling=params["l2_reg"]["sampling"])
+        dense_units = hp.Int("dense_units", min_value=params["dense_units"]["min"], max_value=params["dense_units"]["max"], step=params["dense_units"]["step"])
+        embedding_dim = hp.Int("embedding_dim", min_value=params["embedding_dim"]["min"], max_value=params["embedding_dim"]["max"], step=params["embedding_dim"]["step"])
+        time_bins = hp.Int("time_bins", min_value=params["time_bins"]["min"], max_value=params["time_bins"]["max"], step=params["time_bins"]["step"])
+        learning_rate = hp.Float("learning_rate", min_value=params["learning_rate"]["min"], max_value=params["learning_rate"]["max"], sampling=params["learning_rate"]["sampling"])
 
         model = TemporalDynamicVariants(
             l2_reg, dense_units, embedding_dim, data_query, time_bins
@@ -238,17 +238,19 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
         model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule))
         return model
 
+
     def build_fpmc_model(hp):
         params = config["fpmc_hyperparameters"]
-        l2_reg = hp.Float("l2_reg", **params["l2_reg"])
-        embedding_dim = hp.Int("embedding_dim", **params["embedding_dim"])
-        learning_rate = hp.Float("learning_rate", **params["learning_rate"])
+        l2_reg = hp.Float("l2_reg", min_value=params["l2_reg"]["min"], max_value=params["l2_reg"]["max"], sampling=params["l2_reg"]["sampling"])
+        embedding_dim = hp.Int("embedding_dim", min_value=params["embedding_dim"]["min"], max_value=params["embedding_dim"]["max"], step=params["embedding_dim"]["step"])
+        learning_rate = hp.Float("learning_rate", min_value=params["learning_rate"]["min"], max_value=params["learning_rate"]["max"], sampling=params["learning_rate"]["sampling"])
 
         model = FPMCVariants(
             l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
         )
         model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
         return model
+
 
     # Hyperparameter tuning for the selected model
     if model_name == "tdlf":
