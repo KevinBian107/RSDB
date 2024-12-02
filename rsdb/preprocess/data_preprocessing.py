@@ -263,7 +263,7 @@ def get_single_chunk(url: str, meta_url: str, chunk_size=100000):
     """
 
     ## Set up paths
-    base_path = Path.cwd().parent
+    base_path = Path.cwd()
     file_path = base_path / "data" / "data.json.gz"
     meta_file_path = base_path / "data" / "metadata.json.gz"
 
