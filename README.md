@@ -18,3 +18,5 @@ Recommendation](https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf)
 
 context wise:
 - (https://pmc.ncbi.nlm.nih.gov/articles/PMC9287091/)
+- This paper demonstrate the effectiveness of using user similarity to predict the ratings(https://cseweb.ucsd.edu/classes/wi15/cse255-a/reports/wi15/Kritika_Singh.pdf)
+- 
