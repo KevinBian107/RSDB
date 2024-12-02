@@ -176,7 +176,7 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
             restore_best_weights=True,
         )
 
-        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule))
+        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule))
 
     elif model_name == "fpmc":
         embedding_dim = config["fpmc"]["embedding_dim"]
@@ -320,7 +320,7 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
             decay_steps=params["decay_steps"],
             decay_rate=params["decay_rate"],
         )
-        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule))
+        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule))
         return model
 
     def build_fpmc_model(hp):
@@ -347,7 +347,7 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
         model = FPMCVariants(
             l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
         )
-        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
+        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate))
         return model
 
     # Hyperparameter tuning for the selected model

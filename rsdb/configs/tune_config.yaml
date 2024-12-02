@@ -43,7 +43,7 @@ fpmc_hyperparameters:
     max: 1e-2
     sampling: "log"
   embedding_dim:
-    min: 8
+    min: 90
     max: 128
     step: 8
   learning_rate:
