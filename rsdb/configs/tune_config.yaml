@@ -1,0 +1,52 @@
+tuning:
+  train_frac: 0.8
+  random_state: 42
+  shuffle_buffer_size: 1024
+  batch_size: 4096
+  search_epochs: 10
+  max_epochs: 50
+  factor: 3
+  directories:
+    tdlf: "hypertune_tdlf"
+    fpmc: "hypertune_fpmc"
+  project_names:
+    tdlf: "tdlf_tuning"
+    fpmc: "fpmc_tuning"
+
+tdlf_hyperparameters:
+  l2_reg:
+    min: 1e-5
+    max: 1e-2
+    sampling: "log"
+  dense_units:
+    min: 16
+    max: 128
+    step: 16
+  embedding_dim:
+    min: 8
+    max: 64
+    step: 8
+  time_bins:
+    min: 5
+    max: 50
+    step: 5
+  learning_rate:
+    min: 1e-4
+    max: 1e-2
+    sampling: "log"
+  decay_rate: 0.8
+  decay_steps: 1000
+
+fpmc_hyperparameters:
+  l2_reg:
+    min: 1e-5
+    max: 1e-2
+    sampling: "log"
+  embedding_dim:
+    min: 8
+    max: 128
+    step: 8
+  learning_rate:
+    min: 1e-4
+    max: 1e-2
+    sampling: "log"
