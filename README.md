@@ -56,7 +56,7 @@ Our system supports customized tunning through our yaml configs system, so all h
     - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
     - Advance LSTM Model: https://github.com/nijianmo/fit-rec
 
-## Mathamatics Formulation of Model
-1. Summary from FitRec: https://github.com/KevinBian107/RSDB/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
+## Mathamatics Formulation of Models
+1. Intro to FitRec Mathamatical Formulation: https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20FitRec%20Mathamatical%20Formulation.pdf
 2. Intro to Sequential Modeling: https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
 
