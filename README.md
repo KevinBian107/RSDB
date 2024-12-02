@@ -1,5 +1,6 @@
 # Recommendation based on Sequential Dynamics for Business owners (RSDB)
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
+[Overleaf Paper editor](https://www.overleaf.com/project/6747b9894eb6b872537547be)
 
 ## Milestones
 1. Four hours per day work:
