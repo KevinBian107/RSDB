@@ -15,5 +15,6 @@
 - [Translation-based Factorization Machines for Sequential
 Recommendation](https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf)
 - [Advanced LSTM model](https://github.com/nijianmo/fit-rec)
+
 context wise:
-(https://pmc.ncbi.nlm.nih.gov/articles/PMC9287091/)
+- (https://pmc.ncbi.nlm.nih.gov/articles/PMC9287091/)
