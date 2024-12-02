@@ -3,28 +3,24 @@ Remanber that `intelligence comes from the data`, you should use a temporal mode
 
 # Structure of Models
 ```bash
-- fpmc
-    - fpmc.py
-        - (factorized personalized markov chain)
-    - fpmc_variants.py
-        - (our variants factorized personalized markov chain)
-    - run.ipynb
-        - (run script of non-varaiants fpmc)
-- tlfm
-    - latent_factor.py
-        - (baseline latent factor + neural corrolative)
-    - temporal_static.py
-        - (Netflex price model with static user imbeddings)
-    - temporal_dynamics.py
-        - (Netflex price model with dynamics user imbeddings)
-    - temporal_dynamics_variants.py
-        - (Variants Netflex price model with dynamics user imbeddings)
-    - run.ipynb
-        - (run scripts of non-variants tlfm)
-- recommendation.py
-    - (down stream task)
-- run.ipynb
-    - (full model of the variants)
+fpmc (factorized personalized markov chain)/
+├── fpmc.py
+│   └── (factorized personalized markov chain)
+├── fpmc_variants.py
+│   └── (our variants factorized personalized markov chain)
+├── baseline.ipynb
+│   └── (run script of non-variants fpmc baseline)
+tdlf (temporal dynamic latent factor)/
+├── latent_factor.py
+│   └── (baseline latent factor + neural correlative)
+├── temporal_static.py
+│   └── (Netflix price model with static user embeddings)
+├── temporal_dynamics.py
+│   └── (Netflix price model with dynamic user embeddings)
+├── temporal_dynamics_variants.py
+│   └── (Variants Netflix price model with dynamic user embeddings)
+├── baseline.ipynb
+│   └── (run scripts of non-variants tlfm baseline)
 ```
 
 # Question In Interest 🤔

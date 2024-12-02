@@ -182,9 +182,9 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=Fal
 
     """
     ## Set up paths
-    base_path = Path.cwd().parent
-    file_path = base_path / "data" / "data.json.gz"
-    meta_file_path = base_path / "data" / "metadata.json.gz"
+    base_path = Path.cwd()
+    file_path = base_path / "rsdb" / "data" / "data.json.gz"
+    meta_file_path = base_path / "rsdb" / "data" / "metadata.json.gz"
 
     ## Download data if not available
     if not file_path.exists():
@@ -263,9 +263,9 @@ def get_single_chunk(url: str, meta_url: str, chunk_size=100000):
     """
 
     ## Set up paths
-    base_path = Path.cwd().parent
-    file_path = base_path / "data" / "data.json.gz"
-    meta_file_path = base_path / "data" / "metadata.json.gz"
+    base_path = Path.cwd()
+    file_path = base_path / "rsdb" / "data" / "data.json.gz"
+    meta_file_path = base_path /  "rsdb" / "data" / "metadata.json.gz"
 
     ## Download data if not available
     if not file_path.exists():

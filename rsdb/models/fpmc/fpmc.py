@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow_recommenders as tfrs
 
+
 class FPMCModel(tfrs.Model):
     def __init__(self, l2_reg, embedding_dim, data_query):
         super().__init__()
@@ -14,29 +15,27 @@ class FPMCModel(tfrs.Model):
         self.user_to_item_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_users + 1,
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
         self.item_to_user_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_items + 1,
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # Item-item embeddings
         self.item_to_item_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_items + 1,
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # User and item biases
         self.user_bias = tf.keras.layers.Embedding(
-            input_dim=self.num_users + 1,
-            output_dim=1
+            input_dim=self.num_users + 1, output_dim=1
         )
         self.item_bias = tf.keras.layers.Embedding(
-            input_dim=self.num_items + 1,
-            output_dim=1
+            input_dim=self.num_items + 1, output_dim=1
         )
 
         # Global bias
@@ -45,7 +44,7 @@ class FPMCModel(tfrs.Model):
         # Rating task
         self.rating_task = tfrs.tasks.Ranking(
             loss=tf.keras.losses.MeanSquaredError(),
-            metrics=[tf.keras.metrics.RootMeanSquaredError()]
+            metrics=[tf.keras.metrics.RootMeanSquaredError()],
         )
 
     def call(self, features):
@@ -74,7 +73,9 @@ class FPMCModel(tfrs.Model):
         item_bias = tf.squeeze(self.item_bias(next_item_ids))
 
         # Total predicted rating
-        return user_next_score + item_next_score + user_bias + item_bias + self.global_bias
+        return (
+            user_next_score + item_next_score + user_bias + item_bias + self.global_bias
+        )
 
     def compute_loss(self, features, training=False):
         """

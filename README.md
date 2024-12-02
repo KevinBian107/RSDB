@@ -1,9 +1,5 @@
 # Recommendation based on Sequential Dynamics for Business owners (RSDB)
-
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
-
-## Recommendation Structure
-![Alt text](demos/recommendationSystemStructure.png)
 
 ## Milestones
 1. Four hours per day work:
@@ -19,48 +15,37 @@
     - `Nov 25, 2024` Data cleaning finish (at least good dat, doesn’t need to be best data)
         - Have a Python file with clean code that preprocesses and give clean data
 
-## assignment requirements
-### Dataset
-- [ ]  EDA
-- [ ]  data set description
-    - [ ]  row and cols
-    - [ ]  basic statistics
-    - [ ]  missing values
-    - [ ]  outliers
-    - [ ]  size of the data set
+## Structure of System
 
-### Predictive Task
-- [ ]  Problem we are trying to solve
-    - [ ]  context
-    - [ ]  stakeholder
-- [ ]  metrics used to evaluate the model
-- [ ]  baseline model
-- [ ]  downstream application of the model (validity the performance of the model)
-- [ ]  used features
+```bash
+rsdb/
+├── data/
+├── configs/
+├── features/
+│   ├── featuring.py
+├── math_formulation/
+├── models/
+│   ├── fpmc/
+│   ├── tldf/
+├── preprocess/
+│   ├── data_preprocessing.py
+├── recommendation.py
+├── run.ipynb
+├── train.py
+```
 
-### Model
-- [ ]  Used model
-    - [ ]  what is the model
-    - [ ]  pro and con
-    - [ ]  the result
-    - [ ]  why using this model
-    - [ ]  how did we optimize it
-    - [ ]  issue encountered
-- [ ]  
-- [ ]  strength and weakness
+## Running RSDB System
+Running a training job with `tdlf` model:
+```bash
+python rsdb/train.py --action "train" --model "tdlf"
+```
 
-### Literature
-- [ ]  related works on the problem
-- [ ]  other data set that has been used to train this model
-- [ ]  What are state of the art method
-- [ ]  your finding against other works
+Running a tunning job with `fpmc` model:
+```bash
+python rsdb/train.py --action "tune" --model "fpmc"
+```
 
-### Results
-- [ ]  baseline model comparison
-- [ ]  significance of the result
-- [ ]  which feature representation works well
-- [ ]  interpretation of your model
-- [ ]  How does the proposed model succeed
+Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system.
 
 ## Reference Sources
 1. Dataset:
@@ -70,17 +55,8 @@
     - General models from textbook: https://cseweb.ucsd.edu/~jmcauley/pml/pml_book.pdf
     - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
     - Advance LSTM Model: https://github.com/nijianmo/fit-rec
-3. Instructions:
-    - A2 Slides: https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
 
 ## Mathamatics Formulation of Model
-1. Summary of the math from FitRec: https://github.com/KevinBian107/TBR/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
-2. Intro to Sequential Modeling: https://github.com/KevinBian107/SBRB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
-
-## Model in Practice
-1. Instruction at https://github.com/KevinBian107/RSDB/tree/main/recommender
-
-## Explorative Data Analysis
-1. Refer to https://github.com/KevinBian107/RSDB/bl ob/main/explorative%20data%20analysis/eda.ipynb
-2. Instruction at https://github.com/KevinBian107/RSDB/tree/main/explorative%20data%20analysis
+1. Summary from FitRec: https://github.com/KevinBian107/RSDB/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
+2. Intro to Sequential Modeling: https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
 

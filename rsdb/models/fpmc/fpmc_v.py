@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow_recommenders as tfrs
 
+
 class FPMCVariants(tfrs.Model):
     def __init__(self, l2_reg, embedding_dim, data_query):
         super().__init__()
@@ -14,29 +15,29 @@ class FPMCVariants(tfrs.Model):
         self.user_to_item_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_users + 1,
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
+
+        # Item-user embeddings
         self.item_to_user_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_items + 1,
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # Item-item embeddings
         self.item_to_item_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_items + 1,
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # User and item biases
         self.user_bias = tf.keras.layers.Embedding(
-            input_dim=self.num_users + 1,
-            output_dim=1
+            input_dim=self.num_users + 1, output_dim=1
         )
         self.item_bias = tf.keras.layers.Embedding(
-            input_dim=self.num_items + 1,
-            output_dim=1
+            input_dim=self.num_items + 1, output_dim=1
         )
 
         # Global bias
@@ -46,33 +47,27 @@ class FPMCVariants(tfrs.Model):
         self.category_embedding = tf.keras.layers.Embedding(
             input_dim=3,  # 3 categories: restaurant, park, store
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
-        self.lon_bin_embedding = tf.keras.layers.Embedding(
-            input_dim=20,  # 20 longitude bins
-            output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
-        )
-
-        self.lat_bin_embedding = tf.keras.layers.Embedding(
-            input_dim=20,  # 20 latitude bins
-            output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
-        )
-
-        self.avg_review_dense = tf.keras.layers.Dense(
+        self.lon_bin_dense = tf.keras.layers.Dense(
             units=embedding_dim,
             activation="relu",
-            kernel_regularizer=tf.keras.regularizers.l2(l2_reg)
+            kernel_regularizer=tf.keras.regularizers.l2(l2_reg),
+        )
+
+        self.lat_bin_dense = tf.keras.layers.Dense(
+            units=embedding_dim,
+            activation="relu",
+            kernel_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # Rating task
         self.rating_task = tfrs.tasks.Ranking(
             loss=tf.keras.losses.MeanSquaredError(),
-            metrics=[tf.keras.metrics.RootMeanSquaredError()]
+            metrics=[tf.keras.metrics.RootMeanSquaredError()],
         )
-
+    
     def call(self, features):
         """
         Predict ratings for (user, prev_item, next_item) triplets with additional features.
@@ -98,31 +93,51 @@ class FPMCVariants(tfrs.Model):
         user_bias = tf.squeeze(self.user_bias(user_ids))
         item_bias = tf.squeeze(self.item_bias(next_item_ids))
 
-        # Additional feature embeddings
-        category_emb = tf.reduce_sum(
-            self.category_embedding(features["isin_category_restaurant"]) +
-            self.category_embedding(features["isin_category_park"]) +
-            self.category_embedding(features["isin_category_store"]),
-            axis=1
-        )
-        lon_bin_emb = tf.reduce_sum(
-            self.lon_bin_embedding(features["lon_bin"]),
-            axis=1
-        )
-        lat_bin_emb = tf.reduce_sum(
-            self.lat_bin_embedding(features["lat_bin"]),
-            axis=1
-        )
-        avg_review_emb = self.avg_review_dense(features["avg_review_per_year"])
-
-        # Combine embeddings
-        additional_features = tf.reduce_sum(
-            [category_emb, lon_bin_emb, lat_bin_emb, avg_review_emb], axis=0
+        # Additional feature vector embeddings
+        category_emb = (
+            features["isin_category_restaurant"][:, None] * self.category_embedding(0)
+            + features["isin_category_park"][:, None] * self.category_embedding(1)
+            + features["isin_category_store"][:, None] * self.category_embedding(2)
         )
 
-        # Total predicted rating
-        return user_next_score + item_next_score + user_bias + item_bias + self.global_bias + additional_features
+        # Match rank of category_emb with lon_bin_emb and lat_bin_emb
+        category_emb = tf.reduce_mean(category_emb, axis=1, keepdims=True)
 
+        lon_bin_features = tf.concat(
+            [
+                features[f"lon_bin_{i}"][:, None]
+                for i in range(20)
+                if f"lon_bin_{i}" in features
+            ],
+            axis=1,
+        )
+        lat_bin_features = tf.concat(
+            [
+                features[f"lat_bin_{i}"][:, None]
+                for i in range(20)
+                if f"lat_bin_{i}" in features
+            ],
+            axis=1,
+        )
+
+        lon_bin_emb = self.lon_bin_dense(lon_bin_features)
+        lat_bin_emb = self.lat_bin_dense(lat_bin_features)
+
+        # Combine all features
+        additional_features = tf.concat(
+            [category_emb, lon_bin_emb, lat_bin_emb], axis=1
+        )
+
+        # Final prediction
+        return (
+            user_next_score
+            + item_next_score
+            + user_bias
+            + item_bias
+            + self.global_bias
+            + tf.reduce_sum(additional_features, axis=1)
+        )
+        
     def compute_loss(self, features, training=False):
         """
         Compute MSE loss for predicted ratings.
@@ -130,3 +145,17 @@ class FPMCVariants(tfrs.Model):
         ratings = features["rating"]
         predictions = self(features)
         return self.rating_task(labels=ratings, predictions=predictions)
+    
+    def get_config(self):
+        # Return a dictionary of the model's configuration
+        return {
+            "l2_reg": self.l2_reg,
+            "embedding_dim": self.embedding_dim,
+        }
+
+    @classmethod
+    def from_config(cls, config):
+        # Create an instance of the model from the config
+        return cls(**config)
+        
+
