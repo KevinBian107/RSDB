@@ -67,15 +67,7 @@ class FPMCVariants(tfrs.Model):
             loss=tf.keras.losses.MeanSquaredError(),
             metrics=[tf.keras.metrics.RootMeanSquaredError()],
         )
-
-    def compute_loss(self, features, training=False):
-        """
-        Compute MSE loss for predicted ratings.
-        """
-        ratings = features["rating"]
-        predictions = self(features)
-        return self.rating_task(labels=ratings, predictions=predictions)
-
+    
     def call(self, features):
         """
         Predict ratings for (user, prev_item, next_item) triplets with additional features.
@@ -136,9 +128,6 @@ class FPMCVariants(tfrs.Model):
             [category_emb, lon_bin_emb, lat_bin_emb], axis=1
         )
 
-        # Apply dropout for additional features
-        additional_features = self.dropout(additional_features)
-
         # Final prediction
         return (
             user_next_score
@@ -148,3 +137,25 @@ class FPMCVariants(tfrs.Model):
             + self.global_bias
             + tf.reduce_sum(additional_features, axis=1)
         )
+        
+    def compute_loss(self, features, training=False):
+        """
+        Compute MSE loss for predicted ratings.
+        """
+        ratings = features["rating"]
+        predictions = self(features)
+        return self.rating_task(labels=ratings, predictions=predictions)
+    
+    def get_config(self):
+        # Return a dictionary of the model's configuration
+        return {
+            "l2_reg": self.l2_reg,
+            "embedding_dim": self.embedding_dim,
+        }
+
+    @classmethod
+    def from_config(cls, config):
+        # Create an instance of the model from the config
+        return cls(**config)
+        
+
