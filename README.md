@@ -1,6 +1,8 @@
 # Recommendation based on Sequential Dynamics for Business owners (RSDB)
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
+**The data size used is extremely large (fourty million rows of data), dealing with large dataset is one main challenge in this project.**
+
 ## Milestones
 1. Four hours per day work:
 2. Milestones:
