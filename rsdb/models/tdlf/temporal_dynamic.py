@@ -10,10 +10,12 @@ import tensorflow as tf
 import tensorflow_recommenders as tfrs
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
-class TemporalDynamicVariants(tfrs.Model):
-    def __init__(self, l2_reg, dense_units, embedding_dim, dataframe, time_bins):
+
+class TemporalDynamicModel(tfrs.Model):
+    def __init__(self, l2_reg, dense_units, embedding_dim, data_query, time_bins):
         super().__init__()
 
         self.l2_reg = l2_reg
@@ -21,77 +23,69 @@ class TemporalDynamicVariants(tfrs.Model):
         self.embedding_dim = embedding_dim
         self.time_bins = time_bins
 
-        # Extract unique identifiers for vocabulary
-        self.user_vocab = dataframe["reviewer_id"].astype(str).unique()
-        self.item_vocab = dataframe["gmap_id"].astype(str).unique()
-        self.time_bin_vocab = list(range(time_bins))
-
         # Initialize StringLookup layers
         self.user_index = tf.keras.layers.StringLookup(
-            vocabulary=self.user_vocab,
+            vocabulary=data_query["reviewer_id"].unique(),
             mask_token=None,
-            num_oov_indices=1
+            num_oov_indices=1,
         )
         self.item_index = tf.keras.layers.StringLookup(
-            vocabulary=self.item_vocab,
+            vocabulary=data_query["gmap_id"].unique(),
             mask_token=None,
-            num_oov_indices=1
+            num_oov_indices=1,
         )
         self.time_bin_index = tf.keras.layers.IntegerLookup(
-            vocabulary=self.time_bin_vocab,
-            mask_token=None,
-            num_oov_indices=1
+            vocabulary=list(range(time_bins)), mask_token=None, num_oov_indices=1
         )
 
         # Embedding layers for latent embeddings
         self.user_embedding = tf.keras.layers.Embedding(
             input_dim=self.user_index.vocabulary_size(),
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
         self.item_embedding = tf.keras.layers.Embedding(
             input_dim=self.item_index.vocabulary_size(),
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # Time bin embedding for dynamic user temporal latent
         self.time_bin_embedding = tf.keras.layers.Embedding(
             input_dim=self.time_bin_index.vocabulary_size(),
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
         # User and item biases
         self.user_bias = tf.keras.layers.Embedding(
-            input_dim=self.user_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.user_index.vocabulary_size(), output_dim=1
         )
         self.item_bias = tf.keras.layers.Embedding(
-            input_dim=self.item_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.item_index.vocabulary_size(), output_dim=1
         )
 
         # Dynamic user deviation parameter
         self.user_alpha = tf.keras.layers.Embedding(
-            input_dim=self.user_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.user_index.vocabulary_size(), output_dim=1
         )
 
         # Global bias
         self.global_bias = tf.Variable(initial_value=3.5, trainable=True)
 
         # Dense layers for interactions
-        self.dense_layers = tf.keras.Sequential([
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Dense(dense_units, activation="relu"),
-            tf.keras.layers.Dense(1)
-        ])
+        self.dense_layers = tf.keras.Sequential(
+            [
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.Dense(dense_units, activation="relu"),
+                tf.keras.layers.Dense(1),
+            ]
+        )
 
         # Rating task
         self.rating_task = tfrs.tasks.Ranking(
             loss=tf.keras.losses.MeanSquaredError(),
-            metrics=[tf.keras.metrics.RootMeanSquaredError()]
+            metrics=[tf.keras.metrics.RootMeanSquaredError()],
         )
 
     def call(self, features):
@@ -116,33 +110,15 @@ class TemporalDynamicVariants(tfrs.Model):
         user_alpha = self.user_alpha(user_idx)
         time = tf.cast(features["time"], tf.float32)
         user_mean_time = tf.cast(features["user_mean_time"], tf.float32)
-        deviation = tf.math.sign(time - user_mean_time) * tf.abs(time - user_mean_time) ** 0.5
+        deviation = (
+            tf.math.sign(time - user_mean_time) * tf.abs(time - user_mean_time) ** 0.5
+        )
         temporal_effect = user_bias + user_alpha * tf.expand_dims(deviation, axis=-1)
 
-        # Extract additional features
-        category_features = tf.stack([
-            features["isin_category_restaurant"],
-            features["isin_category_park"],
-            features["isin_category_store"],
-            features['closed_on_weekend'],
-            features['weekly_operating_hours']
-        ], axis=1)
-
-        # Longitude and latitude bins
-        longitude_bins = tf.stack(
-            [features[f"lon_bin_{i}"] for i in range(20) if f"lon_bin_{i}" in features], axis=1
-        )
-        latitude_bins = tf.stack(
-            [features[f"lat_bin_{i}"] for i in range(20) if f"lat_bin_{i}" in features], axis=1
-        )
-
-        # Combine all features for interaction computation
-        interaction_inputs = tf.concat([
-            dynamic_user_emb, item_emb, category_features, longitude_bins, latitude_bins
-        ], axis=1)
-
         # Interaction score
-        interaction_score = self.dense_layers(interaction_inputs)
+        interaction_score = self.dense_layers(
+            tf.concat([dynamic_user_emb, item_emb], axis=1)
+        )
 
         # Final prediction
         return (

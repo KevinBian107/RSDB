@@ -10,6 +10,7 @@ import tensorflow as tf
 import tensorflow_recommenders as tfrs
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
 
@@ -26,65 +27,61 @@ class TemporalStaticModel(tfrs.Model):
         self.user_index = tf.keras.layers.StringLookup(
             vocabulary=data_query["reviewer_id"].unique(),
             mask_token=None,
-            num_oov_indices=1
+            num_oov_indices=1,
         )
         self.item_index = tf.keras.layers.StringLookup(
             vocabulary=data_query["gmap_id"].unique(),
             mask_token=None,
-            num_oov_indices=1
+            num_oov_indices=1,
         )
         self.time_bin_index = tf.keras.layers.IntegerLookup(
-            vocabulary=list(range(time_bins)),
-            mask_token=None,
-            num_oov_indices=1
+            vocabulary=list(range(time_bins)), mask_token=None, num_oov_indices=1
         )
 
         # Embedding layers for latent embeddings
         self.user_embedding = tf.keras.layers.Embedding(
             input_dim=self.user_index.vocabulary_size(),
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
         self.item_embedding = tf.keras.layers.Embedding(
             input_dim=self.item_index.vocabulary_size(),
             output_dim=embedding_dim,
-            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg)
+            embeddings_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
         self.time_bin_bias = tf.keras.layers.Embedding(
-            input_dim=self.time_bin_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.time_bin_index.vocabulary_size(), output_dim=1
         )
 
         # User and item biases
         self.user_bias = tf.keras.layers.Embedding(
-            input_dim=self.user_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.user_index.vocabulary_size(), output_dim=1
         )
         self.item_bias = tf.keras.layers.Embedding(
-            input_dim=self.item_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.item_index.vocabulary_size(), output_dim=1
         )
 
         # Dynamic user deviation parameter
         self.user_alpha = tf.keras.layers.Embedding(
-            input_dim=self.user_index.vocabulary_size(),
-            output_dim=1
+            input_dim=self.user_index.vocabulary_size(), output_dim=1
         )
 
         # Global bias
         self.global_bias = tf.Variable(initial_value=3.5, trainable=True)
 
         # Dense layers for interactions
-        self.dense_layers = tf.keras.Sequential([
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Dense(dense_units, activation="relu"),
-            tf.keras.layers.Dense(1)
-        ])
+        self.dense_layers = tf.keras.Sequential(
+            [
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.Dense(dense_units, activation="relu"),
+                tf.keras.layers.Dense(1),
+            ]
+        )
 
         # Rating task
         self.rating_task = tfrs.tasks.Ranking(
             loss=tf.keras.losses.MeanSquaredError(),
-            metrics=[tf.keras.metrics.RootMeanSquaredError()]
+            metrics=[tf.keras.metrics.RootMeanSquaredError()],
         )
 
     def call(self, features):
@@ -106,7 +103,9 @@ class TemporalStaticModel(tfrs.Model):
         user_alpha = self.user_alpha(user_idx)
         time = tf.cast(features["time"], tf.float32)
         user_mean_time = tf.cast(features["user_mean_time"], tf.float32)
-        deviation = tf.math.sign(time - user_mean_time) * tf.abs(time - user_mean_time) ** 0.5
+        deviation = (
+            tf.math.sign(time - user_mean_time) * tf.abs(time - user_mean_time) ** 0.5
+        )
         temporal_effect = user_bias + user_alpha * tf.expand_dims(deviation, axis=-1)
 
         # Interaction score
