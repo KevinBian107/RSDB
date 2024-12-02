@@ -10,11 +10,30 @@ import yaml
 URL = "https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/review-California_10.json.gz"
 METAURL = "https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/meta-California.json.gz"
 
-
 def load_config(config_path):
-    '''loading in yaml configs'''
+    """Load and validate YAML configuration."""
+    def validate_and_cast(value):
+        if isinstance(value, str):
+            try:
+                # Try to cast to float if it's a scientific notation string
+                return float(value)
+            except ValueError:
+                return value
+        return value
+
     with open(config_path, "r") as file:
-        return yaml.safe_load(file)
+        config = yaml.safe_load(file)
+
+    # Recursively apply the validation and casting function
+    def recursive_validate_cast(data):
+        if isinstance(data, dict):
+            return {k: recursive_validate_cast(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            return [recursive_validate_cast(item) for item in data]
+        else:
+            return validate_and_cast(data)
+
+    return recursive_validate_cast(config)
 
 def tdlf_df_to_tf_dataset(dataframe):
     """change featuers from data frame to tensorfloe styles"""
@@ -95,7 +114,7 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
     """Training for both TemporalDynamicVariants and FPMCVariants"""
     config = load_config(config_path)
 
-    cleaned_df = get_single_chunk(URL, METAURL)
+    cleaned_df = get_clean_review_data(URL, METAURL)
     featured_df = featuring_engineering(cleaned_df)
     data_query = featured_df[["gmap_id", "reviewer_id", "rating"]]
     train_frac = config["training"]["dataset_split"]["train_frac"]
@@ -178,7 +197,7 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
     config = load_config(config_path)
 
     # Dataset preparation
-    cleaned_df = get_single_chunk(URL, METAURL)
+    cleaned_df = get_clean_review_data(URL, METAURL)
     featured_df = featuring_engineering(cleaned_df)
     data_query = featured_df[["gmap_id", "reviewer_id", "rating"]]
 

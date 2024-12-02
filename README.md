@@ -16,7 +16,6 @@
         - Have a Python file with clean code that preprocesses and give clean data
 
 ## Structure of System
-Our system supports customized tunning through our yaml configs system.
 
 ```bash
 rsdb/
@@ -46,6 +45,8 @@ Running a tunning job with `fpmc` model:
 python rsdb/train.py --action "tune" --model "fpmc"
 ```
 
+Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system.
+
 ## Reference Sources
 1. Dataset:
     - General Information: https://cseweb.ucsd.edu/~jmcauley/datasets.html#google_local
@@ -54,10 +55,8 @@ python rsdb/train.py --action "tune" --model "fpmc"
     - General models from textbook: https://cseweb.ucsd.edu/~jmcauley/pml/pml_book.pdf
     - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
     - Advance LSTM Model: https://github.com/nijianmo/fit-rec
-3. Instructions:
-    - A2 Slides: https://cseweb.ucsd.edu/classes/fa24/cse258-b/slides/assignment2_fa24.pdf
 
 ## Mathamatics Formulation of Model
-1. Summary of the math from FitRec: https://github.com/KevinBian107/RSDB/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
+1. Summary from FitRec: https://github.com/KevinBian107/RSDB/blob/main/math/TBR%20Mathamatical%20Formulation.pdf
 2. Intro to Sequential Modeling: https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
 

@@ -164,3 +164,17 @@ class TemporalDynamicVariants(tfrs.Model):
         ratings = features["rating"]
         predictions = self(features)
         return self.rating_task(labels=ratings, predictions=predictions)
+    
+    def get_config(self):
+        # Return a dictionary of the model's configuration
+        return {
+            "l2_reg": self.l2_reg,
+            "dense_units": self.dense_units,
+            "embedding_dim": self.embedding_dim,
+            "time_bins": self.time_bins,
+        }
+
+    @classmethod
+    def from_config(cls, config):
+        # Create an instance of the model from the config
+        return cls(**config)

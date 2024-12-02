@@ -4,22 +4,22 @@ training:
     random_state: 42
   shuffle_buffer_size: 1024
   batch_size: 4096
-  epochs: 500
-  patience: 10
+  epochs: 1000
+  patience: 50
   min_delta: 0.001
   learning_rate_schedule:
     initial_learning_rate: 1e-2
     decay_steps: 1000
-    decay_rate: 0.8
+    decay_rate: 0.2
   model_save_path: "trained_{model_name}_model"
 
 tdlf:
-  embedding_dim: 30
-  dense_units: 30
-  l2_reg: 0.0201
-  time_bins: 30
+  embedding_dim: 50
+  dense_units: 50
+  l2_reg: 1e-2
+  time_bins: 10
 
 fpmc:
-  embedding_dim: 32
-  l2_reg: 0.0201
-  learning_rate: 1e-3
+  embedding_dim: 50
+  l2_reg: 1e-2
+  learning_rate: 1e-4
