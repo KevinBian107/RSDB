@@ -1,8 +1,6 @@
 # Recommendation based on Sequential Dynamics for Business owners (RSDB)
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 
-**The data size used is extremely large (fourty million rows of data), dealing with large dataset is one main challenge in this project.**
-
 ## Milestones
 1. Four hours per day work:
 2. Milestones:
@@ -17,48 +15,44 @@
     - `Nov 25, 2024` Data cleaning finish (at least good dat, doesn’t need to be best data)
         - Have a Python file with clean code that preprocesses and give clean data
 
-## Structure of System
+## Assignment Requirements
+### Dataset
+- [ ]  EDA
+- [ ]  data set description
+    - [ ]  row and cols
+    - [ ]  basic statistics
+    - [ ]  missing values
+    - [ ]  outliers
+    - [ ]  size of the data set
 
-```bash
-rsdb/
-├── data/
-├── configs/
-├── features/
-│   ├── featuring.py
-├── math_formulation/
-├── models/
-│   ├── fpmc/
-│   ├── tldf/
-├── preprocess/
-│   ├── data_preprocessing.py
-├── recommendation.py
-├── run.ipynb
-├── train.py
-```
+### Predictive Task
+- [ ]  Problem we are trying to solve
+    - [ ]  context
+    - [ ]  stakeholder
+- [ ]  metrics used to evaluate the model
+- [ ]  baseline model
+- [ ]  downstream application of the model (validity the performance of the model)
+- [ ]  used features
 
-## Running RSDB System
-Running a training job with `tdlf` model:
-```bash
-python rsdb/train.py --action "train" --model "tdlf"
-```
+### Model
+- [ ]  Used model
+    - [ ]  what is the model
+    - [ ]  pro and con
+    - [ ]  the result
+    - [ ]  why using this model
+    - [ ]  how did we optimize it
+    - [ ]  issue encountered
+- [ ]  strength and weakness
 
-Running a tunning job with `fpmc` model:
-```bash
-python rsdb/train.py --action "tune" --model "fpmc"
-```
+### Literature
+- [ ]  related works on the problem
+- [ ]  other data set that has been used to train this model
+- [ ]  What are state of the art method
+- [ ]  your finding against other works
 
-Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system.
-
-## Reference Sources
-1. Dataset:
-    - General Information: https://cseweb.ucsd.edu/~jmcauley/datasets.html#google_local
-    - Full Dataset: https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/#files
-2. Models:
-    - General models from textbook: https://cseweb.ucsd.edu/~jmcauley/pml/pml_book.pdf
-    - Translational Model: https://cseweb.ucsd.edu/~jmcauley/pdfs/recsys18a.pdf
-    - Advance LSTM Model: https://github.com/nijianmo/fit-rec
-
-## Mathamatics Formulation of Models
-1. Intro to FitRec Mathamatical Formulation: https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20FitRec%20Mathamatical%20Formulation.pdf
-2. Intro to Sequential Modeling: https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf
-
+### Results
+- [ ]  baseline model comparison
+- [ ]  significance of the result
+- [ ]  which feature representation works well
+- [ ]  interpretation of your model
+- [ ]  How does the proposed model succeed
