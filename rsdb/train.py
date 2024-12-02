@@ -190,6 +190,10 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
         )
 
         model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
+    elif model_name == "blf":
+        # TODO
+        print("currently working on the model")
+        return
 
     # Training and saving
     model.fit(
@@ -359,7 +363,7 @@ def main():
     )
     parser.add_argument(
         "--model",
-        choices=["tdlf", "fpmc"],
+        choices=["tdlf", "fpmc", "blf"],
         help="Specify the model to use (tdlf or fpmc).",
     )
     args = parser.parse_args()
@@ -370,6 +374,12 @@ def main():
         print("Training completed. Parameter Saved")
 
     elif args.action == "tune":
+        if args.model == "blf":
+            print("There is no tunning for basic latent factor model!")
+            print("if you want to run baseline model: run the command line:")
+            print('python rsdb/train.py --action "train" --model "blf"')
+            return
+
         print(f"Tuning {args.model} model...")
         best_model = tune(args.model)
         print(f"Tuning completed for {args.model}.")
