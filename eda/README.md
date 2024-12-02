@@ -1,4 +1,5 @@
 # Schematic of EDA
+Notice that EDA here uses a toy `hawaii_dataset`, different from the actual dataset we are using
 
 EDA + preprocessing for each model (many EDA stuff is reusable, pair up for EDA first)
 1. Data Cleaning (do two notebook and then merge):
