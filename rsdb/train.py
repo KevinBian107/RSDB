@@ -132,6 +132,7 @@ def fpmc_df_to_tf_dataset(dataframe):
         }
     )
 
+
 def train(model_name, config_path="rsdb/configs/train_config.yaml"):
     """Training for both TemporalDynamicVariants and FPMCVariants"""
     config = load_config(config_path)
@@ -182,7 +183,9 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
             restore_best_weights=True,
         )
 
-        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule))
+        model.compile(
+            optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule)
+        )
 
     elif model_name == "fpmc":
         embedding_dim = config["fpmc"]["embedding_dim"]
@@ -252,7 +255,7 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
     save_path = config["training"]["model_save_path"].format(model_name=model_name)
     model.save(save_path)
     print(f"Trained {model_name} model saved as '{save_path}'.")
-    
+
     test_metrics = model.evaluate(test_data, return_dict=True)
     print(f"Test RMSE: {test_metrics['root_mean_squared_error']}")
 
@@ -329,7 +332,9 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
             decay_steps=params["decay_steps"],
             decay_rate=params["decay_rate"],
         )
-        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule))
+        model.compile(
+            optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule)
+        )
         return model
 
     def build_fpmc_model(hp):
@@ -356,7 +361,9 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
         model = FPMCVariants(
             l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
         )
-        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate))
+        model.compile(
+            optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate)
+        )
         return model
 
     # Hyperparameter tuning for the selected model
