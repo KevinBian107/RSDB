@@ -85,6 +85,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#notebooks" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -233,7 +238,7 @@
   
     
   
-  RSDB
+  Why RSDB?
 
       </a>
     </li>
@@ -333,7 +338,7 @@
         
   
   <span class="md-ellipsis">
-    RSDB
+    Why RSDB?
   </span>
   
 
@@ -356,6 +361,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    API Calls
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -365,6 +381,41 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notebooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting-up Training
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -519,6 +570,32 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notebooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting-up Training
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -537,6 +614,10 @@
 
   <h1>API Calls</h1>
 
+<p>We ahve created simply interactive API calls to use our system for building a business recommender system.</p>
+<h2 id="notebooks">Notebooks<a class="headerlink" href="#notebooks" title="Permanent link">&para;</a></h2>
+<p>We have created two notebooks for a clear visualization of our <a href="https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/train.ipynb">training</a>, <a href="https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/eval.ipynb">evaluations, and downstream applications</a></p>
+<h2 id="setting-up-training">Setting-up Training<a class="headerlink" href="#setting-up-training" title="Permanent link">&para;</a></h2>
 <p>Create a environment to work on:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span>
 </code></pre></div></p>
@@ -550,7 +631,6 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">python</span> <span class="n">rsdb</span><span class="o">/</span><span class="n">train</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">action</span> <span class="s2">&quot;tune&quot;</span> <span class="o">--</span><span class="n">model</span> <span class="s2">&quot;fpmc&quot;</span>
 </code></pre></div></p>
 <p>Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system. With the <a href="https://github.com/KevinBian107/RSDB/tree/main/rsdb/configs">config</a> system, we can tune and choose the hyperparameter that we want to use.</p>
-<p>We have created two notebooks for a clear visualization of our <a href="https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/train.ipynb">training</a>, <a href="https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/eval.ipynb">evaluations, and downstream applications</a></p>
 
 
 
