@@ -7,10 +7,6 @@ training:
   epochs: 1000
   patience: 5
   min_delta: 0.001
-  learning_rate_schedule:
-    initial_learning_rate: 0.00066501
-    decay_steps: 1000
-    decay_rate: 0.5
   model_save_path: "trained_{model_name}_model"
 
 tdlf:
@@ -18,11 +14,18 @@ tdlf:
   dense_units: 64
   l2_reg: 0.000121
   time_bins: 20
+  learning_rate_schedule:
+    initial_learning_rate: 0.00066501
+    decay_steps: 1000
+    decay_rate: 0.5
 
 fpmc:
   embedding_dim: 20
   l2_reg: 0.0066295
-  learning_rate: 0.00022001
+  learning_rate_schedule:
+    initial_learning_rate: 0.00022001
+    decay_steps: 1000
+    decay_rate: 0.5
 
 blf:
   embedding_dim: 20

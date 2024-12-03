@@ -153,10 +153,11 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
 
     # Model-specific configuration
     if model_name == "tdlf":
-        embedding_dim = config["tdlf"]["embedding_dim"]
-        dense_units = config["tdlf"]["dense_units"]
-        l2_reg = config["tdlf"]["l2_reg"]
-        time_bins = config["tdlf"]["time_bins"]
+        model_params = config["tdlf"]
+        embedding_dim = model_params["embedding_dim"]
+        dense_units = model_params["dense_units"]
+        l2_reg = model_params["l2_reg"]
+        time_bins = model_params["time_bins"]
 
         train_data = (
             tdlf_df_to_tf_dataset(train_df)
@@ -169,11 +170,10 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
             l2_reg, dense_units, embedding_dim, data_query, time_bins
         )
 
-        lr_schedule_config = config["training"]["learning_rate_schedule"]
         lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-            initial_learning_rate=lr_schedule_config["initial_learning_rate"],
-            decay_steps=lr_schedule_config["decay_steps"],
-            decay_rate=lr_schedule_config["decay_rate"],
+            initial_learning_rate=model_params["learning_rate_schedule"]["initial_learning_rate"],
+            decay_steps=model_params["learning_rate_schedule"]["decay_steps"],
+            decay_rate=model_params["learning_rate_schedule"]["decay_rate"],
         )
 
         early_stopping = tf.keras.callbacks.EarlyStopping(
@@ -188,9 +188,9 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
         )
 
     elif model_name == "fpmc":
-        embedding_dim = config["fpmc"]["embedding_dim"]
-        l2_reg = config["fpmc"]["l2_reg"]
-        learning_rate = config["fpmc"]["learning_rate"]
+        model_params = config["fpmc"]
+        embedding_dim = model_params["embedding_dim"]
+        l2_reg = model_params["l2_reg"]
 
         train_data = (
             fpmc_df_to_tf_dataset(train_df)
@@ -202,6 +202,12 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
         model = FPMCVariants(
             l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
         )
+        
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate=model_params["learning_rate_schedule"]["initial_learning_rate"],
+            decay_steps=model_params["learning_rate_schedule"]["decay_steps"],
+            decay_rate=model_params["learning_rate_schedule"]["decay_rate"],
+        )
 
         early_stopping = tf.keras.callbacks.EarlyStopping(
             monitor="val_root_mean_squared_error",
@@ -210,7 +216,8 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
             restore_best_weights=True,
         )
 
-        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
+        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule))
+    
     elif model_name == "blf":
         model_params = config["blf"]
         l2_reg = model_params["l2_reg"]
