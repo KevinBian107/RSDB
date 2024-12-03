@@ -8,11 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://kbian.org/RSDB/system/downstream/">
+        <link rel="canonical" href="https://kbian.org/RSDB/system/math/">
       
       
-        <link rel="prev" href="../math/">
+        <link rel="prev" href="../models/">
       
+      
+        <link rel="next" href="../downstream/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +22,7 @@
     
     
       
-        <title>Applications - RSDB Documentation</title>
+        <title>Math - RSDB Documentation</title>
       
     
     
@@ -84,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#expand-businesses-advertisements" class="md-skip">
+        <a href="#modeling-dynamics-in-time" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Applications
+              Math
             
           </span>
         </div>
@@ -477,27 +479,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../math/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Math
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -507,12 +488,14 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
   <span class="md-ellipsis">
-    Applications
+    Math
   </span>
   
 
@@ -523,7 +506,7 @@
         
   
   <span class="md-ellipsis">
-    Applications
+    Math
   </span>
   
 
@@ -535,6 +518,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -543,18 +528,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#expand-businesses-advertisements" class="md-nav__link">
+  <a href="#baseline-latent-factor-blf" class="md-nav__link">
     <span class="md-ellipsis">
-      Expand Businesses &amp; Advertisements
+      Baseline Latent Factor (BLF)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-new-businesses" class="md-nav__link">
+  <a href="#factorized-personalized-markov-chain-variants-fmpc-v" class="md-nav__link">
     <span class="md-ellipsis">
-      Start New Businesses
+      Factorized Personalized Markov Chain Variants (FMPC-V)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#temporal-dynamic-latent-factor-model-with-neural-correlative-variants-tdlf-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      Temporal Dynamic Latent Factor Model With Neural Correlative Variants (TDLF-V)
     </span>
   </a>
   
@@ -564,6 +558,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../downstream/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Applications
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -593,6 +608,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -601,18 +618,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#expand-businesses-advertisements" class="md-nav__link">
+  <a href="#baseline-latent-factor-blf" class="md-nav__link">
     <span class="md-ellipsis">
-      Expand Businesses &amp; Advertisements
+      Baseline Latent Factor (BLF)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-new-businesses" class="md-nav__link">
+  <a href="#factorized-personalized-markov-chain-variants-fmpc-v" class="md-nav__link">
     <span class="md-ellipsis">
-      Start New Businesses
+      Factorized Personalized Markov Chain Variants (FMPC-V)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#temporal-dynamic-latent-factor-model-with-neural-correlative-variants-tdlf-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      Temporal Dynamic Latent Factor Model With Neural Correlative Variants (TDLF-V)
     </span>
   </a>
   
@@ -636,28 +662,81 @@
   
 
 
-  <h1>Applications</h1>
-
-<h2 id="expand-businesses-advertisements">Expand Businesses &amp; Advertisements<a class="headerlink" href="#expand-businesses-advertisements" title="Permanent link">&para;</a></h2>
-<p>We want to look at how user would behave like in the future, not predicting the past, <strong>we use the classical way of reconmendation</strong>.
-- How uninteracted <code>users</code> would inteacr with <code>gmap_id</code> then reconmand to high rating users.
-- Assuming that the <code>gmap_id</code> want to expand business to certain location, we are modeling how <code>users</code> in this region would interact with this <code>gmap_id</code> ().</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">-</span> <span class="n">given</span> <span class="n">gmap_id</span> <span class="o">+</span> <span class="n">location_range</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">-</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">users</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">region</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">-</span> <span class="n">predict</span> <span class="n">rating</span> <span class="k">for</span> <span class="n">each</span> <span class="n">uninteracted</span> <span class="n">users</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="o">-</span> <span class="n">reconmand</span> <span class="n">business</span> <span class="n">to</span> <span class="n">predicted</span> <span class="n">high</span> <span class="n">rating</span> <span class="n">users</span>
-</code></pre></div>
-<h2 id="start-new-businesses">Start New Businesses<a class="headerlink" href="#start-new-businesses" title="Permanent link">&para;</a></h2>
-<p>Given a <code>location (lattitude, longitute)</code> -&gt; binning -&gt; look at all business rating predictions in this bin -&gt; predict the best business for this location bin given all user rating in this location (implicit inm the recommander system).
-- If score of business is high, interacting with lcoal user (captured in data, think about A1 book_id and user_id), high rating tells about insights of successful business in theis region.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">-</span> <span class="n">bining</span> <span class="nb">all</span> <span class="n">locations</span> <span class="p">(</span><span class="n">same</span> <span class="k">as</span> <span class="n">feature</span> <span class="n">engineering</span><span class="p">)</span>  
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">users</span> <span class="ow">in</span> <span class="p">(</span><span class="n">location_bin</span> <span class="o">+</span> <span class="n">hours_want_to_operate</span><span class="p">):</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="o">-</span> <span class="n">query</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">needed</span> <span class="n">info</span> <span class="p">(</span><span class="n">temporal</span> <span class="n">info</span> <span class="o">+</span> <span class="n">gmap</span> <span class="n">popularity</span><span class="p">)</span> <span class="n">based</span> <span class="n">on</span> <span class="n">user</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">such</span> <span class="n">location</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="o">-</span> <span class="nb">all</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">such</span> <span class="n">location</span> <span class="n">has</span> <span class="n">history</span> <span class="n">of</span> <span class="n">interacting</span> <span class="k">with</span> <span class="n">certain</span> <span class="n">business</span> <span class="n">category</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="o">-</span> <span class="n">predict</span> <span class="n">ratings</span> <span class="k">for</span> <span class="nb">all</span> <span class="nb">type</span> <span class="n">of</span> <span class="n">business</span> <span class="n">x</span> <span class="nb">all</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">such</span> <span class="n">location</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="o">-</span> <span class="n">aggregate</span> <span class="nb">all</span> <span class="n">ratings</span> <span class="n">grouoby</span> <span class="n">business</span> <span class="n">location</span> <span class="n">Bin</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="o">-</span> <span class="n">ranking</span>
-</code></pre></div>
+<h1 id="modeling-dynamics-in-time">Modeling Dynamics in Time<a class="headerlink" href="#modeling-dynamics-in-time" title="Permanent link">&para;</a></h1>
+<p>There are usually two approaches to tackling dynamics in time: one focuses on using temporal features (timestamps), and the other focuses on looking at the order of things (sequence). We will introduce two common approaches (one from each family) in this section.</p>
+<h2 id="baseline-latent-factor-blf">Baseline Latent Factor (BLF)<a class="headerlink" href="#baseline-latent-factor-blf" title="Permanent link">&para;</a></h2>
+<p>For our baseline evaluation, we use a plain latent factor model that only models the interaction between user and item through rating interactions (<span class="arithmatex">\( \gamma_u \)</span> and <span class="arithmatex">\( \gamma_i \)</span>) and bias terms (user bias <span class="arithmatex">\( \beta_u \)</span>, item bias <span class="arithmatex">\( \beta_i \)</span>, and global bias <span class="arithmatex">\( \beta_g \)</span>). We also added regularization on each of the terms mentioned above, which can frame the whole optimization using MSE as follows:</p>
+<div class="arithmatex">\[
+\arg \min_{\beta, \gamma} \sum_{u,i} \left( \beta_g + \beta_u + \beta_i + \gamma_u \cdot \gamma_i - R_{u,i} \right)^2 + \lambda \left[ \sum_u \beta_u^2 + \sum_i \beta_i^2 + \sum_i \left\| \gamma_i \right\|_2^2 + \sum_u \left\| \gamma_u \right\|_2^2 \right]
+\]</div>
+<h2 id="factorized-personalized-markov-chain-variants-fmpc-v">Factorized Personalized Markov Chain Variants (FMPC-V)<a class="headerlink" href="#factorized-personalized-markov-chain-variants-fmpc-v" title="Permanent link">&para;</a></h2>
+<p>Factorized Personalized Markov Chains (FPMC) extends from the Markov Chain model using the first-order Markovian property. It includes both user-item interactions and item-item sequential transitions and represents them as a factorized latent factor model. The core idea of FPMC is to do two things:</p>
+<ol>
+<li>Item should match user preferences.</li>
+<li>The next item should be consistent with the previous item.</li>
+</ol>
+<p>To achieve this, we use the scoring function <span class="arithmatex">\( f(i \mid u, j) \)</span> that represents the probability of seeing item <span class="arithmatex">\( i \)</span> given the joint probability of item <span class="arithmatex">\( j \)</span> and the user <span class="arithmatex">\( u \)</span>. We can use tensor decomposition to reduce such a probabilistic formulation into a latent factor formulation:</p>
+<div class="arithmatex">\[
+f(i \mid u, j) = \underbrace{\gamma_{ui} \cdot \gamma_{iu}}_{f(i \mid u)} + \underbrace{\gamma_{ij} \cdot \gamma_{ji}}_{f(i \mid j)} + \underbrace{\gamma_{uj} \cdot \gamma_{ju}}_{f(u, j)}
+\]</div>
+<p>Here:
+- <span class="arithmatex">\( f(i \mid u) \)</span>: Captures the compatibility between the user <span class="arithmatex">\( u \)</span> and the next item <span class="arithmatex">\( i \)</span> (user-item interaction, personalized).
+- <span class="arithmatex">\( f(i \mid j) \)</span>: Captures the sequential relationship between the previous item <span class="arithmatex">\( j \)</span> and the next item <span class="arithmatex">\( i \)</span> (Markov chain).
+- <span class="arithmatex">\( f(u, j) \)</span>: Captures the relationship between the user <span class="arithmatex">\( u \)</span> and the previous item <span class="arithmatex">\( j \)</span>. This term is usually neglected because a user's compatibility with a previously rated item is trivial.</p>
+<p>Our variants expand upon this system and incorporate feature components into the model. The features take many formats, but for demonstration purposes, we separate them into categorical and numerical features, which are embedded into the model as follows:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+f(i \mid u, j, \mathbf{F}) = &amp;\ 
+\underbrace{\gamma_{ui} \cdot \gamma_{iu}}_{\text{user/next item compatibility}} + 
+\underbrace{\gamma_{ij} \cdot \gamma_{ji}}_{\text{next/previous item compatibility}} + \underbrace{\beta_u + \beta_i}_{\text{user and next-item biases}} \\ + 
+&amp;\underbrace{\mathbf{w}^\top \mathbf{F}_{\text{cat}}}_{\text{categorical embeddings}} + \underbrace{\mathbf{v}^\top \mathbf{F}_{\text{num}}}_{\text{numerical embeddings}} + 
+\underbrace{b_g}_{\text{global bias}}
+\end{aligned}
+\]</div>
+<p>Traditionally, FPMC is optimized with Bayesian Personalized Ranking. However, since we are making a non-binary categorical prediction (rating), we use plain MSE for optimization, framed as follows:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\arg \min_{\gamma, \beta, \mathbf{w}, \mathbf{v}} \sum_{u,i,j} 
+\Bigg(\gamma_{ui} \cdot \gamma_{iu} + \gamma_{ij} \cdot \gamma_{ji} + 
+\beta_u + \beta_i + \mathbf{w}^\top \mathbf{F} + 
+\mathbf{v}^\top \mathbf{F} + 
+\beta_g - R_{u,i}
+\Bigg)^2 \\ + 
+\lambda \Bigg( \sum_u \beta_u^2 + \sum_i \beta_i^2 + \sum_u \|\gamma_u\|_2^2 + \sum_i \|\gamma_i\|_2^2 + \|\mathbf{w}\|_2^2 + \|\mathbf{v}\|_2^2 \Bigg)
+\end{aligned}
+\]</div>
+<p>The features are directly embedded using embedding methods with neural networks.</p>
+<h2 id="temporal-dynamic-latent-factor-model-with-neural-correlative-variants-tdlf-v">Temporal Dynamic Latent Factor Model With Neural Correlative Variants (TDLF-V)<a class="headerlink" href="#temporal-dynamic-latent-factor-model-with-neural-correlative-variants-tdlf-v" title="Permanent link">&para;</a></h2>
+<p>The second approach in this system extends from the model that won the Netflix Prize. This model incorporates temporal features into a latent factor framework, specifically adding bias terms that are time-dependent (<span class="arithmatex">\( \beta_i(t) \)</span>) and assuming that the user latent factors (<span class="arithmatex">\( \gamma_{u,k}(t) \)</span>) change over time. The bias term includes both binning and periodic changes:</p>
+<div class="arithmatex">\[
+\beta_i(t) = \beta_i + \beta_{i,\text{bin}}(t) + \beta_{i,\text{period}}(t)
+\]</div>
+<p>Additionally, we use a neural correlative approach, passing latent factors through a neural network. The features (<span class="arithmatex">\( \mathbf{w}^\top \mathbf{F} \)</span>) are also incorporated into the neural network as follows:</p>
+<div class="arithmatex">\[
+f(\gamma_u, \gamma_i) = \text{NN}([\gamma_u, \gamma_i])
+\]</div>
+<p>The prediction model is formulated as:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\hat{r}_{u,i,t, \mathbf{F}} = &amp;\ 
+\underbrace{\mu}_{\text{Global bias}} + 
+\underbrace{\beta_i}_{\text{Static item bias}} + 
+\underbrace{\beta_i(t)}_{\text{Dynamic item bias}} + \underbrace{\beta_u}_{\text{Static user bias}}
++ \underbrace{f(\gamma_{u,k}(t), \gamma_{i,k})}_{\text{Interaction score}} + 
+\underbrace{\mathbf{w}^\top \mathbf{F}_{\text{item}}}_{\text{Item-specific feature effect}}
+\end{aligned}
+\]</div>
+<p>The optimization process is framed as follows with regularization on each component:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\arg \min_{\alpha, \beta, \gamma, \mathbf{W}} \sum_{u,i} 
+\Bigg(&amp;
+\mu + \beta_i + \beta_i(t) + \beta_u + f(\gamma_{u,k}(t), \gamma_{i,k}) + \mathbf{w}^\top \mathbf{F}_{\text{item}} - R_{u,i}
+\Bigg)^2 \\
+&amp;+ 
+\lambda \Bigg( \sum_u \beta_u^2 + \sum_i \beta_i^2 + \sum_u \|\gamma_u\|_2^2 + \sum_i \|\gamma_i\|_2^2 + \sum \|\mathbf{w}\|_2^2 \Bigg)
+\end{aligned}
+\]</div>
 
 
 
