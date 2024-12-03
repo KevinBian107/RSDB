@@ -1,6 +1,7 @@
 # the function will takes trained model and return pandas dataframe contain the metrics of the model
 import pandas as pd
 import numpy as np
+from rsdb.recommendation import Recommendation
 
 
 def calculate_mse(y_true, y_pred):
@@ -131,6 +132,82 @@ def eval_result(models: list, tf_test_datas: list) -> pd.DataFrame:
         columns=columns,
         index=[row[0] for row in result_list],
     )
+
+
+def eval_downstream(models: list, clean_df: pd.DataFrame, model_names: list):
+    # Define a function that evaluates recommendation models by comparing their predictions against a subset of data.
+    # models: list of trained recommendation models.
+    # clean_df: pre-processed DataFrame containing relevant data for evaluation.
+    # model_names: list of names corresponding to the models, used for reporting.
+
+    print("please make sure all the tensorflow data is same")
+    # Reminder to ensure consistency in TensorFlow-related data if applicable (likely meant for debugging).
+
+    seed = 1
+    random_sample_gmapids = clean_df.sample(5, random_state=seed)["gmap_id"].values
+    # Randomly select 5 unique `gmap_id` values from the `clean_df` for evaluation, ensuring reproducibility with `random_state`.
+
+    gmap_ids_property = [
+        list(clean_df[clean_df["gmap_id"] == gmap_id]["category"].iloc[0])
+        for gmap_id in random_sample_gmapids
+    ]
+    # Retrieve the first "category" value for each of the sampled `gmap_id`s, storing them for reference.
+    # Assumes each `gmap_id` is associated with a single "category".
+
+    for model, model_name in zip(models, model_names):
+        # Iterate through each model and its corresponding name for evaluation.
+
+        recomender = Recommendation(model, clean_df, model_name)
+        # Instantiate a `Recommendation` object with the current model, dataset, and name.
+
+        recommend_dfs = [
+            recomender.recommend(sample_gmap) for sample_gmap in random_sample_gmapids
+        ]
+        # Generate recommendations for each sampled `gmap_id` using the current model.
+        # `recommend()` presumably returns a DataFrame of recommendations.
+
+        for recommend_df in recommend_dfs:
+            recommend_df["reviewer_id"] = recommend_df["reviewer_id"].astype(float)
+            # Cast the `reviewer_id` column to float, potentially to align data types for later operations.
+
+        recommend_dfs = [
+            recommend_df.merge(
+                clean_df[clean_df["gmap_id"] != gmap_id], on="reviewer_id"
+            )
+            for recommend_df, gmap_id in zip(recommend_dfs, random_sample_gmapids)
+        ]
+        # For each recommendation DataFrame, merge it with `clean_df` entries that do not match the original `gmap_id`.
+        # Likely to exclude the businesses already associated with the sampled `gmap_id`.
+
+        print(f"for model: {model_name}")
+        # Display the name of the model being evaluated.
+
+        for recommend_df, gmap_prop in zip(recommend_dfs, gmap_ids_property):
+            # Iterate over each recommendation DataFrame and the corresponding property of the sampled `gmap_id`.
+
+            print(f"The given gmapids has the property {gmap_prop}")
+            # Print the category of the sampled `gmap_id`.
+
+            print(
+                "Of all the recommended user, their categorical visited business are in these categories"
+            )
+            print(
+                recommend_df["category"].explode().value_counts(normalize=True).iloc[:3]
+            )
+            # Display the top 3 categories of businesses visited by users in the recommendations,
+            # along with their normalized frequencies.
+
+            print("\n")
+
+            print("Their average rating is:")
+            print(recommend_df.groupby("reviewer_id")["rating"].mean())
+            # Compute and print the average rating given by each user in the recommendations.
+
+            print("*----------------------------*")
+            # Separator for clarity in the output.
+
+        print("*----------------------------*")
+        # Additional separator for separating results of different models.
 
 
 def main():

@@ -8,6 +8,7 @@ if str(main_path) not in sys.path:
 from rsdb.models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
 from rsdb.models.fpmc.fpmc_v import FPMCVariants
 from rsdb.features.featuring import featuring_engineering
+from rsdb.train import blf_df_to_tf_dataset
 
 import numpy as np
 import pandas as pd
@@ -46,6 +47,8 @@ class Recommendation:
             tf_data = Recommendation.tdlf_df_to_tf(user_df).batch(1024)
         elif self.model_name == "FPMCVariants":
             tf_data = Recommendation.fpmc_df_to_tf(user_df).batch(1024)
+        elif self.model_name == "BasicLatentFactors":
+            tf_data = blf_df_to_tf_dataset(user_df).batch(1024)
 
         # predict ratings for all user for a specific business in a location
         pred_rating = []
