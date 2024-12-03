@@ -12,14 +12,14 @@ theme:
   palette:
     # Palette toggle for dark mode
     - scheme: slate
-      primary: cyan
+      primary: purple
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
 
     # Palette toggle for light mode
     - scheme: default
-      primary: cyan
+      primary: purple
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -147,7 +147,7 @@ copyright: >
   <a href="#__consent">Change cookie settings</a>
 
 nav:
-  - RSDB: index.md
+  - Why RSDB?: index.md
   - API Calls: api.md
   - System:
     - Explorative Data Analysis: system/eda.md

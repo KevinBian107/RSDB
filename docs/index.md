@@ -1,4 +1,7 @@
-**The data size used is extremely large (fourty million rows of data), dealing with large dataset is one main challenge in this project.**
+
+# A Sequential Recommendation System
+We are constructing a hybrid recommender system with collaborative filters and content-based filtering. The model will use features of locations, the interaction of location and user, and the temporal evolution of the interaction to predict a user's rating of a business.
+
 ## Structure of System
 
 ```bash
@@ -13,6 +16,8 @@ rsdb/
 │   ├── tldf/
 ├── preprocess/
 │   ├── data_preprocessing.py
+├── eval/
+│   ├── eval_processing.py
 ├── recommendation.py
 ├── train.py
 ```

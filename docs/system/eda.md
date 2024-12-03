@@ -1,5 +1,5 @@
 ## Data Cleaning
-Notice that EDA here uses a toy `hawaii_dataset`, different from the actual dataset we are using
+Notice that EDA here uses a toy `hawaii_dataset`, different from the actual dataset we are using. **The data size used is extremely large (fourty million rows of data), dealing with large dataset is one main challenge in this project.**
 
 - Traditional data science cleaning (systematic and rigorous)
     - Type conversion
