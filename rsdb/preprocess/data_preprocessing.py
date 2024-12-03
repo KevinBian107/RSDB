@@ -167,7 +167,7 @@ def clean_review_data(df, meta_df):
     return df
 
 
-def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=False):
+def get_clean_review_data(url: str, meta_url: str, chunk_size=100000, export=False):
     """
     take in data url and export the clean data set
 
@@ -213,7 +213,7 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=Fals
     if file_path.exists():
         print(f"Processing review data from: {file_path}")
         results = []
-        total_chunks = 100
+        total_chunks = 300
         num_rows = 0
 
         ## Extract, Transform, Load
@@ -224,11 +224,14 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=Fals
             with tqdm(total=total_chunks, desc="Processing chunks") as pbar:
                 for i, chunk in enumerate(reader):
 
-                    if i > total_chunks:
-                        break
-
+                    # if i > total_chunks:
+                    #     break
+                    
+                    # 5% of the data in each chunk
+                    sampled_chunk = chunk.sample(frac=0.05, random_state=42)
+                    
                     # Rename columns
-                    chunk = chunk.rename(
+                    chunk = sampled_chunk.rename(
                         columns={
                             "user_id": "reviewer_id",
                             "name": "reviewer_name",

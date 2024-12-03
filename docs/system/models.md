@@ -30,17 +30,27 @@ We want to do reconmandation for business owner, doing the inverse from traditio
 - We want to predict unknown interaction between business and users, modeling `interaction` through `metric` (counts/rating/...) and `features`, reasoning about **what business has close relationship for what user**.
 
 ## Model Architectures
-Based on the pros and cons of the model, the effect would be different and what we model is different. All model have characteristics differences, they are good for different cases. In adition, we should try to avoid python for loop, use vectorization.
+Based on the pros and cons of the model, the effect would be different and what we model is different. All model have characteristics differences, they are good for different cases as they care about different properties.
 
-- Temporal Latent Factor Model Variants (`TLF-V`):
-    - It manually define long-short-term bias term for user and item by `binning` or `parametric functions`, many `hand-crafted` things that is specific to the data set working with (original model for Netflix dataset).
-    - Temporal modeling based on time-stamp.
-- Factorized Personalized Markov Chain Variants (`FPMC-V`):
-    - It finds automaticlaly short temporal pattern, but fails in long term temporal pattern.
-    - Sequential modeling.
-    - Different from traditional FPMC model, we need to not only distibguish perfered and non-perfered, so the vanilla model need to have use MSE instead of BPR lost.
-- Recurrent Neural Network (`LSTM`):
-    - It cares long term and short term and finds them automatically agonist of the dataset.
+### Temporal Latent Factor Model Variants (`TLF-V`):
+1. It manually define long-short-term bias term for user and item by `binning` or `parametric functions`, many `hand-crafted` things that is specific to the data set working with (original model for Netflix dataset).
+2. Temporal modeling based on time-stamp.
+3. Very dependent and over-enginnering on a specific domain of dataset.
+
+### Factorized Personalized Markov Chain Variants (`FPMC-V`):
+1. It finds automaticlaly short temporal pattern (first order Markovian property), but fails in long term temporal pattern.
+2. Sequential modeling, not caring about timestamps but ordering. It is the more trivial form of token prediction.
+    - Item should match user preferences.
+    - Next item should be consistent with previous item.
+    - (i.e. if users watches Harry Potter 1 and really likes it + they have the ability to watch sequel of Harry Potter 1, we can say they might like Harry Potter 2)
+3. Knowing what a user did just last time is much more predictive than knowing what the user did for all the history.
+4. Different from traditional FPMC model, we need to not only distibguish perfered and non-perfered, so the vanilla model need to have use MSE instead of BPR lost.
+
+### Further Implementations:
+1. Transformer/Recurrent Neural Network Based Models (LSTM):
+    - Surpass first order Markovian property, it includes more history and recency.
+    - Finding these patterns automatically agonist of the dataset.
+2. Changing latent inner product (related to SVD, but can be changed) to eucledian distance measure (Metric embeddings for sequential recommendation).
 
 ## Testing
 - Use a different state? based on a region?
