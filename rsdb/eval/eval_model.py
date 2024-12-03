@@ -1,6 +1,7 @@
 # the function will takes trained model and return pandas dataframe contain the metrics of the model
 import pandas as pd
 import numpy as np
+from rsdb.recommendation import Recommendation
 
 
 def calculate_mse(y_true, y_pred):
@@ -131,6 +132,51 @@ def eval_result(models: list, tf_test_datas: list) -> pd.DataFrame:
         columns=columns,
         index=[row[0] for row in result_list],
     )
+
+
+def eval_downstream(models: list, clean_df: pd.DataFrame, model_names: list):
+    print("please make sure all the tensorflow data is same")
+
+    seed = 1
+    random_sample_gmapids = clean_df.sample(5, random_state=seed)["gmap_id"].values
+    gmap_ids_property = [
+        list(clean_df[clean_df["gmap_id"] == gmap_id]["category"].iloc[0])
+        for gmap_id in random_sample_gmapids
+    ]
+
+    for model, model_name in zip(models, model_names):
+        recomender = Recommendation(model, clean_df, model_name)
+        recommend_dfs = [
+            recomender.recommend(sample_gmap) for sample_gmap in random_sample_gmapids
+        ]
+
+        recommend_dfs = [
+            recommend_df.merge(
+                clean_df[clean_df["gmap_id"] != gmap_id], on="reviewer_id"
+            )
+            for recommend_df, gmap_id in zip(recommend_dfs, random_sample_gmapids)
+        ]
+
+        print(f"for model: {model_name}")
+        for recommend_df, gmap_prop in zip(recommend_dfs, gmap_ids_property):
+            print(f"The given gmapids has the property {gmap_prop}")
+
+            print(
+                "Of all the recommended user, their categorical visited business are in these categories"
+            )
+            print(
+                recommend_df["category"].explode().value_counts(normalize=True).iloc[:3]
+            )
+            print("\n")
+
+            print("Their average rating is:")
+            print(recommend_df.groupby("reviewer_id")["rating"].mean())
+            print("*----------------------------*")
+
+        print("*----------------------------*")
+        break
+
+        # average rating
 
 
 def main():
