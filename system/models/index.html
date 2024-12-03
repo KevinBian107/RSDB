@@ -8,26 +8,26 @@
       
       
       
-        <link rel="canonical" href="https://kbian.org/RSDB/downstream/">
+        <link rel="canonical" href="https://kbian.org/RSDB/system/models/">
       
       
-        <link rel="prev" href="../models/">
+        <link rel="prev" href="../features/">
       
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.47">
     
     
       
-        <title>Application - RDSB Documentation</title>
+        <title>Models - RDSB Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +46,9 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -75,7 +75,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#expand-businesses-advertisements" class="md-skip">
+        <a href="#structure-of-models" class="md-skip">
           Skip to content
         </a>
       
@@ -100,11 +100,9 @@
     
       
 
-  
-
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="RDSB Documentation" class="md-header__button md-logo" aria-label="RDSB Documentation" data-md-component="logo">
+    <a href="../.." title="RDSB Documentation" class="md-header__button md-logo" aria-label="RDSB Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -124,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Application
+              Models
             
           </span>
         </div>
@@ -137,7 +135,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -147,7 +145,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="amber" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -223,6 +221,53 @@
       
         
           
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../rdsb/" class="md-tabs__link">
+          
+  
+  RDSB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../eda/" class="md-tabs__link">
+          
+  
+  System
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -236,10 +281,12 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="RDSB Documentation" class="md-nav__button md-logo" aria-label="RDSB Documentation" data-md-component="logo">
+    <a href="../.." title="RDSB Documentation" class="md-nav__button md-logo" aria-label="RDSB Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -268,12 +315,52 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    RDSB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            RDSB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../rdsb/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    System
+    RDSB
   </span>
   
 
@@ -281,15 +368,16 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
   
     <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
+      <a href="../../rdsb/api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -301,9 +389,83 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rdsb/downstream/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
     
       
       
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    System
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            System
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
   
   
   
@@ -321,9 +483,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
@@ -341,29 +504,10 @@
     </li>
   
 
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Models
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
+              
+            
+              
+                
   
   
     
@@ -380,7 +524,7 @@
           
   
   <span class="md-ellipsis">
-    Application
+    Models
   </span>
   
 
@@ -391,7 +535,7 @@
         
   
   <span class="md-ellipsis">
-    Application
+    Models
   </span>
   
 
@@ -411,18 +555,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#expand-businesses-advertisements" class="md-nav__link">
+  <a href="#structure-of-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Expand Businesses &amp; Advertisements
+      Structure of Models
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-new-businesses" class="md-nav__link">
+  <a href="#question-in-interest" class="md-nav__link">
     <span class="md-ellipsis">
-      Start New Businesses
+      Question In Interest
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Architectures
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
     </span>
   </a>
   
@@ -431,6 +593,14 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -461,18 +631,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#expand-businesses-advertisements" class="md-nav__link">
+  <a href="#structure-of-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Expand Businesses &amp; Advertisements
+      Structure of Models
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-new-businesses" class="md-nav__link">
+  <a href="#question-in-interest" class="md-nav__link">
     <span class="md-ellipsis">
-      Start New Businesses
+      Question In Interest
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Architectures
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
     </span>
   </a>
   
@@ -496,28 +684,62 @@
   
 
 
-  <h1>Application</h1>
+  <h1>Models</h1>
 
-<h2 id="expand-businesses-advertisements">Expand Businesses &amp; Advertisements<a class="headerlink" href="#expand-businesses-advertisements" title="Permanent link">&para;</a></h2>
-<p>We want to look at how user would behave like in the future, not predicting the past, <strong>we use the classical way of reconmendation</strong>.
-- How uninteracted <code>users</code> would inteacr with <code>gmap_id</code> then reconmand to high rating users.
-- Assuming that the <code>gmap_id</code> want to expand business to certain location, we are modeling how <code>users</code> in this region would interact with this <code>gmap_id</code> ().</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">-</span> <span class="n">given</span> <span class="n">gmap_id</span> <span class="o">+</span> <span class="n">location_range</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">-</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">users</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">region</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">-</span> <span class="n">predict</span> <span class="n">rating</span> <span class="k">for</span> <span class="n">each</span> <span class="n">uninteracted</span> <span class="n">users</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="o">-</span> <span class="n">reconmand</span> <span class="n">business</span> <span class="n">to</span> <span class="n">predicted</span> <span class="n">high</span> <span class="n">rating</span> <span class="n">users</span>
+<p>Remanber that <code>intelligence comes from the data</code>, you should use a temporal model if your data tells you so, not just by imaginations. We have nice engineering lessons from the Netflix price model, <code>build models that is particularly designed and shaped particularly your data</code> (extract intelligence form the data), the temporal user bias is specifically designed as a parametric function to follow the frame of the data.</p>
+<h2 id="structure-of-models">Structure of Models<a class="headerlink" href="#structure-of-models" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>fpmc<span class="w"> </span><span class="o">(</span>factorized<span class="w"> </span>personalized<span class="w"> </span>markov<span class="w"> </span>chain<span class="o">)</span>/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├──<span class="w"> </span>fpmc.py
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>factorized<span class="w"> </span>personalized<span class="w"> </span>markov<span class="w"> </span>chain<span class="o">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├──<span class="w"> </span>fpmc_variants.py
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>our<span class="w"> </span>variants<span class="w"> </span>factorized<span class="w"> </span>personalized<span class="w"> </span>markov<span class="w"> </span>chain<span class="o">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├──<span class="w"> </span>baseline.ipynb
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>run<span class="w"> </span>script<span class="w"> </span>of<span class="w"> </span>non-variants<span class="w"> </span>fpmc<span class="w"> </span>baseline<span class="o">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>tdlf<span class="w"> </span><span class="o">(</span>temporal<span class="w"> </span>dynamic<span class="w"> </span>latent<span class="w"> </span>factor<span class="o">)</span>/
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├──<span class="w"> </span>latent_factor.py
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>baseline<span class="w"> </span>latent<span class="w"> </span>factor<span class="w"> </span>+<span class="w"> </span>neural<span class="w"> </span>correlative<span class="o">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├──<span class="w"> </span>temporal_static.py
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>Netflix<span class="w"> </span>price<span class="w"> </span>model<span class="w"> </span>with<span class="w"> </span>static<span class="w"> </span>user<span class="w"> </span>embeddings<span class="o">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>├──<span class="w"> </span>temporal_dynamics.py
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>Netflix<span class="w"> </span>price<span class="w"> </span>model<span class="w"> </span>with<span class="w"> </span>dynamic<span class="w"> </span>user<span class="w"> </span>embeddings<span class="o">)</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>├──<span class="w"> </span>temporal_dynamics_variants.py
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>Variants<span class="w"> </span>Netflix<span class="w"> </span>price<span class="w"> </span>model<span class="w"> </span>with<span class="w"> </span>dynamic<span class="w"> </span>user<span class="w"> </span>embeddings<span class="o">)</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>├──<span class="w"> </span>baseline.ipynb
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│<span class="w">   </span>└──<span class="w"> </span><span class="o">(</span>run<span class="w"> </span>scripts<span class="w"> </span>of<span class="w"> </span>non-variants<span class="w"> </span>tlfm<span class="w"> </span>baseline<span class="o">)</span>
 </code></pre></div>
-<h2 id="start-new-businesses">Start New Businesses<a class="headerlink" href="#start-new-businesses" title="Permanent link">&para;</a></h2>
-<p>Given a <code>location (lattitude, longitute)</code> -&gt; binning -&gt; look at all business rating predictions in this bin -&gt; predict the best business for this location bin given all user rating in this location (implicit inm the recommander system).
-- If score of business is high, interacting with lcoal user (captured in data, think about A1 book_id and user_id), high rating tells about insights of successful business in theis region.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">-</span> <span class="n">bining</span> <span class="nb">all</span> <span class="n">locations</span> <span class="p">(</span><span class="n">same</span> <span class="k">as</span> <span class="n">feature</span> <span class="n">engineering</span><span class="p">)</span>  
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">users</span> <span class="ow">in</span> <span class="p">(</span><span class="n">location_bin</span> <span class="o">+</span> <span class="n">hours_want_to_operate</span><span class="p">):</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="o">-</span> <span class="n">query</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">needed</span> <span class="n">info</span> <span class="p">(</span><span class="n">temporal</span> <span class="n">info</span> <span class="o">+</span> <span class="n">gmap</span> <span class="n">popularity</span><span class="p">)</span> <span class="n">based</span> <span class="n">on</span> <span class="n">user</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">such</span> <span class="n">location</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="o">-</span> <span class="nb">all</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">such</span> <span class="n">location</span> <span class="n">has</span> <span class="n">history</span> <span class="n">of</span> <span class="n">interacting</span> <span class="k">with</span> <span class="n">certain</span> <span class="n">business</span> <span class="n">category</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="o">-</span> <span class="n">predict</span> <span class="n">ratings</span> <span class="k">for</span> <span class="nb">all</span> <span class="nb">type</span> <span class="n">of</span> <span class="n">business</span> <span class="n">x</span> <span class="nb">all</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">such</span> <span class="n">location</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="o">-</span> <span class="n">aggregate</span> <span class="nb">all</span> <span class="n">ratings</span> <span class="n">grouoby</span> <span class="n">business</span> <span class="n">location</span> <span class="n">Bin</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="o">-</span> <span class="n">ranking</span>
-</code></pre></div>
+<h2 id="question-in-interest">Question In Interest<a class="headerlink" href="#question-in-interest" title="Permanent link">&para;</a></h2>
+<p>We want to do reconmandation for business owner, doing the inverse from traditional reconmandations for users. We want to see what does the users like, then we want to develop our business towards that (thinking from the business perspective).</p>
+<ul>
+<li>We are modeling interaction by connection through rating (though we can also use <code>num_reviews</code>, <code>token_counts_in_review</code>, or <code>token_counts_pos_words</code>)</li>
+<li>Techniqually, teh <code>user</code> for us is business owners and <code>item</code> for us is the actual users, but because the structure of the dataset, we still use the traditional perspective of deeming users as <code>user</code>.</li>
+<li>We want to predict unknown interaction between business and users, modeling <code>interaction</code> through <code>metric</code> (counts/rating/...) and <code>features</code>, reasoning about <strong>what business has close relationship for what user</strong>.</li>
+</ul>
+<h2 id="model-architectures">Model Architectures<a class="headerlink" href="#model-architectures" title="Permanent link">&para;</a></h2>
+<p>Based on the pros and cons of the model, the effect would be different and what we model is different. All model have characteristics differences, they are good for different cases. In adition, we should try to avoid python for loop, use vectorization.</p>
+<ul>
+<li>Temporal Latent Factor Model Variants (<code>TLF-V</code>):<ul>
+<li>It manually define long-short-term bias term for user and item by <code>binning</code> or <code>parametric functions</code>, many <code>hand-crafted</code> things that is specific to the data set working with (original model for Netflix dataset).</li>
+<li>Temporal modeling based on time-stamp.</li>
+</ul>
+</li>
+<li>Factorized Personalized Markov Chain Variants (<code>FPMC-V</code>):<ul>
+<li>It finds automaticlaly short temporal pattern, but fails in long term temporal pattern.</li>
+<li>Sequential modeling.</li>
+<li>Different from traditional FPMC model, we need to not only distibguish perfered and non-perfered, so the vanilla model need to have use MSE instead of BPR lost.</li>
+</ul>
+</li>
+<li>Recurrent Neural Network (<code>LSTM</code>):<ul>
+<li>It cares long term and short term and finds them automatically agonist of the dataset.</li>
+</ul>
+</li>
+</ul>
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Use a different state? based on a region?</li>
+<li>Output should be given region, check with how many ranking degree.</li>
+<li>Use RMSE, ACC, and R^2 for now</li>
+<li>Study the real business success of the predictions</li>
+</ul>
 
 
 
@@ -670,10 +892,10 @@
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tracking", "toc.follow", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "content.code.select", "content.footnote.tooltips"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "toc.follow", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "content.code.select", "content.footnote.tooltips"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
       
     
   </body>

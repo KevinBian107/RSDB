@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://kbian.org/RSDB/</loc>
-         <lastmod>2024-12-02</lastmod>
+         <loc>https://kbian.org/RSDB/rdsb/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
     <url>
-         <loc>https://kbian.org/RSDB/api/</loc>
-         <lastmod>2024-12-02</lastmod>
+         <loc>https://kbian.org/RSDB/rdsb/api/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
     <url>
-         <loc>https://kbian.org/RSDB/downstream/</loc>
-         <lastmod>2024-12-02</lastmod>
+         <loc>https://kbian.org/RSDB/rdsb/downstream/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
     <url>
-         <loc>https://kbian.org/RSDB/eda/</loc>
-         <lastmod>2024-12-02</lastmod>
+         <loc>https://kbian.org/RSDB/system/eda/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
     <url>
-         <loc>https://kbian.org/RSDB/features/</loc>
-         <lastmod>2024-12-02</lastmod>
+         <loc>https://kbian.org/RSDB/system/features/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
     <url>
-         <loc>https://kbian.org/RSDB/models/</loc>
-         <lastmod>2024-12-02</lastmod>
+         <loc>https://kbian.org/RSDB/system/models/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
 </urlset>
