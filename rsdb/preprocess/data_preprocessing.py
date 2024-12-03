@@ -168,7 +168,6 @@ def clean_review_data(df, meta_df):
 
 
 def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=False):
-def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=False):
     """
     take in data url and export the clean data set
 
