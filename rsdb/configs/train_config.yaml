@@ -20,6 +20,6 @@ tdlf:
   time_bins: 10
 
 fpmc:
-  embedding_dim: 50
-  l2_reg: 1e-2
-  learning_rate: 1e-4
+  embedding_dim: 104
+  l2_reg: 0.00066295
+  learning_rate: 0.00022001

@@ -2,8 +2,8 @@
 Notice that EDA here uses a toy `hawaii_dataset`, different from the actual dataset we are using
 
 - Traditional data science cleaning (systematic and rigorous)
-    - Type conversion.
-    - Outlier (make it N/A?).
+    - Type conversion
+    - Outlier
     - Evaluate the outlier impact (use BoxPlot).
     - Column split if needed.
     - Narrow dataset to what we need (filter).

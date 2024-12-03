@@ -1,4 +1,4 @@
-site_name: RDSB Documentation
+site_name: RSDB Documentation
 site_url: https://kbian.org/RSDB/
 repo_url: https://github.com/KevinBian107/RSDB
 
@@ -12,14 +12,14 @@ theme:
   palette:
     # Palette toggle for dark mode
     - scheme: slate
-      primary: amber
+      primary: cyan
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
 
     # Palette toggle for light mode
     - scheme: default
-      primary: amber
+      primary: cyan
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -30,7 +30,7 @@ theme:
     # - toc.integrate
     - toc.follow
     # Tabs
-    # - navigation.tabs
+    - navigation.tabs
     # - navigation.tabs.sticky  # stays visible at the top
     - navigation.sections
     - navigation.top
@@ -137,9 +137,7 @@ extra:
 
   social:
     - icon: fontawesome/brands/github 
-      link: https://github.com/talmolab
-    - icon: fontawesome/brands/x-twitter
-      link: https://twitter.com/talmop
+      link: https://github.com/KevinBian107
 
 # extra_css:
 #   - css/mkdocstrings.css
@@ -149,12 +147,13 @@ copyright: >
   <a href="#__consent">Change cookie settings</a>
 
 nav:
-  - System: index.md
+  - RSDB: index.md
   - API Calls: api.md
-  - Explorative Data Analysis: eda.md
-  - Features: features.md
-  - Models: models.md
-  - Application: downstream.md
+  - System:
+    - Explorative Data Analysis: system/eda.md
+    - Features: system/features.md
+    - Models: system/models.md
+    - Applications: system/downstream.md
   # - Examples: examples.md
   # - Changelog: changelog.md
   # - Releases: https://github.com/talmolab/sleap-io/releases
