@@ -246,6 +246,9 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
     save_path = config["training"]["model_save_path"].format(model_name=model_name)
     model.save(save_path)
     print(f"Trained {model_name} model saved as '{save_path}'.")
+    
+    test_metrics = model.evaluate(test_data, return_dict=True)
+    print(f"Test RMSE: {test_metrics['root_mean_squared_error']}")
 
 
 def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):

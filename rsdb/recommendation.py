@@ -4,14 +4,16 @@ import tensorflow as tf
 from models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
 from models.fpmc.fpmc_v import FPMCVariants
 from features.featuring import featuring_engineering
+import keras
 
 class Recommendation():
     """
     Recommend potential customers for business owner
     """
 
-    def __init__(self, model, dataset):
+    def __init__(self, model, dataset, name):
         self.model = model
+        self.model_name = name
         self.dataset = dataset
         # the number of users recommend to business
         self.N = 20
@@ -32,9 +34,9 @@ class Recommendation():
         user_df = self.prepare_data(gmap_id)
 
         tf_data = None
-        if isinstance(self.model, TemporalDynamicVariants):
+        if (self.model_name=="TemporalDynamicVariants"):
             tf_data = Recommendation.tdlf_df_to_tf(user_df).batch(1024)
-        elif isinstance(self.model, FPMCVariants):
+        elif (self.model_name=="FPMCVariants"):
             tf_data = Recommendation.fpmc_df_to_tf(user_df).batch(1024)
 
         # predict ratings for all user for a specific business in a location
@@ -50,7 +52,7 @@ class Recommendation():
             ["reviewer_id", 'pred_rating']
         ].iloc[:self.N]
 
-        return self.to_str(top_users)
+        return top_users
 
     def to_str(self, top_users):
         top_user_str = top_users['reviewer_id'].astype(str).str.cat(sep='\n')

@@ -182,9 +182,10 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=Fals
 
     """
     ## Set up paths
-    base_path = Path.cwd()
-    file_path = base_path / "rsdb" / "data" / "data.json.gz"
-    meta_file_path = base_path / "rsdb" / "data" / "metadata.json.gz"
+    base_path = Path.cwd() / "rsdb"
+    print(base_path)
+    file_path = base_path / "data" / "data.json.gz"
+    meta_file_path = base_path / "data" / "metadata.json.gz"
 
     ## Download data if not available
     if not file_path.exists():
@@ -253,7 +254,7 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=Fals
     return clean_reviews
 
 
-def get_single_chunk(url: str, meta_url: str, chunk_size=100000):
+def get_single_chunk(url: str, meta_url: str, chunk_size=10000):
     """
     Download data if not available and process only one chunk for testing.
 
@@ -267,14 +268,9 @@ def get_single_chunk(url: str, meta_url: str, chunk_size=100000):
     """
 
     ## Set up paths
-    base_path = Path.cwd()
-<<<<<<< Updated upstream
-    file_path = base_path / "rsdb" / "data" / "data.json.gz"
-    meta_file_path = base_path / "rsdb" / "data" / "metadata.json.gz"
-=======
+    base_path = Path.cwd() / "rsdb"
     file_path = base_path / "data" / "data.json.gz"
     meta_file_path = base_path / "data" / "metadata.json.gz"
->>>>>>> Stashed changes
 
     ## Download data if not available
     if not file_path.exists():
