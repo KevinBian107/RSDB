@@ -18,12 +18,17 @@ class Recommendation():
         # feature engineering dataset
         self.featured_df = featuring_engineering(self.dataset)
         
-
     def recommend(self, gmap_id):
         """
-        Given gmap_id, recommend potential customers that are
+        Given address, recommend potential customers that are
         more likely to give high rating to the business
         """
+        # if gmap_id is None:
+        #     try:
+        #         gmap_id = self.dataset[self.dataset['address'].str.contains(address)].iloc[0]['gmap_id']
+        #     except:
+        #         raise ValueError('Your business address is not in the dataset. Please input a correct address')
+
         user_df = self.prepare_data(gmap_id)
 
         tf_data = None
@@ -42,10 +47,14 @@ class Recommendation():
         # rank predicted rating
         # These are the top users that are more likely to give high rating to the business
         top_users = user_df.sort_values(by="pred_rating", ascending=False)[
-            ["reviewer_id", "pred_rating"]
+            ["reviewer_id", 'pred_rating']
         ].iloc[:self.N]
 
-        return top_users
+        return self.to_str(top_users)
+
+    def to_str(self, top_users):
+        top_user_str = top_users['reviewer_id'].astype(str).str.cat(sep='\n')
+        return f'Here are the top {self.N} users that are likely to give high rating to your business \n' + top_user_str
 
     def prepare_data(self, gmap_id):
         """
@@ -62,6 +71,9 @@ class Recommendation():
         user_ids = query_data['reviewer_id']
         # get user ids that's available in featured dataframe
         user_ids = np.unique(self.featured_df[self.featured_df['reviewer_id'].isin(user_ids)]['reviewer_id'])
+        if len(user_ids) == 0:
+            raise ValueError('No users found for given gmap_id')
+        
         gmap_ids = np.repeat(gmap_id, len(user_ids))
 
         # create user-item dataset

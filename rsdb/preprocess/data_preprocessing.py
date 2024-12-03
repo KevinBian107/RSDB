@@ -268,8 +268,13 @@ def get_single_chunk(url: str, meta_url: str, chunk_size=100000):
 
     ## Set up paths
     base_path = Path.cwd()
+<<<<<<< Updated upstream
     file_path = base_path / "rsdb" / "data" / "data.json.gz"
     meta_file_path = base_path / "rsdb" / "data" / "metadata.json.gz"
+=======
+    file_path = base_path / "data" / "data.json.gz"
+    meta_file_path = base_path / "data" / "metadata.json.gz"
+>>>>>>> Stashed changes
 
     ## Download data if not available
     if not file_path.exists():
