@@ -77,7 +77,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="purple" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="orange" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -137,7 +137,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="purple" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="orange" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -147,7 +147,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="purple" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="orange" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -685,30 +685,33 @@
 </ul>
 <h2 id="model-architectures">Model Architectures<a class="headerlink" href="#model-architectures" title="Permanent link">&para;</a></h2>
 <p>Based on the pros and cons of the model, the effect would be different and what we model is different. All model have characteristics differences, they are good for different cases as they care about different properties.</p>
-<ul>
-<li>Temporal Latent Factor Model Variants (<code>TLF-V</code>):<ul>
+<h3 id="temporal-latent-factor-model-variants-tlf-v">Temporal Latent Factor Model Variants (<code>TLF-V</code>):<a class="headerlink" href="#temporal-latent-factor-model-variants-tlf-v" title="Permanent link">&para;</a></h3>
+<ol>
 <li>It manually define long-short-term bias term for user and item by <code>binning</code> or <code>parametric functions</code>, many <code>hand-crafted</code> things that is specific to the data set working with (original model for Netflix dataset).</li>
 <li>Temporal modeling based on time-stamp.</li>
 <li>Very dependent and over-enginnering on a specific domain of dataset.</li>
+</ol>
+<h3 id="factorized-personalized-markov-chain-variants-fpmc-v">Factorized Personalized Markov Chain Variants (<code>FPMC-V</code>):<a class="headerlink" href="#factorized-personalized-markov-chain-variants-fpmc-v" title="Permanent link">&para;</a></h3>
+<ol>
+<li>It finds automaticlaly short temporal pattern (first order Markovian property), but fails in long term temporal pattern.</li>
+<li>Sequential modeling, not caring about timestamps but ordering. It is the more trivial form of token prediction.<ul>
+<li>Item should match user preferences.</li>
+<li>Next item should be consistent with previous item.</li>
+<li>(i.e. if users watches Harry Potter 1 and really likes it + they have the ability to watch sequel of Harry Potter 1, we can say they might like Harry Potter 2)</li>
 </ul>
 </li>
-<li>Factorized Personalized Markov Chain Variants (<code>FPMC-V</code>):<ul>
-<li>It finds automaticlaly short temporal pattern (first order Markovian property), but fails in long term temporal pattern.</li>
-<li>Sequential modeling, not caring about timestamps but ordering. It is the more trivial form of token prediction.</li>
 <li>Knowing what a user did just last time is much more predictive than knowing what the user did for all the history.</li>
 <li>Different from traditional FPMC model, we need to not only distibguish perfered and non-perfered, so the vanilla model need to have use MSE instead of BPR lost.</li>
-</ul>
-</li>
-<li>Further Implementations:<ul>
+</ol>
+<h3 id="further-implementations">Further Implementations:<a class="headerlink" href="#further-implementations" title="Permanent link">&para;</a></h3>
+<ol>
 <li>Transformer/Recurrent Neural Network Based Models (LSTM):<ul>
 <li>Surpass first order Markovian property, it includes more history and recency.</li>
 <li>Finding these patterns automatically agonist of the dataset.</li>
 </ul>
 </li>
 <li>Changing latent inner product (related to SVD, but can be changed) to eucledian distance measure (Metric embeddings for sequential recommendation).</li>
-</ul>
-</li>
-</ul>
+</ol>
 <h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Use a different state? based on a region?</li>
