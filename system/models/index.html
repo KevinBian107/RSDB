@@ -684,21 +684,28 @@
 <li>We want to predict unknown interaction between business and users, modeling <code>interaction</code> through <code>metric</code> (counts/rating/...) and <code>features</code>, reasoning about <strong>what business has close relationship for what user</strong>.</li>
 </ul>
 <h2 id="model-architectures">Model Architectures<a class="headerlink" href="#model-architectures" title="Permanent link">&para;</a></h2>
-<p>Based on the pros and cons of the model, the effect would be different and what we model is different. All model have characteristics differences, they are good for different cases. In adition, we should try to avoid python for loop, use vectorization.</p>
+<p>Based on the pros and cons of the model, the effect would be different and what we model is different. All model have characteristics differences, they are good for different cases as they care about different properties.</p>
 <ul>
 <li>Temporal Latent Factor Model Variants (<code>TLF-V</code>):<ul>
 <li>It manually define long-short-term bias term for user and item by <code>binning</code> or <code>parametric functions</code>, many <code>hand-crafted</code> things that is specific to the data set working with (original model for Netflix dataset).</li>
 <li>Temporal modeling based on time-stamp.</li>
+<li>Very dependent and over-enginnering on a specific domain of dataset.</li>
 </ul>
 </li>
 <li>Factorized Personalized Markov Chain Variants (<code>FPMC-V</code>):<ul>
-<li>It finds automaticlaly short temporal pattern, but fails in long term temporal pattern.</li>
-<li>Sequential modeling.</li>
+<li>It finds automaticlaly short temporal pattern (first order Markovian property), but fails in long term temporal pattern.</li>
+<li>Sequential modeling, not caring about timestamps but ordering. It is the more trivial form of token prediction.</li>
+<li>Knowing what a user did just last time is much more predictive than knowing what the user did for all the history.</li>
 <li>Different from traditional FPMC model, we need to not only distibguish perfered and non-perfered, so the vanilla model need to have use MSE instead of BPR lost.</li>
 </ul>
 </li>
-<li>Recurrent Neural Network (<code>LSTM</code>):<ul>
-<li>It cares long term and short term and finds them automatically agonist of the dataset.</li>
+<li>Transformer/Recurrent Neural Network Based Models (<code>LSTM</code>):<ul>
+<li>Surpass first order Markovian property, it includes more history and recency.</li>
+<li>Finding these patterns automatically agonist of the dataset.</li>
+</ul>
+</li>
+<li>Further Implementations:<ul>
+<li>Changing latent inner product (related to SVD, but can be changed) to eucledian distance measure (Metric embeddings for sequential recommendation).</li>
 </ul>
 </li>
 </ul>
