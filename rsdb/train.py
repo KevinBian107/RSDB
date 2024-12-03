@@ -212,12 +212,14 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
 
         model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
     elif model_name == "blf":
-        l2_reg = 0.001
-        embedding_dim = 1
+        model_params = config["blf"]
+        l2_reg = model_params["l2_reg"]
+        embedding_dim = model_params["embedding_dim"]
+
         lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-            initial_learning_rate=0.001,
-            decay_steps=10000,
-            decay_rate=0.96,
+            initial_learning_rate=model_params["learning_rate_schedule"]["initial_learning_rate"],
+            decay_steps=model_params["learning_rate_schedule"]["decay_steps"],
+            decay_rate=model_params["learning_rate_schedule"]["decay_rate"],
         )
 
         data_query["gmap_id"] = data_query["gmap_id"].astype(str)

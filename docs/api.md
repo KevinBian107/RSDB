@@ -1,3 +1,9 @@
+We ahve created simply interactive API calls to use our system for building a business recommender system.
+
+## Notebooks
+We have created two notebooks for a clear visualization of our [training](https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/train.ipynb), [evaluations, and downstream applications](https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/eval.ipynb)
+
+## Setting-up Training
 Create a environment to work on:
 ```python
 conda env create
@@ -19,5 +25,3 @@ python rsdb/train.py --action "tune" --model "fpmc"
 ```
 
 Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system. With the [config](https://github.com/KevinBian107/RSDB/tree/main/rsdb/configs) system, we can tune and choose the hyperparameter that we want to use.
-
-We have created two notebooks for a clear visualization of our [training](https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/train.ipynb), [evaluations, and downstream applications](https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/eval.ipynb)
