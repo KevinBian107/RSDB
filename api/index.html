@@ -537,13 +537,20 @@
 
   <h1>API Calls</h1>
 
+<p>Create a environment to work on:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span>
+</code></pre></div></p>
+<p>Running a training job with <code>blf</code> model(basic latent factor model):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">python</span> <span class="n">rsdb</span><span class="o">/</span><span class="n">train</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">action</span> <span class="s2">&quot;train&quot;</span> <span class="o">--</span><span class="n">model</span> <span class="s2">&quot;blf&quot;</span>
+</code></pre></div></p>
 <p>Running a training job with <code>tdlf</code> model:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>rsdb/train.py<span class="w"> </span>--action<span class="w"> </span><span class="s2">&quot;train&quot;</span><span class="w"> </span>--model<span class="w"> </span><span class="s2">&quot;tdlf&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">python</span> <span class="n">rsdb</span><span class="o">/</span><span class="n">train</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">action</span> <span class="s2">&quot;train&quot;</span> <span class="o">--</span><span class="n">model</span> <span class="s2">&quot;tdlf&quot;</span>
 </code></pre></div></p>
 <p>Running a tunning job with <code>fpmc</code> model:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>rsdb/train.py<span class="w"> </span>--action<span class="w"> </span><span class="s2">&quot;tune&quot;</span><span class="w"> </span>--model<span class="w"> </span><span class="s2">&quot;fpmc&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">python</span> <span class="n">rsdb</span><span class="o">/</span><span class="n">train</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">action</span> <span class="s2">&quot;tune&quot;</span> <span class="o">--</span><span class="n">model</span> <span class="s2">&quot;fpmc&quot;</span>
 </code></pre></div></p>
-<p>Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system.</p>
+<p>Our system supports customized tunning through our yaml configs system, so all hyperparamters of tunning and training job can be tracked in the configs system. With the <a href="https://github.com/KevinBian107/RSDB/tree/main/rsdb/configs">config</a> system, we can tune and choose the hyperparameter that we want to use.</p>
+<p>We have created two notebooks for a clear visualization of our <a href="https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/train.ipynb">training</a>, <a href="https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/eval.ipynb">evaluations, and downstream applications</a></p>
 
 
 
