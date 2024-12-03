@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-main_path = Path(__file__).resolve().parent.parent.parent
+main_path = Path(__file__).resolve().parent.parent
 if str(main_path) not in sys.path:
     sys.path.append(str(main_path))
 
