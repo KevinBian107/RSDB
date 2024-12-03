@@ -14,7 +14,6 @@ rsdb/
 ├── preprocess/
 │   ├── data_preprocessing.py
 ├── recommendation.py
-├── run.ipynb
 ├── train.py
 ```
 

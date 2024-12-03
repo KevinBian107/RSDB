@@ -1,11 +1,17 @@
+import sys
+from pathlib import Path
+
+main_path = Path(__file__).resolve().parent.parent.parent
+if str(main_path) not in sys.path:
+    sys.path.append(str(main_path))
+
+from rsdb.models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
+from rsdb.models.fpmc.fpmc_v import FPMCVariants
+from rsdb.features.featuring import featuring_engineering
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
-from models.fpmc.fpmc_v import FPMCVariants
-from features.featuring import featuring_engineering
-import keras
-
 class Recommendation():
     """
     Recommend potential customers for business owner
