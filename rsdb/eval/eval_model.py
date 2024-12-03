@@ -101,19 +101,19 @@ def calculate_mase(y_true, y_pred):
     return mase
 
 
-def eval_result(models: list, tf_test_data) -> pd.DataFrame:
+def eval_result(models: list, tf_test_datas: list) -> pd.DataFrame:
     """
     evaluate the result
     """
     columns = ["mse", "rmse", "r2", "mase"]
 
-    # convert tensorflow data into array
-    rating_column_batched = tf_test_data.unbatch().map(lambda x: x["rating"])
-    actual_rating = np.array(list(rating_column_batched.as_numpy_iterator()))
-
     result_list = []
     # eval the perforamnce of each model
-    for model in models:
+    for model, tf_test_data in zip(models, tf_test_datas):
+        # convert tensorflow data into array
+        rating_column_batched = tf_test_data.unbatch().map(lambda x: x["rating"])
+        actual_rating = np.array(list(rating_column_batched.as_numpy_iterator()))
+
         metrics = [model.name]
         prediction = model.predict(tf_test_data)
         metrics.extend(

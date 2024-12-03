@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-main_path = Path(__file__).resolve().parent.parent.parent
+main_path = Path(__file__).resolve().parent.parent
 if str(main_path) not in sys.path:
     sys.path.append(str(main_path))
 
@@ -12,7 +12,9 @@ from rsdb.features.featuring import featuring_engineering
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-class Recommendation():
+
+
+class Recommendation:
     """
     Recommend potential customers for business owner
     """
@@ -25,7 +27,7 @@ class Recommendation():
         self.N = 20
         # feature engineering dataset
         self.featured_df = featuring_engineering(self.dataset)
-        
+
     def recommend(self, gmap_id):
         """
         Given address, recommend potential customers that are
@@ -40,9 +42,9 @@ class Recommendation():
         user_df = self.prepare_data(gmap_id)
 
         tf_data = None
-        if (self.model_name=="TemporalDynamicVariants"):
+        if self.model_name == "TemporalDynamicVariants":
             tf_data = Recommendation.tdlf_df_to_tf(user_df).batch(1024)
-        elif (self.model_name=="FPMCVariants"):
+        elif self.model_name == "FPMCVariants":
             tf_data = Recommendation.fpmc_df_to_tf(user_df).batch(1024)
 
         # predict ratings for all user for a specific business in a location
@@ -55,63 +57,116 @@ class Recommendation():
         # rank predicted rating
         # These are the top users that are more likely to give high rating to the business
         top_users = user_df.sort_values(by="pred_rating", ascending=False)[
-            ["reviewer_id", 'pred_rating']
-        ].iloc[:self.N]
+            ["reviewer_id", "pred_rating"]
+        ].iloc[: self.N]
 
         return top_users
 
     def to_str(self, top_users):
-        top_user_str = top_users['reviewer_id'].astype(str).str.cat(sep='\n')
-        return f'Here are the top {self.N} users that are likely to give high rating to your business \n' + top_user_str
+        top_user_str = top_users["reviewer_id"].astype(str).str.cat(sep="\n")
+        return (
+            f"Here are the top {self.N} users that are likely to give high rating to your business \n"
+            + top_user_str
+        )
 
     def prepare_data(self, gmap_id):
         """
         Prepare data for tensorflow model
         """
-        # query data for users 
-        category = set(self.dataset[self.dataset['gmap_id'] == gmap_id].iloc[0]['category'])
+        # query data for users
+        category = set(
+            self.dataset[self.dataset["gmap_id"] == gmap_id].iloc[0]["category"]
+        )
 
-        query_data = (self.dataset[(self.dataset['category'].apply(
-            lambda x: any(item in category for item in x))) & 
-            (self.dataset['gmap_id'] != gmap_id)
-            ])
+        query_data = self.dataset[
+            (
+                self.dataset["category"].apply(
+                    lambda x: any(item in category for item in x)
+                )
+            )
+            & (self.dataset["gmap_id"] != gmap_id)
+        ]
 
-        user_ids = query_data['reviewer_id']
+        user_ids = query_data["reviewer_id"]
         # get user ids that's available in featured dataframe
-        user_ids = np.unique(self.featured_df[self.featured_df['reviewer_id'].isin(user_ids)]['reviewer_id'])
+        user_ids = np.unique(
+            self.featured_df[self.featured_df["reviewer_id"].isin(user_ids)][
+                "reviewer_id"
+            ]
+        )
         if len(user_ids) == 0:
-            raise ValueError('No users found for given gmap_id')
-        
+            raise ValueError("No users found for given gmap_id")
+
         gmap_ids = np.repeat(gmap_id, len(user_ids))
 
         # create user-item dataset
         empty_df = pd.DataFrame({"reviewer_id": user_ids, "gmap_id": gmap_ids})
 
         # find the time of latests review for each user
-        user_time_mapping = (self.featured_df[
+        user_time_mapping = self.featured_df[
             self.featured_df["reviewer_id"].isin(user_ids)
-            ].loc[
-                lambda df: df.groupby("reviewer_id")["review_time(unix)"].idxmax()
-            ][['reviewer_id', 'prev_item_id', "review_time(unix)", "time_bin", "user_mean_time"]]
-        )
+        ].loc[lambda df: df.groupby("reviewer_id")["review_time(unix)"].idxmax()][
+            [
+                "reviewer_id",
+                "prev_item_id",
+                "review_time(unix)",
+                "time_bin",
+                "user_mean_time",
+            ]
+        ]
 
-        result_df = empty_df.merge(
-            user_time_mapping, 
-            on = ['reviewer_id'], 
-            how='left'
-        )
+        result_df = empty_df.merge(user_time_mapping, on=["reviewer_id"], how="left")
 
-        features = self.featured_df[[
-        'gmap_id','isin_category_restaurant', 'isin_category_park', 'isin_category_store',
-        'lon_bin_0', 'lon_bin_1', 'lon_bin_2', 'lon_bin_3', 'lon_bin_4',
-        'lon_bin_5', 'lon_bin_6', 'lon_bin_7', 'lon_bin_8', 'lon_bin_9',
-        'lon_bin_10', 'lon_bin_11', 'lon_bin_12', 'lon_bin_13', 'lon_bin_14',
-        'lon_bin_15', 'lon_bin_16', 'lon_bin_17', 'lon_bin_18', 'lon_bin_19',
-        'lat_bin_0', 'lat_bin_1', 'lat_bin_2', 'lat_bin_3', 'lat_bin_4',
-        'lat_bin_5', 'lat_bin_6', 'lat_bin_7', 'lat_bin_8', 'lat_bin_9',
-        'lat_bin_10', 'lat_bin_11', 'lat_bin_12', 'lat_bin_13', 'lat_bin_14',
-        'lat_bin_15', 'lat_bin_16', 'lat_bin_17', 'lat_bin_18', 'lat_bin_19',
-        'closed_on_weekend', 'weekly_operating_hours']].iloc[0]
+        features = self.featured_df[
+            [
+                "gmap_id",
+                "isin_category_restaurant",
+                "isin_category_park",
+                "isin_category_store",
+                "lon_bin_0",
+                "lon_bin_1",
+                "lon_bin_2",
+                "lon_bin_3",
+                "lon_bin_4",
+                "lon_bin_5",
+                "lon_bin_6",
+                "lon_bin_7",
+                "lon_bin_8",
+                "lon_bin_9",
+                "lon_bin_10",
+                "lon_bin_11",
+                "lon_bin_12",
+                "lon_bin_13",
+                "lon_bin_14",
+                "lon_bin_15",
+                "lon_bin_16",
+                "lon_bin_17",
+                "lon_bin_18",
+                "lon_bin_19",
+                "lat_bin_0",
+                "lat_bin_1",
+                "lat_bin_2",
+                "lat_bin_3",
+                "lat_bin_4",
+                "lat_bin_5",
+                "lat_bin_6",
+                "lat_bin_7",
+                "lat_bin_8",
+                "lat_bin_9",
+                "lat_bin_10",
+                "lat_bin_11",
+                "lat_bin_12",
+                "lat_bin_13",
+                "lat_bin_14",
+                "lat_bin_15",
+                "lat_bin_16",
+                "lat_bin_17",
+                "lat_bin_18",
+                "lat_bin_19",
+                "closed_on_weekend",
+                "weekly_operating_hours",
+            ]
+        ].iloc[0]
 
         # append feature to the dataframe
         # all the entries will have the same values
@@ -145,13 +200,15 @@ class Recommendation():
                 "prev_item_id": item_lookup(dataframe["prev_item_id"]),
                 "next_item_id": item_lookup(dataframe["gmap_id"]),
                 "rating": dataframe["rating"].astype(float),
-                "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(
-                    float
-                ),
+                "isin_category_restaurant": dataframe[
+                    "isin_category_restaurant"
+                ].astype(float),
                 "isin_category_park": dataframe["isin_category_park"].astype(float),
                 "isin_category_store": dataframe["isin_category_store"].astype(float),
                 "closed_on_weekend": dataframe["closed_on_weekend"].astype(float),
-                "weekly_operating_hours": dataframe["weekly_operating_hours"].astype(float),
+                "weekly_operating_hours": dataframe["weekly_operating_hours"].astype(
+                    float
+                ),
                 # Longitude bins
                 **{
                     f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float)
@@ -178,13 +235,15 @@ class Recommendation():
                 "time_bin": dataframe["time_bin"].astype(float),
                 "user_mean_time": dataframe["user_mean_time"],
                 "rating": dataframe["rating"],
-                "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(
-                    float
-                ),
+                "isin_category_restaurant": dataframe[
+                    "isin_category_restaurant"
+                ].astype(float),
                 "isin_category_park": dataframe["isin_category_park"].astype(float),
                 "isin_category_store": dataframe["isin_category_store"].astype(float),
                 "closed_on_weekend": dataframe["closed_on_weekend"].astype(float),
-                "weekly_operating_hours": dataframe["weekly_operating_hours"].astype(float),
+                "weekly_operating_hours": dataframe["weekly_operating_hours"].astype(
+                    float
+                ),
                 # Longitude bins
                 **{
                     f"lon_bin_{i}": dataframe[f"lon_bin_{i}"].astype(float)
@@ -199,4 +258,3 @@ class Recommendation():
                 },
             }
         )
-
