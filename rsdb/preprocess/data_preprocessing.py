@@ -168,6 +168,7 @@ def clean_review_data(df, meta_df):
 
 
 def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=False):
+def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=False):
     """
     take in data url and export the clean data set
 
@@ -223,10 +224,10 @@ def get_clean_review_data(url: str, meta_url: str, chunk_size=10000, export=Fals
             ## batch processin
             with tqdm(total=total_chunks, desc="Processing chunks") as pbar:
                 for i, chunk in enumerate(reader):
-                    
+
                     if i > total_chunks:
                         break
-                    
+
                     # Rename columns
                     chunk = chunk.rename(
                         columns={

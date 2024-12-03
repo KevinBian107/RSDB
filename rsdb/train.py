@@ -2,6 +2,7 @@ from preprocess.data_preprocessing import *
 from features.featuring import *
 from models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
 from models.fpmc.fpmc_v import FPMCVariants
+from models.tdlf.latent_factor import LatentFactorModel
 import tensorflow as tf
 import kerastuner as kt
 import argparse
@@ -10,8 +11,10 @@ import yaml
 URL = "https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/review-California_10.json.gz"
 METAURL = "https://datarepo.eng.ucsd.edu/mcauley_group/gdrive/googlelocal/meta-California.json.gz"
 
+
 def load_config(config_path):
     """Load and validate YAML configuration."""
+
     def validate_and_cast(value):
         if isinstance(value, str):
             try:
@@ -34,6 +37,18 @@ def load_config(config_path):
             return validate_and_cast(data)
 
     return recursive_validate_cast(config)
+
+
+def blf_df_to_tf_dataset(dataframe: pd.DataFrame):
+    """Convert DataFrame to TensorFlow Dataset for Latent Factor Model."""
+    return tf.data.Dataset.from_tensor_slices(
+        {
+            "reviewer_id": dataframe["reviewer_id"].astype(str),
+            "gmap_id": dataframe["gmap_id"].astype(str),
+            "rating": dataframe["rating"],
+        }
+    )
+
 
 def tdlf_df_to_tf_dataset(dataframe):
     """change featuers from data frame to tensorfloe styles"""
@@ -110,6 +125,7 @@ def fpmc_df_to_tf_dataset(dataframe):
         }
     )
 
+
 def train(model_name, config_path="rsdb/configs/train_config.yaml"):
     """Training for both TemporalDynamicVariants and FPMCVariants"""
     config = load_config(config_path)
@@ -135,7 +151,11 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
         l2_reg = config["tdlf"]["l2_reg"]
         time_bins = config["tdlf"]["time_bins"]
 
-        train_data = tdlf_df_to_tf_dataset(train_df).shuffle(shuffle_buffer_size).batch(batch_size)
+        train_data = (
+            tdlf_df_to_tf_dataset(train_df)
+            .shuffle(shuffle_buffer_size)
+            .batch(batch_size)
+        )
         test_data = tdlf_df_to_tf_dataset(test_df).batch(batch_size)
 
         model = TemporalDynamicVariants(
@@ -163,7 +183,11 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
         l2_reg = config["fpmc"]["l2_reg"]
         learning_rate = config["fpmc"]["learning_rate"]
 
-        train_data = fpmc_df_to_tf_dataset(train_df).shuffle(shuffle_buffer_size).batch(batch_size)
+        train_data = (
+            fpmc_df_to_tf_dataset(train_df)
+            .shuffle(shuffle_buffer_size)
+            .batch(batch_size)
+        )
         test_data = fpmc_df_to_tf_dataset(test_df).batch(batch_size)
 
         model = FPMCVariants(
@@ -177,7 +201,39 @@ def train(model_name, config_path="rsdb/configs/train_config.yaml"):
             restore_best_weights=True,
         )
 
-        model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate))
+        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
+    elif model_name == "blf":
+        l2_reg = 0.001
+        embedding_dim = 1
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate=0.001,
+            decay_steps=10000,
+            decay_rate=0.96,
+        )
+
+        data_query["gmap_id"] = data_query["gmap_id"].astype(str)
+        data_query["reviewer_id"] = data_query["reviewer_id"].astype(str)
+
+        train_data = (
+            blf_df_to_tf_dataset(train_df)
+            .shuffle(shuffle_buffer_size)
+            .batch(batch_size)
+        )
+
+        test_data = blf_df_to_tf_dataset(test_df).batch(batch_size)
+
+        model = LatentFactorModel(
+            l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
+        )
+
+        early_stopping = tf.keras.callbacks.EarlyStopping(
+            monitor="val_root_mean_squared_error",
+            patience=patience,
+            min_delta=min_delta,
+            restore_best_weights=True,
+        )
+
+        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule))
 
     # Training and saving
     model.fit(
@@ -212,9 +268,13 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
     shuffle_buffer_size = config["tuning"]["shuffle_buffer_size"]
     batch_size = config["tuning"]["batch_size"]
 
-    train_tdlf_data = tdlf_df_to_tf_dataset(train_df).shuffle(shuffle_buffer_size).batch(batch_size)
+    train_tdlf_data = (
+        tdlf_df_to_tf_dataset(train_df).shuffle(shuffle_buffer_size).batch(batch_size)
+    )
     test_tdlf_data = tdlf_df_to_tf_dataset(test_df).batch(batch_size)
-    train_fpmc_data = fpmc_df_to_tf_dataset(train_df).shuffle(shuffle_buffer_size).batch(batch_size)
+    train_fpmc_data = (
+        fpmc_df_to_tf_dataset(train_df).shuffle(shuffle_buffer_size).batch(batch_size)
+    )
     test_fpmc_data = fpmc_df_to_tf_dataset(test_df).batch(batch_size)
 
     # Tuning setup
@@ -224,11 +284,36 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
 
     def build_tdlf_model(hp):
         params = config["tdlf_hyperparameters"]
-        l2_reg = hp.Float("l2_reg", min_value=params["l2_reg"]["min"], max_value=params["l2_reg"]["max"], sampling=params["l2_reg"]["sampling"])
-        dense_units = hp.Int("dense_units", min_value=params["dense_units"]["min"], max_value=params["dense_units"]["max"], step=params["dense_units"]["step"])
-        embedding_dim = hp.Int("embedding_dim", min_value=params["embedding_dim"]["min"], max_value=params["embedding_dim"]["max"], step=params["embedding_dim"]["step"])
-        time_bins = hp.Int("time_bins", min_value=params["time_bins"]["min"], max_value=params["time_bins"]["max"], step=params["time_bins"]["step"])
-        learning_rate = hp.Float("learning_rate", min_value=params["learning_rate"]["min"], max_value=params["learning_rate"]["max"], sampling=params["learning_rate"]["sampling"])
+        l2_reg = hp.Float(
+            "l2_reg",
+            min_value=params["l2_reg"]["min"],
+            max_value=params["l2_reg"]["max"],
+            sampling=params["l2_reg"]["sampling"],
+        )
+        dense_units = hp.Int(
+            "dense_units",
+            min_value=params["dense_units"]["min"],
+            max_value=params["dense_units"]["max"],
+            step=params["dense_units"]["step"],
+        )
+        embedding_dim = hp.Int(
+            "embedding_dim",
+            min_value=params["embedding_dim"]["min"],
+            max_value=params["embedding_dim"]["max"],
+            step=params["embedding_dim"]["step"],
+        )
+        time_bins = hp.Int(
+            "time_bins",
+            min_value=params["time_bins"]["min"],
+            max_value=params["time_bins"]["max"],
+            step=params["time_bins"]["step"],
+        )
+        learning_rate = hp.Float(
+            "learning_rate",
+            min_value=params["learning_rate"]["min"],
+            max_value=params["learning_rate"]["max"],
+            sampling=params["learning_rate"]["sampling"],
+        )
 
         model = TemporalDynamicVariants(
             l2_reg, dense_units, embedding_dim, data_query, time_bins
@@ -241,19 +326,32 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
         model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=lr_schedule))
         return model
 
-
     def build_fpmc_model(hp):
         params = config["fpmc_hyperparameters"]
-        l2_reg = hp.Float("l2_reg", min_value=params["l2_reg"]["min"], max_value=params["l2_reg"]["max"], sampling=params["l2_reg"]["sampling"])
-        embedding_dim = hp.Int("embedding_dim", min_value=params["embedding_dim"]["min"], max_value=params["embedding_dim"]["max"], step=params["embedding_dim"]["step"])
-        learning_rate = hp.Float("learning_rate", min_value=params["learning_rate"]["min"], max_value=params["learning_rate"]["max"], sampling=params["learning_rate"]["sampling"])
+        l2_reg = hp.Float(
+            "l2_reg",
+            min_value=params["l2_reg"]["min"],
+            max_value=params["l2_reg"]["max"],
+            sampling=params["l2_reg"]["sampling"],
+        )
+        embedding_dim = hp.Int(
+            "embedding_dim",
+            min_value=params["embedding_dim"]["min"],
+            max_value=params["embedding_dim"]["max"],
+            step=params["embedding_dim"]["step"],
+        )
+        learning_rate = hp.Float(
+            "learning_rate",
+            min_value=params["learning_rate"]["min"],
+            max_value=params["learning_rate"]["max"],
+            sampling=params["learning_rate"]["sampling"],
+        )
 
         model = FPMCVariants(
             l2_reg=l2_reg, embedding_dim=embedding_dim, data_query=data_query
         )
         model.compile(optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate))
         return model
-
 
     # Hyperparameter tuning for the selected model
     if model_name == "tdlf":
@@ -266,7 +364,9 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
             directory=config["tuning"]["directories"]["tdlf"],
             project_name=config["tuning"]["project_names"]["tdlf"],
         )
-        tdlf_tuner.search(train_tdlf_data, validation_data=test_tdlf_data, epochs=search_epochs)
+        tdlf_tuner.search(
+            train_tdlf_data, validation_data=test_tdlf_data, epochs=search_epochs
+        )
         best_tdlf_hp = tdlf_tuner.get_best_hyperparameters(num_trials=1)[0]
         print("Best hyperparameters for TemporalDynamicVariants:", best_tdlf_hp.values)
         best_model = tdlf_tuner.hypermodel.build(best_tdlf_hp)
@@ -281,7 +381,9 @@ def tune(model_name, config_path="rsdb/configs/tune_config.yaml"):
             directory=config["tuning"]["directories"]["fpmc"],
             project_name=config["tuning"]["project_names"]["fpmc"],
         )
-        fpmc_tuner.search(train_fpmc_data, validation_data=test_fpmc_data, epochs=search_epochs)
+        fpmc_tuner.search(
+            train_fpmc_data, validation_data=test_fpmc_data, epochs=search_epochs
+        )
         best_fpmc_hp = fpmc_tuner.get_best_hyperparameters(num_trials=1)[0]
         print("Best hyperparameters for FPMCVariants:", best_fpmc_hp.values)
         best_model = fpmc_tuner.hypermodel.build(best_fpmc_hp)
@@ -304,7 +406,7 @@ def main():
     )
     parser.add_argument(
         "--model",
-        choices=["tdlf", "fpmc"],
+        choices=["tdlf", "fpmc", "blf"],
         help="Specify the model to use (tdlf or fpmc).",
     )
     args = parser.parse_args()
@@ -315,6 +417,12 @@ def main():
         print("Training completed. Parameter Saved")
 
     elif args.action == "tune":
+        if args.model == "blf":
+            print("There is no tunning for basic latent factor model!")
+            print("if you want to run baseline model: run the command line:")
+            print('python rsdb/train.py --action "train" --model "blf"')
+            return
+
         print(f"Tuning {args.model} model...")
         best_model = tune(args.model)
         print(f"Tuning completed for {args.model}.")
