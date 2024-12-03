@@ -1,8 +1,15 @@
-from preprocess.data_preprocessing import *
-from features.featuring import *
-from models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
-from models.fpmc.fpmc_v import FPMCVariants
-from models.tdlf.latent_factor import LatentFactorModel
+import sys
+from pathlib import Path
+
+main_path = Path(__file__).resolve().parent.parent.parent
+if str(main_path) not in sys.path:
+    sys.path.append(str(main_path))
+
+from rsdb.preprocess.data_preprocessing import *
+from rsdb.features.featuring import *
+from rsdb.models.tdlf.temporal_dynamic_v import TemporalDynamicVariants
+from rsdb.models.fpmc.fpmc_v import FPMCVariants
+from rsdb.models.tdlf.latent_factor import LatentFactorModel
 import tensorflow as tf
 import kerastuner as kt
 import argparse
@@ -124,7 +131,6 @@ def fpmc_df_to_tf_dataset(dataframe):
             },
         }
     )
-
 
 def train(model_name, config_path="rsdb/configs/train_config.yaml"):
     """Training for both TemporalDynamicVariants and FPMCVariants"""

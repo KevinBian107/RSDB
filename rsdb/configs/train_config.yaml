@@ -5,7 +5,7 @@ training:
   shuffle_buffer_size: 1024
   batch_size: 4096
   epochs: 1000
-  patience: 10
+  patience: 5
   min_delta: 0.001
   learning_rate_schedule:
     initial_learning_rate: 0.00066501
@@ -15,7 +15,7 @@ training:
 
 tdlf:
   embedding_dim: 120
-  dense_units: 64
+  dense_units: 128
   l2_reg: 0.000121
   time_bins: 20
 
