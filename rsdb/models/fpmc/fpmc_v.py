@@ -1,7 +1,6 @@
 import tensorflow as tf
 import tensorflow_recommenders as tfrs
 
-
 class FPMCVariants(tfrs.Model):
     def __init__(self, l2_reg, embedding_dim, data_query):
         super().__init__()
@@ -40,8 +39,11 @@ class FPMCVariants(tfrs.Model):
             input_dim=self.num_items + 1, output_dim=1
         )
 
-        # Global bias
-        self.global_bias = tf.Variable(initial_value=3.5, trainable=True)
+        # Global bias initialized to dataset average
+        self.global_bias = tf.Variable(
+            initial_value=tf.constant(data_query["rating"].mean(), dtype=tf.float32),
+            trainable=True,
+        )
 
         # Additional feature embeddings
         self.category_embedding = tf.keras.layers.Embedding(
@@ -62,12 +64,54 @@ class FPMCVariants(tfrs.Model):
             kernel_regularizer=tf.keras.regularizers.l2(l2_reg),
         )
 
+        # Mixed DNN architecture for feature integration
+        self.mixed_dnn = tf.keras.Sequential([
+            tf.keras.layers.Dense(128, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l2_reg)),
+            tf.keras.layers.Dense(64, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l2_reg)),
+            tf.keras.layers.Dense(embedding_dim, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l2_reg)),
+        ])
+
         # Rating task
         self.rating_task = tfrs.tasks.Ranking(
             loss=tf.keras.losses.MeanSquaredError(),
             metrics=[tf.keras.metrics.RootMeanSquaredError()],
         )
-    
+
+    def preprocess_features(self, features):
+        """Preprocess additional features."""
+        # Process category embeddings
+        category_emb = (
+            features["isin_category_restaurant"][:, None] * self.category_embedding(0)
+            + features["isin_category_park"][:, None] * self.category_embedding(1)
+            + features["isin_category_store"][:, None] * self.category_embedding(2)
+        )
+        category_emb = tf.reduce_mean(category_emb, axis=1, keepdims=True)
+
+        # Process longitude and latitude bins
+        lon_bin_features = tf.concat(
+            [
+                features[f"lon_bin_{i}"][:, None]
+                for i in range(20)
+                if f"lon_bin_{i}" in features
+            ],
+            axis=1,
+        )
+        lon_bin_emb = self.lon_bin_dense(lon_bin_features)
+
+        lat_bin_features = tf.concat(
+            [
+                features[f"lat_bin_{i}"][:, None]
+                for i in range(20)
+                if f"lat_bin_{i}" in features
+            ],
+            axis=1,
+        )
+        lat_bin_emb = self.lat_bin_dense(lat_bin_features)
+
+        # Combine all features
+        additional_features = tf.concat([category_emb, lon_bin_emb, lat_bin_emb], axis=1)
+        return additional_features
+
     def call(self, features):
         """
         Predict ratings for (user, prev_item, next_item) triplets with additional features.
@@ -93,40 +137,11 @@ class FPMCVariants(tfrs.Model):
         user_bias = tf.squeeze(self.user_bias(user_ids))
         item_bias = tf.squeeze(self.item_bias(next_item_ids))
 
-        # Additional feature vector embeddings
-        category_emb = (
-            features["isin_category_restaurant"][:, None] * self.category_embedding(0)
-            + features["isin_category_park"][:, None] * self.category_embedding(1)
-            + features["isin_category_store"][:, None] * self.category_embedding(2)
-        )
+        # Process additional features
+        additional_features = self.preprocess_features(features)
 
-        # Match rank of category_emb with lon_bin_emb and lat_bin_emb
-        category_emb = tf.reduce_mean(category_emb, axis=1, keepdims=True)
-
-        lon_bin_features = tf.concat(
-            [
-                features[f"lon_bin_{i}"][:, None]
-                for i in range(20)
-                if f"lon_bin_{i}" in features
-            ],
-            axis=1,
-        )
-        lat_bin_features = tf.concat(
-            [
-                features[f"lat_bin_{i}"][:, None]
-                for i in range(20)
-                if f"lat_bin_{i}" in features
-            ],
-            axis=1,
-        )
-
-        lon_bin_emb = self.lon_bin_dense(lon_bin_features)
-        lat_bin_emb = self.lat_bin_dense(lat_bin_features)
-
-        # Combine all features
-        additional_features = tf.concat(
-            [category_emb, lon_bin_emb, lat_bin_emb], axis=1
-        )
+        # Pass additional features through the mixed DNN
+        mixed_feature_representation = self.mixed_dnn(additional_features)
 
         # Final prediction
         return (
@@ -135,9 +150,9 @@ class FPMCVariants(tfrs.Model):
             + user_bias
             + item_bias
             + self.global_bias
-            # + tf.reduce_sum(additional_features, axis=1)
+            + tf.reduce_sum(mixed_feature_representation, axis=1)
         )
-        
+
     def compute_loss(self, features, training=False):
         """
         Compute MSE loss for predicted ratings.
@@ -145,7 +160,7 @@ class FPMCVariants(tfrs.Model):
         ratings = features["rating"]
         predictions = self(features)
         return self.rating_task(labels=ratings, predictions=predictions)
-    
+
     def get_config(self):
         # Return a dictionary of the model's configuration
         return {
@@ -157,5 +172,3 @@ class FPMCVariants(tfrs.Model):
     def from_config(cls, config):
         # Create an instance of the model from the config
         return cls(**config)
-        
-

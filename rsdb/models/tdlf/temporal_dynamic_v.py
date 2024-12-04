@@ -66,7 +66,7 @@ class TemporalDynamicVariants(tfrs.Model):
         )
 
         # Global bias
-        self.global_bias = tf.Variable(initial_value=3.5, trainable=True)
+        self.global_bias = tf.Variable(initial_value=4.0, trainable=True)
         
         self.layer_norm = tf.keras.layers.LayerNormalization()
         
@@ -96,11 +96,14 @@ class TemporalDynamicVariants(tfrs.Model):
         # Static embeddings
         user_emb = self.user_embedding(user_idx)
         user_emb = self.layer_norm(user_emb)
+        user_emb = self.layer_norm(user_emb)
         item_emb = self.item_embedding(item_idx)
+        item_emb = self.layer_norm(item_emb)
         item_emb = self.layer_norm(item_emb)
 
         # Dynamic user temporal embedding (time-bin specific user latent)
         time_bin_emb = self.time_bin_embedding(time_bin_idx)
+        time_bin_emb = self.layer_norm(time_bin_emb)
         time_bin_emb = self.layer_norm(time_bin_emb)
         dynamic_user_emb = user_emb + time_bin_emb
 
@@ -108,7 +111,7 @@ class TemporalDynamicVariants(tfrs.Model):
         user_bias = self.user_bias(user_idx)
         item_bias = self.item_bias(item_idx)
         
-        # Calculate the temporal deviation with a logarithmic relationship
+        # Temporal deviation with a logarithmic relationship
         # time = tf.cast(features["time"], tf.float32)
         # user_mean_time = tf.cast(features["user_mean_time"], tf.float32)
         # time_diff = tf.abs(time - user_mean_time)
@@ -116,7 +119,14 @@ class TemporalDynamicVariants(tfrs.Model):
         # log_deviation = tf.math.log(time_diff + epsilon)
         # deviation = tf.math.sign(time - user_mean_time) * log_deviation
         # temporal_effect = user_bias + self.alpha * tf.expand_dims(deviation, axis=-1)
-
+        
+        temporal_effect = self.calculate_periodic_user_bias(
+            features=features,
+            user_bias=user_bias,
+            period=30,
+            amplitude=0.5,
+            phase_shift=0.0,
+        )
 
         # # Calculate the temporal deviation with a logarithmic relationship
         # time = tf.cast(features["time"], tf.float32)
@@ -176,7 +186,7 @@ class TemporalDynamicVariants(tfrs.Model):
         return (
             tf.squeeze(interaction_score)
             + tf.squeeze(item_bias)
-            + tf.squeeze(user_bias)
+            + tf.squeeze(temporal_effect)
             + self.global_bias
         )
     

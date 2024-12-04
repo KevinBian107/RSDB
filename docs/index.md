@@ -2,6 +2,11 @@
 # A Sequential Recommendation System
 We are constructing a hybrid recommender system with collaborative filters and content-based filtering. The model will use features of locations, the interaction of location and user, and the temporal evolution of the interaction to predict a user's rating of a business.
 
+## System Flow of RSDB
+This is the main flow of our pipeline:
+
+![system](img/SystemWorkFlow.png)
+
 ## Structure of System
 
 ```bash
