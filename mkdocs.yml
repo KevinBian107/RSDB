@@ -139,6 +139,9 @@ extra:
     - icon: fontawesome/brands/github 
       link: https://github.com/KevinBian107
 
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML
+
 # extra_css:
 #   - css/mkdocstrings.css
 
@@ -149,6 +152,7 @@ copyright: >
 nav:
   - Why RSDB?: index.md
   - API Calls: api.md
+  - Math Formulation: math.md
   - System:
     - Explorative Data Analysis: system/eda.md
     - Features: system/features.md

@@ -100,6 +100,16 @@ class TemporalDynamicVariants(tfrs.Model):
         # Biases
         user_bias = self.user_bias(user_idx)
         item_bias = self.item_bias(item_idx)
+        
+        # Calculate the temporal deviation with a logarithmic relationship
+        # time = tf.cast(features["time"], tf.float32)
+        # user_mean_time = tf.cast(features["user_mean_time"], tf.float32)
+        # time_diff = tf.abs(time - user_mean_time)
+        # epsilon = 1e-6
+        # log_deviation = tf.math.log(time_diff + epsilon)
+        # deviation = tf.math.sign(time - user_mean_time) * log_deviation
+        # temporal_effect = user_bias + self.alpha * tf.expand_dims(deviation, axis=-1)
+
 
         # Extract additional features
         category_features = tf.stack(
