@@ -109,6 +109,7 @@ def fpmc_df_to_tf_dataset(dataframe):
             "reviewer_id": user_lookup(dataframe["reviewer_id"]),
             "prev_item_id": item_lookup(dataframe["prev_item_id"]),
             "next_item_id": item_lookup(dataframe["gmap_id"]),
+            "time": dataframe["review_time(unix)"].astype(float),
             "rating": dataframe["rating"].astype(float),
             "isin_category_restaurant": dataframe["isin_category_restaurant"].astype(
                 float
