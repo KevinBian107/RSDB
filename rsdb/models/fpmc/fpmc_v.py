@@ -135,7 +135,7 @@ class FPMCVariants(tfrs.Model):
             + user_bias
             + item_bias
             + self.global_bias
-            + tf.reduce_sum(additional_features, axis=1)
+            # + tf.reduce_sum(additional_features, axis=1)
         )
         
     def compute_loss(self, features, training=False):

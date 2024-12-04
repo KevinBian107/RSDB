@@ -13,7 +13,6 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-
 class TemporalDynamicVariants(tfrs.Model):
     def __init__(self, l2_reg, dense_units, embedding_dim, dataframe, time_bins):
         super().__init__()
@@ -64,11 +63,6 @@ class TemporalDynamicVariants(tfrs.Model):
         )
         self.item_bias = tf.keras.layers.Embedding(
             input_dim=self.item_index.vocabulary_size(), output_dim=1
-        )
-
-        # Dynamic user deviation parameter
-        self.user_alpha = tf.keras.layers.Embedding(
-            input_dim=self.user_index.vocabulary_size(), output_dim=1
         )
 
         # Global bias
