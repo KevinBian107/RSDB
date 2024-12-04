@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from rsdb.recommendation import Recommendation
+from sklearn.metrics import recall_score, precision_score, f1_score
 
 
 def calculate_mse(y_true, y_pred):
@@ -102,11 +103,35 @@ def calculate_mase(y_true, y_pred):
     return mase
 
 
+def calculate_recall_multiclass(y_true, y_pred):
+    """
+    Calculate Recall for multi-class ratings.
+    Macro-averaging ensures all classes are equally weighted.
+    """
+    return recall_score(y_true, y_pred, average="macro")
+
+
+def calculate_precision_multiclass(y_true, y_pred):
+    """
+    Calculate Precision for multi-class ratings.
+    Macro-averaging ensures all classes are equally weighted.
+    """
+    return precision_score(y_true, y_pred, average="macro")
+
+
+def calculate_f1_multiclass(y_true, y_pred):
+    """
+    Calculate F1 Score for multi-class ratings.
+    Macro-averaging ensures all classes are equally weighted.
+    """
+    return f1_score(y_true, y_pred, average="macro")
+
+
 def eval_result(models: list, tf_test_datas: list) -> pd.DataFrame:
     """
     evaluate the result
     """
-    columns = ["mse", "rmse", "r2", "mase"]
+    columns = ["mse", "rmse", "r2", "mase", "recall", "precision", "f1", "acc"]
 
     result_list = []
     # eval the perforamnce of each model
@@ -116,13 +141,17 @@ def eval_result(models: list, tf_test_datas: list) -> pd.DataFrame:
         actual_rating = np.array(list(rating_column_batched.as_numpy_iterator()))
 
         metrics = [model.name]
-        prediction = model.predict(tf_test_data)
+        prediction = np.round(model.predict(tf_test_data))
         metrics.extend(
-            [
+            [                
                 calculate_mse(actual_rating, prediction),
                 calculate_rmse(actual_rating, prediction),
                 calculate_r2(actual_rating, prediction),
                 calculate_mase(actual_rating, prediction),
+                calculate_recall_multiclass(actual_rating, prediction),
+                calculate_precision_multiclass(actual_rating, prediction),
+                calculate_f1_multiclass(actual_rating, prediction),
+                np.mean(np.abs(actual_rating == prediction)),
             ]
         )
         result_list.append(metrics)

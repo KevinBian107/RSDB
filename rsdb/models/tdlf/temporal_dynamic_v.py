@@ -67,7 +67,11 @@ class TemporalDynamicVariants(tfrs.Model):
 
         # Global bias
         self.global_bias = tf.Variable(initial_value=3.5, trainable=True)
-
+        
+        self.layer_norm = tf.keras.layers.LayerNormalization()
+        
+        self.user_alpha = tf.Variable(initial_value=0.1, trainable=True, dtype=tf.float32)
+        
         # Dense layers for interactions
         self.dense_layers = tf.keras.Sequential(
             [
@@ -91,10 +95,13 @@ class TemporalDynamicVariants(tfrs.Model):
 
         # Static embeddings
         user_emb = self.user_embedding(user_idx)
+        user_emb = self.layer_norm(user_emb)
         item_emb = self.item_embedding(item_idx)
+        item_emb = self.layer_norm(item_emb)
 
         # Dynamic user temporal embedding (time-bin specific user latent)
         time_bin_emb = self.time_bin_embedding(time_bin_idx)
+        time_bin_emb = self.layer_norm(time_bin_emb)
         dynamic_user_emb = user_emb + time_bin_emb
 
         # Biases
@@ -109,6 +116,24 @@ class TemporalDynamicVariants(tfrs.Model):
         # log_deviation = tf.math.log(time_diff + epsilon)
         # deviation = tf.math.sign(time - user_mean_time) * log_deviation
         # temporal_effect = user_bias + self.alpha * tf.expand_dims(deviation, axis=-1)
+
+
+        # # Calculate the temporal deviation with a logarithmic relationship
+        # time = tf.cast(features["time"], tf.float32)
+        # user_mean_time = tf.cast(features["user_mean_time"], tf.float32)
+        # time_diff = tf.abs(time - user_mean_time)
+        # epsilon = 1e-6
+        # log_deviation = tf.math.log(time_diff + epsilon)
+        # deviation = tf.math.sign(time - user_mean_time) * log_deviation
+        # temporal_effect = user_bias + self.user_alpha * tf.expand_dims(deviation, axis=-1)
+        
+        temporal_effect = self.calculate_periodic_user_bias(
+            features=features,
+            user_bias=user_bias,
+            period=.0,
+            amplitude=0.5,
+            phase_shift=0.0,
+        )
 
 
         # Extract additional features
@@ -154,7 +179,32 @@ class TemporalDynamicVariants(tfrs.Model):
             + tf.squeeze(user_bias)
             + self.global_bias
         )
+    
+    def calculate_periodic_user_bias(self, features, user_bias, period, amplitude, phase_shift):
+        """
+        Calculates user bias adjusted with a periodic trend.
 
+        Parameters:
+            features (dict): Input features containing reviewer_id and other data.
+            user_bias_embedding (tf.keras.layers.Embedding): User bias embedding layer.
+            period (float): The period of the sinusoidal function (e.g., days, weeks).
+            amplitude (float): The amplitude of the periodic adjustment.
+            phase_shift (float): Phase shift for the periodic function.
+
+        Returns:
+            tf.Tensor: Adjusted user bias.
+        """
+        # Extract time-related features (e.g., timestamps or days)
+        time = tf.cast(features["time"], tf.float32)
+
+        # Calculate periodic adjustment
+        normalized_time = (time % period) / period  # Normalize time to [0, 1] range
+        periodic_adjustment = amplitude * tf.math.sin(2 * np.pi * normalized_time + phase_shift)
+
+        # Adjust user bias with periodic function
+        adjusted_user_bias = user_bias + tf.expand_dims(periodic_adjustment, axis=-1)
+        return adjusted_user_bias
+    
     def compute_loss(self, features, training=False):
         ratings = features["rating"]
         predictions = self(features)

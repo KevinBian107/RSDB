@@ -10,18 +10,22 @@ training:
   model_save_path: "trained_{model_name}_model"
 
 tdlf:
-  embedding_dim: 90
-  dense_units: 128
-  l2_reg: 0.00121
+  embedding_dim: 30
+  dense_units: 64
+  l2_reg: 0.0121
   time_bins: 30
   learning_rate_schedule:
-    initial_learning_rate: 0.00066501
+    initial_learning_rate: 0.000066501
     decay_steps: 1000
     decay_rate: 0.8
 
 fpmc:
   embedding_dim: 20
   l2_reg: 0.0066295
+  learning_rate_schedule:
+    initial_learning_rate: 0.00022001
+    decay_steps: 1000
+    decay_rate: 0.5
   learning_rate_schedule:
     initial_learning_rate: 0.00022001
     decay_steps: 1000
