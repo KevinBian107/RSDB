@@ -749,6 +749,9 @@
 
 
 <h1 id="modeling-dynamics-in-time">Modeling Dynamics in Time<a class="headerlink" href="#modeling-dynamics-in-time" title="Permanent link">&para;</a></h1>
+<p>For introduction to some of the mathamatical formulation, please check the following:
+1. <a href="https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20FitRec%20Mathamatical%20Formulation.pdf">Intro to FitRec Mathamatical Formulation</a>
+2. <a href="https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf">Intro to Sequential Modeling</a></p>
 <p>There are usually two approaches to tackling dynamics in time: one focuses on using temporal features (timestamps), and the other focuses on looking at the order of things (sequence). We will introduce two common approaches (one from each family) in this section.</p>
 <h2 id="baseline-latent-factor-blf">Baseline Latent Factor (BLF)<a class="headerlink" href="#baseline-latent-factor-blf" title="Permanent link">&para;</a></h2>
 <p>For our baseline evaluation, we use a plain latent factor model that only models the interaction between user and item through rating interactions (<span class="arithmatex">\( \gamma_u \)</span> and <span class="arithmatex">\( \gamma_i \)</span>) and bias terms (user bias <span class="arithmatex">\( \beta_u \)</span>, item bias <span class="arithmatex">\( \beta_i \)</span>, and global bias <span class="arithmatex">\( \beta_g \)</span>). We also added regularization on each of the terms mentioned above, which can frame the whole optimization using MSE as follows:</p>
