@@ -290,7 +290,7 @@
         <a href="formulation/math/" class="md-tabs__link">
           
   
-  Formulation
+  Formulation Details
 
         </a>
       </li>
@@ -399,15 +399,6 @@
   <a href="#system-flow-of-rsdb" class="md-nav__link">
     <span class="md-ellipsis">
       System Flow of RSDB
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#structure-of-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      Structure of System
     </span>
   </a>
   
@@ -616,7 +607,7 @@
             
   
   <span class="md-ellipsis">
-    Formulation
+    Formulation Details
   </span>
   
 
@@ -626,7 +617,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Formulation
+            Formulation Details
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -641,7 +632,7 @@
         
   
   <span class="md-ellipsis">
-    Math Formulation
+    Baisc Math Formulation
   </span>
   
 
@@ -662,7 +653,7 @@
         
   
   <span class="md-ellipsis">
-    Paper
+    Manuscript
   </span>
   
 
@@ -715,15 +706,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#structure-of-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      Structure of System
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#reference-sources" class="md-nav__link">
     <span class="md-ellipsis">
       Reference Sources
@@ -760,27 +742,11 @@
 
 
 <h1 id="a-sequential-recommendation-system">A Sequential Recommendation System<a class="headerlink" href="#a-sequential-recommendation-system" title="Permanent link">&para;</a></h1>
+<p><strong>This is a Beta version system. We are currently working on imrpoving model abilities and data flows.</strong></p>
 <p>We are constructing a hybrid recommender system with collaborative filters and content-based filtering. The model will use features of locations, the interaction of location and user, and the temporal evolution of the interaction to predict a user's rating of a business.</p>
 <h2 id="system-flow-of-rsdb">System Flow of RSDB<a class="headerlink" href="#system-flow-of-rsdb" title="Permanent link">&para;</a></h2>
 <p>This is the main flow of our pipeline:</p>
 <p><img alt="system" src="img/SystemWorkFlow.png" /></p>
-<h2 id="structure-of-system">Structure of System<a class="headerlink" href="#structure-of-system" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>rsdb/
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├──<span class="w"> </span>data/
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├──<span class="w"> </span>configs/
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├──<span class="w"> </span>features/
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│<span class="w">   </span>├──<span class="w"> </span>featuring.py
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├──<span class="w"> </span>math_formulation/
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├──<span class="w"> </span>models/
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│<span class="w">   </span>├──<span class="w"> </span>fpmc/
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│<span class="w">   </span>├──<span class="w"> </span>tldf/
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├──<span class="w"> </span>preprocess/
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│<span class="w">   </span>├──<span class="w"> </span>data_preprocessing.py
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>├──<span class="w"> </span>eval/
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│<span class="w">   </span>├──<span class="w"> </span>eval_processing.py
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>├──<span class="w"> </span>recommendation.py
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>├──<span class="w"> </span>train.py
-</code></pre></div>
 <h2 id="reference-sources">Reference Sources<a class="headerlink" href="#reference-sources" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Dataset:<ul>
