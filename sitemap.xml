@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://kbian.org/RSDB/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2024-12-05</lastmod>
     </url>
     <url>
          <loc>https://kbian.org/RSDB/api/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2024-12-05</lastmod>
     </url>
     <url>
-         <loc>https://kbian.org/RSDB/math/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <loc>https://kbian.org/RSDB/formulation/math/</loc>
+         <lastmod>2024-12-05</lastmod>
+    </url>
+    <url>
+         <loc>https://kbian.org/RSDB/formulation/paper/</loc>
+         <lastmod>2024-12-05</lastmod>
     </url>
     <url>
          <loc>https://kbian.org/RSDB/system/downstream/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2024-12-05</lastmod>
     </url>
     <url>
          <loc>https://kbian.org/RSDB/system/eda/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2024-12-05</lastmod>
     </url>
     <url>
          <loc>https://kbian.org/RSDB/system/features/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2024-12-05</lastmod>
     </url>
     <url>
          <loc>https://kbian.org/RSDB/system/models/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2024-12-05</lastmod>
     </url>
 </urlset>
