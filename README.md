@@ -5,3 +5,17 @@ We are constructing a hybrid recommender system with collaborative filters and c
 [Overleaf Paper editor](https://www.overleaf.com/project/6747b9894eb6b872537547be)
 
 Visit documentation website here: https://kbian.org/RSDB/
+
+## Contributor 
+equal contributions
+
+Guoxuan Xu - [@github_profile](https://github.com/g7xu) - g7xu@ucsd.edu
+
+Kaiwen Bian - [@github_profile]() - ...
+
+Jiaying Chen - [@github_profile]() - ...
+
+Weijie Zhang - [@github_profile]() - ...
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
