@@ -3,6 +3,27 @@ We ahve created simply interactive API calls to use our system for building a bu
 ## Notebooks
 We have created two notebooks for a clear visualization of our [training](https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/train.ipynb), [evaluations, and downstream applications](https://github.com/KevinBian107/RSDB/blob/main/demo_notebooks/eval.ipynb)
 
+## Structure of System
+The following illsutrates the structure of our system for ease of API calling and modification of code:
+
+```bash
+rsdb/
+├── data/
+├── configs/
+├── features/
+│   ├── featuring.py
+├── math_formulation/
+├── models/
+│   ├── fpmc/
+│   ├── tldf/
+├── preprocess/
+│   ├── data_preprocessing.py
+├── eval/
+│   ├── eval_processing.py
+├── recommendation.py
+├── train.py
+```
+
 ## Setting-up Training
 Create a environment to work on:
 ```python

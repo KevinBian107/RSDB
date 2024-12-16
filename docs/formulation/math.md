@@ -1,5 +1,11 @@
 # Modeling Dynamics in Time
 
+For introduction to some of the mathamatical formulation, please check the following:
+
+1. [Intro to FitRec Mathamatical Formulation](https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20FitRec%20Mathamatical%20Formulation.pdf)
+2. [Intro to Sequential Modeling](https://github.com/KevinBian107/RSDB/blob/main/math/Intro%20to%20Sequential%20Modeling.pdf)
+
+
 There are usually two approaches to tackling dynamics in time: one focuses on using temporal features (timestamps), and the other focuses on looking at the order of things (sequence). We will introduce two common approaches (one from each family) in this section.
 
 ## Baseline Latent Factor (BLF)

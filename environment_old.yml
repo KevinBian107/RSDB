@@ -18,9 +18,9 @@ dependencies:
       - black
       - plotly
       - scikit-learn
-      - tensorflow==2.13.0
-      - tensorflow-recommenders==0.7.3
-      - keras-tuner==1.4.7
+      - tensorflow=2.13.0
+      - tensorflow-recommenders=0.7.3
+      - keras-tuner=1.4.7
       - tqdm
       - pathlib
       - pandas

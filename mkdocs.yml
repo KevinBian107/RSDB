@@ -152,12 +152,14 @@ copyright: >
 nav:
   - Why RSDB?: index.md
   - API Calls: api.md
-  - Math Formulation: math.md
   - System:
     - Explorative Data Analysis: system/eda.md
     - Features: system/features.md
     - Models: system/models.md
     - Applications: system/downstream.md
+  - Implementation Details:
+    - Baisc Model Formulation: formulation/math.md
+    - Manuscript: formulation/paper.md
   # - Examples: examples.md
   # - Changelog: changelog.md
   # - Releases: https://github.com/talmolab/sleap-io/releases
