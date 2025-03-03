@@ -11,7 +11,7 @@ equal contributions
 
 Guoxuan Xu - [@github_profile](https://github.com/g7xu) - g7xu@ucsd.edu
 
-Kaiwen Bian - [@github_profile]() - ...
+Kaiwen Bian - [@github_profile](https://github.com/KevinBian107) - kbian@ucsd.edu
 
 Jiaying Chen - [@github_profile](https://github.com/rcwoshimao) - jic098@ucsd.edu
 
