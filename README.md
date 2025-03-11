@@ -1,6 +1,8 @@
 ## Recommendation based on Sequential Dynamics for Business owners (RSDB)
 We are constructing a hybrid recommender system with collaborative filters and content-based filtering. The model will use features of locations, the interaction of location and user, and the temporal evolution of the interaction to predict a user's rating of a business.     
 
+[See our paper here.](https://github.com/KevinBian107/RSDB/blob/main/Recommendation%20Based%20on%20Sequential%20Dynamics%20for%20Business%20Owners.pdf)
+
 [Running Meeting Note](https://docs.google.com/document/d/1wip-kDJHyLVldHFIrES-p2NLOI2Qk7_ww8qfhiIvoc4/edit?usp=sharing)
 [Overleaf Paper editor](https://www.overleaf.com/project/6747b9894eb6b872537547be)
 
